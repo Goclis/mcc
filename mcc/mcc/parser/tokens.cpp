@@ -1,5 +1,6 @@
+#line 2 "tokens.cpp"
 
-#line 3 "lex.yy.c"
+#line 4 "tokens.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -509,10 +510,12 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "lex.ll"
-#line 2 "lex.ll"
-		
-#line 516 "lex.yy.c"
+#line 1 "tokens.l"
+#line 2 "tokens.l"
+
+#include "parser.hpp"
+
+#line 519 "tokens.cpp"
 
 #define INITIAL 0
 
@@ -521,7 +524,8 @@ char *yytext;
  * down here because we want the user's section 1 to have been scanned first.
  * The user has a chance to override it with an option.
  */
-#include <unistd.h>
+#include <stdio.h>
+#include <io.h>
 #endif
 
 #ifndef YY_EXTRA_TYPE
@@ -699,10 +703,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 7 "lex.ll"
+#line 9 "tokens.l"
 
 
-#line 706 "lex.yy.c"
+#line 709 "tokens.cpp"
 
 	if ( !(yy_init) )
 		{
@@ -787,196 +791,196 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 9 "lex.ll"
+#line 11 "tokens.l"
 ;
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 10 "lex.ll"
+#line 12 "tokens.l"
 ;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 11 "lex.ll"
+#line 13 "tokens.l"
 ;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 13 "lex.ll"
-return token::INT;
+#line 15 "tokens.l"
+return INT;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 14 "lex.ll"
-return token::VOID;
+#line 16 "tokens.l"
+return VOID;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 15 "lex.ll"
-return token::WHILE;
+#line 17 "tokens.l"
+return WHILE;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 16 "lex.ll"
-return token::IF;
+#line 18 "tokens.l"
+return IF;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 17 "lex.ll"
-return token::ELSE;
+#line 19 "tokens.l"
+return ELSE;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 18 "lex.ll"
-return token::BREAK;
+#line 20 "tokens.l"
+return BREAK;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 19 "lex.ll"
-return token::CONTINUE;
+#line 21 "tokens.l"
+return CONTINUE;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 20 "lex.ll"
-return token::RETURN;
+#line 22 "tokens.l"
+return RETURN;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 21 "lex.ll"
-return token::IDENT;
+#line 23 "tokens.l"
+return IDENT;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 22 "lex.ll"
-return token::DECNUM;
+#line 24 "tokens.l"
+return DECNUM;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 24 "lex.ll"
-return token::COMMA;
+#line 26 "tokens.l"
+return COMMA;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 25 "lex.ll"
-return token::SEMICOLON;
+#line 27 "tokens.l"
+return SEMICOLON;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 26 "lex.ll"
-return token::EQUAL;
+#line 28 "tokens.l"
+return EQUAL;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 27 "lex.ll"
-return token::LEFT_SQUARE_BRACKET;
+#line 29 "tokens.l"
+return LEFT_SQUARE_BRACKET;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 28 "lex.ll"
-return token::RIGHT_SQUARE_BRACKET;
+#line 30 "tokens.l"
+return RIGHT_SQUARE_BRACKET;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 29 "lex.ll"
-return token::LEFT_PARANTHESIS;
+#line 31 "tokens.l"
+return LEFT_PARANTHESIS;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 30 "lex.ll"
-return token::RIGHT_PARANTHESIS;
+#line 32 "tokens.l"
+return RIGHT_PARANTHESIS;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 31 "lex.ll"
-return token::LEFT_CURLY_BRACKET;
+#line 33 "tokens.l"
+return LEFT_CURLY_BRACKET;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 32 "lex.ll"
-return token::RIGHT_CURLY_BRACKET;
+#line 34 "tokens.l"
+return RIGHT_CURLY_BRACKET;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 33 "lex.ll"
-return token::OR;
+#line 35 "tokens.l"
+return OR;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 34 "lex.ll"
-return token::AND;
+#line 36 "tokens.l"
+return AND;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 35 "lex.ll"
-return token::NOT;
+#line 37 "tokens.l"
+return NOT;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 36 "lex.ll"
-return token::LE;
+#line 38 "tokens.l"
+return LE;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 37 "lex.ll"
-return token::GE;
+#line 39 "tokens.l"
+return GE;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 38 "lex.ll"
-return token::LT;
+#line 40 "tokens.l"
+return LT;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 39 "lex.ll"
-return token::GT;
+#line 41 "tokens.l"
+return GT;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 40 "lex.ll"
-return token::EQ;
+#line 42 "tokens.l"
+return EQ;
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 41 "lex.ll"
-return token::NE;
+#line 43 "tokens.l"
+return NE;
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 42 "lex.ll"
-return token::PLUS;
+#line 44 "tokens.l"
+return PLUS;
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 43 "lex.ll"
-return token::MINUS;
+#line 45 "tokens.l"
+return MINUS;
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 44 "lex.ll"
-return token::ASTERISK;
+#line 46 "tokens.l"
+return ASTERISK;
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 45 "lex.ll"
-return token::SOLIDUS;
+#line 47 "tokens.l"
+return SOLIDUS;
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 46 "lex.ll"
-return token::PERCENT;
+#line 48 "tokens.l"
+return PERCENT;
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 47 "lex.ll"
-return token::DOLLAR;
+#line 49 "tokens.l"
+return DOLLAR;
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 49 "lex.ll"
+#line 51 "tokens.l"
 ECHO;
 	YY_BREAK
-#line 980 "lex.yy.c"
+#line 983 "tokens.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1974,7 +1978,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 49 "lex.ll"
+#line 51 "tokens.l"
 
 
 

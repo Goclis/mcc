@@ -65,9 +65,20 @@
 
 /* Copy the first part of user declarations.  */
 
+/* Line 268 of yacc.c  */
+#line 1 "parser.y"
+
+#include <stdio.h>
+extern int yylex();
+void yyerror(const char *s)
+{
+	printf("ERROR: %s\n", s);	
+}
+	
+
 
 /* Line 268 of yacc.c  */
-#line 71 "yacc.tab.cc"
+#line 82 "parser.cpp"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -147,7 +158,7 @@ typedef int YYSTYPE;
 
 
 /* Line 343 of yacc.c  */
-#line 151 "yacc.tab.cc"
+#line 162 "parser.cpp"
 
 #ifdef short
 # undef short
@@ -464,13 +475,13 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    50,    50,    54,    55,    59,    60,    65,    67,    71,
-      72,    76,    80,    81,    85,    86,    90,    91,    95,    96,
-     100,   101,   102,   103,   104,   105,   106,   110,   114,   118,
-     119,   120,   124,   128,   132,   133,   137,   138,   142,   143,
-     147,   148,   152,   153,   154,   155,   156,   157,   158,   159,
-     160,   161,   162,   163,   164,   165,   166,   167,   168,   169,
-     170,   171,   172,   176,   180,   181,   185,   186
+       0,    62,    62,    66,    67,    71,    72,    77,    79,    83,
+      84,    88,    92,    93,    97,    98,   102,   103,   107,   108,
+     112,   113,   114,   115,   116,   117,   118,   122,   126,   130,
+     131,   132,   136,   140,   144,   145,   149,   150,   154,   155,
+     159,   160,   164,   165,   166,   167,   168,   169,   170,   171,
+     172,   173,   174,   175,   176,   177,   178,   179,   180,   181,
+     182,   183,   184,   188,   192,   193,   197,   198
 };
 #endif
 
@@ -1516,7 +1527,7 @@ yyreduce:
       
 
 /* Line 1806 of yacc.c  */
-#line 1520 "yacc.tab.cc"
+#line 1531 "parser.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1747,7 +1758,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 191 "yacc.yy"
+#line 203 "parser.y"
 
 
 
