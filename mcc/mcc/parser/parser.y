@@ -172,10 +172,10 @@ expr_stmt
 
 expr
 	: expr OR expr
-	| expr EQ expr	
+	| expr EQ expr
 	| expr NE expr
 	| expr LE expr
-	| expr '<' expr 		
+	| expr '<' expr
 	| expr GE expr
 	| expr '>' expr
 	| expr AND expr
@@ -184,7 +184,7 @@ expr
 	| expr '*' expr
 	| expr '/' expr
 	| expr '%' expr
-	| '!' expr %prec UNARY		
+	| '!' expr %prec UNARY
 	| '$' expr %prec UNARY
 	| '-' expr %prec UNARY
 	| '+' expr %prec UNARY
