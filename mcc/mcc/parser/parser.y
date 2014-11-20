@@ -1,58 +1,56 @@
 %{
 #include <stdio.h>
+
 extern int yylex();
+extern int yylineno;
+extern char *yytext;
 void yyerror(const char *s)
 {
-	printf("ERROR: %s\n", s);	
+	printf("ERROR: %s at line %d around '%s'\n", s, yylineno, yytext);	
 }
-	
 %}
 
 %token IDENT 						/* Identifier */
 %token DECNUM 						/* decimal number*/
-%token NEG_DECNUM
-%token COMMA						/* , */
-%token SEMICOLON 					/* ; */
-%token EQUAL						/* = */
-%token LEFT_SQUARE_BRACKET 			/* [ */
-%token RIGHT_SQUARE_BRACKET 		/* ] */
-%token LEFT_PARANTHESIS				/* ( */
-%token RIGHT_PARANTHESIS			/* ) */
-%token LEFT_CURLY_BRACKET			/* { */
-%token RIGHT_CURLY_BRACKET			/* } */
-%token VOID							/* void */
-%token INT 							/* int */
-%token WHILE 						/* while */
-%token IF 							/* if */
-%token ELSE							/* else */
-%token RETURN 						/* return */
-%token BREAK 						/* break */
-%token CONTINUE 					/* continue */
-%token OR							/* || */
-%token AND							/* && */
-%token NOT							/* ! */
-%token LE 							/* <= */
-%token GE							/* >= */
-%token LT 							/* < */
-%token GT 							/* > */
-%token EQ 							/* == */
-%token NE 							/* != */
-%token PLUS 						/* + */
-%token MINUS 						/* - */
-%token ASTERISK 					/* * */
-%token SOLIDUS 						/* / */
-%token PERCENT 						/* % */
-%token DOLLAR 						/* $ */
+%token HEXNUM
 
-%left OR AND
+%token VOID
+%token INT
+%token WHILE
+%token IF
+%token ELSE
+%token RETURN
+%token BREAK
+%token CONTINUE
+%token OR
+%token AND
+%token LE
+%token GE
+%token EQ
+%token NE
+%token LSHIFT
+%token RSHIFT
+
+%left OR 
+%left AND
 %left EQ NE
-%left LE LT GE GT
-%left PLUS MINUS
-%left ASTERISK SOLIDUS PERCENT
-%right NOT DOLLAR
-
+%left LE GE '>' '<'
+%left '+' '-'
+%left '|'
+%left '&' '^'
+%left '*' '/' '%'
+%right LSHIFT RSHIFT
+%right '!'
+%right '~'
+%nonassoc UNARY
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
+
+
+%union {
+	char *id_name;
+	int int_val;
+}
 
 %start program
 
@@ -74,9 +72,9 @@ decl
 
 var_decl
 		/* normal variable*/
-	: type_spec IDENT SEMICOLON 
+	: type_spec IDENT ';' 
 		/* array variable */
-	| type_spec IDENT LEFT_SQUARE_BRACKET int_literal RIGHT_SQUARE_BRACKET SEMICOLON
+	| type_spec IDENT '[' int_literal ']' ';'
 	;
 
 type_spec
@@ -85,7 +83,8 @@ type_spec
 	;
 
 fun_decl
-	: type_spec IDENT LEFT_PARANTHESIS params RIGHT_PARANTHESIS compound_stmt
+	: type_spec IDENT '(' params ')' compound_stmt
+	| type_spec IDENT '(' params ')' ';'
 	;
 
 params
@@ -94,13 +93,13 @@ params
 	;
 
 param_list
-	: param_list COMMA param
+	: param_list ',' param
 	| param
 	;
 
 param
 	: type_spec IDENT
-	| type_spec IDENT LEFT_SQUARE_BRACKET int_literal RIGHT_SQUARE_BRACKET
+	| type_spec IDENT '[' int_literal ']'
 	;
 
 stmt_list
@@ -119,25 +118,25 @@ stmt
 	;
 
 continue_stmt
-	: CONTINUE SEMICOLON
+	: CONTINUE ';'
 	;
 
 break_stmt
-	: BREAK SEMICOLON
+	: BREAK ';'
 	;
 
 expr_stmt
-	: IDENT EQUAL expr SEMICOLON
-	| IDENT LEFT_SQUARE_BRACKET expr RIGHT_SQUARE_BRACKET EQUAL expr SEMICOLON
-	| SEMICOLON
+	: IDENT '=' expr ';'
+	| IDENT '[' expr ']' '=' expr ';'
+	| ';'
 	;
 
 while_stmt
-	: WHILE LEFT_PARANTHESIS expr RIGHT_PARANTHESIS stmt
+	: WHILE '(' expr ')' stmt
 	;
 
 compound_stmt
-	: LEFT_CURLY_BRACKET local_decls stmt_list RIGHT_CURLY_BRACKET
+	: '{' local_decls stmt_list '}'
 	;
 
 local_decls
@@ -146,50 +145,58 @@ local_decls
 	;
 
 local_decl
-	: type_spec IDENT SEMICOLON
-	| type_spec IDENT LEFT_SQUARE_BRACKET int_literal RIGHT_SQUARE_BRACKET SEMICOLON
+	: type_spec IDENT ';'
+	| type_spec IDENT '[' int_literal ']' ';'
 	;
 
 if_stmt
-	: IF LEFT_PARANTHESIS expr RIGHT_PARANTHESIS stmt %prec LOWER_THAN_ELSE
-	| IF LEFT_PARANTHESIS expr RIGHT_PARANTHESIS stmt ELSE stmt
+	: IF '(' expr ')' stmt %prec LOWER_THAN_ELSE
+	| IF '(' expr ')' stmt ELSE stmt
 	;
 
 return_stmt
-	: RETURN SEMICOLON
-	| RETURN expr SEMICOLON
+	: RETURN ';'
+	| RETURN expr ';'
 	;
 
 expr
-	: expr OR expr 				/* || */
-	| expr EQ expr 				/* == */
-	| expr NE expr 				/* != */
-	| expr LE expr 				/* <= */
-	| expr LT expr 				/* < */
-	| expr GE expr 				/* >= */
-	| expr GT expr 				/* > */
-	| expr AND expr 			/* && */
-	| expr PLUS expr 			/* + */
-	| expr MINUS expr 			/* - */
-	| expr ASTERISK expr 		/* * */
-	| expr SOLIDUS expr 		/* / */
-	| expr PERCENT expr 		/* % */
-	| NOT expr 					/* ! */
-	| DOLLAR expr 				/* $ */
-	| LEFT_PARANTHESIS expr RIGHT_PARANTHESIS
+	: expr OR expr
+	| expr EQ expr	
+	| expr NE expr
+	| expr LE expr
+	| expr '<' expr 		
+	| expr GE expr
+	| expr '>' expr
+	| expr AND expr
+	| expr '+' expr
+	| expr '-' expr
+	| expr '*' expr
+	| expr '/' expr
+	| expr '%' expr
+	| '!' expr %prec UNARY		
+	| '$' expr %prec UNARY
+	| '-' expr %prec UNARY
+	| '+' expr %prec UNARY
+	| '(' expr ')'
 	| IDENT
-	| IDENT LEFT_SQUARE_BRACKET expr RIGHT_SQUARE_BRACKET
-	| IDENT LEFT_PARANTHESIS args RIGHT_PARANTHESIS
+	| IDENT '[' expr ']'
+	| IDENT '(' args ')'
 	| int_literal
-	| NEG_DECNUM
+	| expr '&' expr
+	| expr '^' expr
+	| '~' expr
+	| expr LSHIFT expr
+	| expr RSHIFT expr
+	| expr '|' expr
 	;
 
 int_literal
 	: DECNUM	/* decimal number */
+	| HEXNUM
 	;
 
 arg_list
-	: arg_list COMMA expr
+	: arg_list ',' expr
 	| expr
 	;
 
