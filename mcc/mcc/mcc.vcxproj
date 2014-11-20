@@ -39,7 +39,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)parser;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -51,6 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)ast;$(ProjectDir)parser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -75,11 +77,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ast\MccDeclaration.cpp" />
+    <ClCompile Include="ast\MccVariableDeclaration.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MccFunctionDeclaration.cpp" />
     <ClCompile Include="parser\parser.cpp" />
     <ClCompile Include="parser\tokens.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ast\MccDeclaration.h" />
+    <ClInclude Include="ast\MccVariableDeclaration.h" />
+    <ClInclude Include="MccFunctionDeclaration.h" />
     <ClInclude Include="parser\parser.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
