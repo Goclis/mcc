@@ -212,7 +212,7 @@ expr
 	| expr '*' expr
 	| expr '/' expr
 	| expr '%' expr
-	| '!' expr %prec UNARY		
+	| '!' expr %prec UNARY	
 	| '$' expr %prec UNARY
 	| '-' expr %prec UNARY
 	| '+' expr %prec UNARY
