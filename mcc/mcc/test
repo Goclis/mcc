@@ -2,6 +2,9 @@ void fun(int)
 {
 	int i;
 	int j;
+	
+	i = 10 * 100 & 1 | j + 100 / 3 % -~+!1 * fun();
+	
 	if (i) {
 
 	} else {
