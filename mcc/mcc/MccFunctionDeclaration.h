@@ -9,6 +9,8 @@
 #include <vector>
 
 class MccVariableDeclaration;
+class MccFuncParameter;
+class MccStatement;
 
 using std::vector;
 
@@ -31,18 +33,18 @@ public:
 
 private:
 	/**
-	 * @brief local variable declarations.
+	 * @brief Local variable declarations.
 	 */
 	vector<MccVariableDeclaration *> m_local_variable_decls;
 	
 	/**
-	 * @brief function parameter list.
+	 * @brief Function parameter list.
 	 */
-	// vector<MccFuncParameter *> m_parameter_list;
+	vector<MccFuncParameter *> m_parameter_list;
 
 	/**
-	 * @brief statement list.
+	 * @brief Statement list.
 	 */
-	// vector<MccStatement *> m_statement_list;
+	vector<MccStatement *> m_statement_list;
 };
 

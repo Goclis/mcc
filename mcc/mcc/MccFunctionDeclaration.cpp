@@ -16,6 +16,4 @@ MccFunctionDeclaration::~MccFunctionDeclaration(void)
 			delete this->m_local_variable_decls[i];
 		}
 	}
-
-
 }
