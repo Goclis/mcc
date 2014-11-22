@@ -33,33 +33,6 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#include <string>
-#include "../MccPublicType.h"
-#include "../MccExpression.h"
-#include "../MccIdentifier.h"
-#include "../MccIntLiteral.h"
-#include "../MccUnaryOperatorExpression.h"
-#include "../MccFuncParameter.h"
-#include "../MccFuncParameterList.h"
-#include "../MccArrayAccessExpression.h"
-#include "../MccDeclaration.h"
-#include "../MccDeclarationList.h"
-#include "../MccFunctionDeclaration.h"
-#include "../MccVariableDeclaration.h"
-#include "../MccStatement.h"
-#include "../MccStatementList.h"
-#include "../MccBlockStatement.h"
-#include "../MccWhileStatement.h"
-#include "../MccIfStatement.h"
-#include "../MccAssignStatement.h"
-#include "../MccExpressionList.h"
-#include "../MccMethodCallExpression.h"
-#include "../MccBinaryOperatorExpression.h"
-#include "../MccReturnStatement.h"
-#include "../MccContinueStatement.h"
-#include "../MccBreakStatement.h"
-using std::string;
-
 /* Tokens.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
@@ -117,7 +90,7 @@ using std::string;
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 40 "parser.y"
+#line 41 "parser.y"
 {
 	int iVal;
 	string* pStr;

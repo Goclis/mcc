@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <string>
+#include "../MccRobot.h"
 #include "../MccPublicType.h"
 #include "../MccExpression.h"
 #include "../MccIdentifier.h"
@@ -103,7 +104,7 @@ void yyerror(const char *s)
 %type <pFuncParam> param
 %type <pFuncParamList> param_list params
 %type <pDecl> decl
-%type <pDeclList> decl_list local_decls program
+%type <pDeclList> decl_list local_decls
 %type <pVarDecl> var_decl local_decl
 %type <pFuncDecl> fun_decl
 %type <pStmt> stmt
@@ -124,10 +125,10 @@ void yyerror(const char *s)
 
 program
 	: decl_list {
-		$$ = $1;
+		theMccRobot().initialize($1);
 	}
 	| {
-		$$ = nullptr;
+		
 	}
 	;
 

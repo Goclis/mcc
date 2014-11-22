@@ -120,6 +120,7 @@
 
 #include <stdio.h>
 #include <string>
+#include "../MccRobot.h"
 #include "../MccPublicType.h"
 #include "../MccExpression.h"
 #include "../MccIdentifier.h"
@@ -175,7 +176,7 @@ void yyerror(const char *s)
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 40 "parser.y"
+#line 41 "parser.y"
 {
 	int iVal;
 	string* pStr;
@@ -201,7 +202,7 @@ typedef union YYSTYPE
 	MccBreakStatement* pBreakStmt;
 }
 /* Line 193 of yacc.c.  */
-#line 205 "parser.cpp"
+#line 206 "parser.cpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -214,7 +215,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 218 "parser.cpp"
+#line 219 "parser.cpp"
 
 #ifdef short
 # undef short
@@ -533,15 +534,15 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   126,   126,   129,   135,   140,   146,   149,   155,   159,
-     166,   170,   177,   180,   186,   189,   195,   200,   206,   210,
-     214,   217,   223,   232,   238,   242,   249,   258,   264,   267,
-     270,   273,   276,   279,   282,   285,   291,   298,   304,   307,
-     313,   316,   322,   328,   334,   338,   342,   348,   354,   357,
-     360,   363,   366,   369,   372,   375,   378,   381,   384,   387,
-     390,   393,   396,   399,   402,   405,   408,   412,   416,   420,
-     423,   426,   429,   432,   435,   438,   444,   447,   453,   458,
-     465,   468
+       0,   127,   127,   130,   136,   141,   147,   150,   156,   160,
+     167,   171,   178,   181,   187,   190,   196,   201,   207,   211,
+     215,   218,   224,   233,   239,   243,   250,   259,   265,   268,
+     271,   274,   277,   280,   283,   286,   292,   299,   305,   308,
+     314,   317,   323,   329,   335,   339,   343,   349,   355,   358,
+     361,   364,   367,   370,   373,   376,   379,   382,   385,   388,
+     391,   394,   397,   400,   403,   406,   409,   413,   417,   421,
+     424,   427,   430,   433,   436,   439,   445,   448,   454,   459,
+     466,   469
 };
 #endif
 
@@ -1625,21 +1626,21 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 126 "parser.y"
+#line 127 "parser.y"
     {
-		(yyval.pDeclList) = (yyvsp[(1) - (1)].pDeclList);
+		theMccRobot().initialize((yyvsp[(1) - (1)].pDeclList));
 	;}
     break;
 
   case 3:
-#line 129 "parser.y"
+#line 130 "parser.y"
     {
-		(yyval.pDeclList) = nullptr;
+		
 	;}
     break;
 
   case 4:
-#line 135 "parser.y"
+#line 136 "parser.y"
     {
 		(yyval.pDeclList) = (yyvsp[(1) - (2)].pDeclList);
 		(yyvsp[(1) - (2)].pDeclList) = nullptr;
@@ -1648,28 +1649,28 @@ yyreduce:
     break;
 
   case 5:
-#line 140 "parser.y"
+#line 141 "parser.y"
     {
 		(yyval.pDeclList) = new MccDeclarationList((yyvsp[(1) - (1)].pDecl));
 	;}
     break;
 
   case 6:
-#line 146 "parser.y"
+#line 147 "parser.y"
     {
 		(yyval.pDecl) = (yyvsp[(1) - (1)].pVarDecl);
 	;}
     break;
 
   case 7:
-#line 149 "parser.y"
+#line 150 "parser.y"
     {
 		(yyval.pDecl) = (yyvsp[(1) - (1)].pFuncDecl);
 	;}
     break;
 
   case 8:
-#line 155 "parser.y"
+#line 156 "parser.y"
     {
 		(yyval.pVarDecl) = new MccVariableDeclaration((yyvsp[(1) - (3)].eType), new MccIdentifier((yyvsp[(2) - (3)].pStr)));
 		delete (yyvsp[(2) - (3)].pStr);
@@ -1677,7 +1678,7 @@ yyreduce:
     break;
 
   case 9:
-#line 159 "parser.y"
+#line 160 "parser.y"
     {
 		(yyval.pVarDecl) = new MccVariableDeclaration((yyvsp[(1) - (6)].eType), new MccIdentifier((yyvsp[(2) - (6)].pStr)), ((yyvsp[(4) - (6)].pInt))->get_value());
 		delete (yyvsp[(2) - (6)].pStr);
@@ -1685,7 +1686,7 @@ yyreduce:
     break;
 
   case 10:
-#line 166 "parser.y"
+#line 167 "parser.y"
     {
 		(yyval.pFuncDecl) = new MccFunctionDeclaration((yyvsp[(1) - (9)].eType), new MccIdentifier((yyvsp[(2) - (9)].pStr)), (yyvsp[(4) - (9)].pFuncParamList), (yyvsp[(7) - (9)].pDeclList), (yyvsp[(8) - (9)].pStmtList));
 		delete (yyvsp[(2) - (9)].pStr);
@@ -1693,7 +1694,7 @@ yyreduce:
     break;
 
   case 11:
-#line 170 "parser.y"
+#line 171 "parser.y"
     {
 		(yyval.pFuncDecl) = new MccFunctionDeclaration((yyvsp[(1) - (6)].eType), new MccIdentifier((yyvsp[(2) - (6)].pStr)), (yyvsp[(4) - (6)].pFuncParamList));
 		delete (yyvsp[(2) - (6)].pStr);
@@ -1701,35 +1702,35 @@ yyreduce:
     break;
 
   case 12:
-#line 177 "parser.y"
+#line 178 "parser.y"
     {
 		(yyval.eType) = VOID_TYPE_SPEC;
 	;}
     break;
 
   case 13:
-#line 180 "parser.y"
+#line 181 "parser.y"
     {
 		(yyval.eType) = INT_TYPE_SPEC;	
 	;}
     break;
 
   case 14:
-#line 186 "parser.y"
+#line 187 "parser.y"
     {
 		(yyval.pFuncParamList) = (yyvsp[(1) - (1)].pFuncParamList);
 	;}
     break;
 
   case 15:
-#line 189 "parser.y"
+#line 190 "parser.y"
     {
 		(yyval.pFuncParamList) = nullptr;
 	;}
     break;
 
   case 16:
-#line 195 "parser.y"
+#line 196 "parser.y"
     {
 		(yyval.pFuncParamList) = (yyvsp[(1) - (3)].pFuncParamList);
 		(yyvsp[(1) - (3)].pFuncParamList) = nullptr;
@@ -1738,14 +1739,14 @@ yyreduce:
     break;
 
   case 17:
-#line 200 "parser.y"
+#line 201 "parser.y"
     {
 		(yyval.pFuncParamList) = new MccFuncParameterList((yyvsp[(1) - (1)].pFuncParam));
 	;}
     break;
 
   case 18:
-#line 206 "parser.y"
+#line 207 "parser.y"
     {
 		(yyval.pFuncParam) = new MccFuncParameter(INT_TYPE_SPEC, new MccIdentifier((yyvsp[(2) - (2)].pStr)));
 		delete (yyvsp[(2) - (2)].pStr);
@@ -1753,7 +1754,7 @@ yyreduce:
     break;
 
   case 19:
-#line 210 "parser.y"
+#line 211 "parser.y"
     {
 		(yyval.pFuncParam) = new MccFuncParameter(INT_TYPE_SPEC, new MccIdentifier((yyvsp[(2) - (5)].pStr)), ((yyvsp[(4) - (5)].pInt))->get_value());
 		delete (yyvsp[(2) - (5)].pStr);
@@ -1761,21 +1762,21 @@ yyreduce:
     break;
 
   case 20:
-#line 214 "parser.y"
+#line 215 "parser.y"
     {
 		(yyval.pFuncParam) = new MccFuncParameter(INT_TYPE_SPEC, nullptr);
 	;}
     break;
 
   case 21:
-#line 217 "parser.y"
+#line 218 "parser.y"
     {
 		(yyval.pFuncParam) = new MccFuncParameter(INT_TYPE_SPEC, nullptr, ((yyvsp[(3) - (4)].pInt))->get_value());
 	;}
     break;
 
   case 22:
-#line 223 "parser.y"
+#line 224 "parser.y"
     {
 		(yyval.pDeclList) = (yyvsp[(1) - (2)].pDeclList);
 		(yyvsp[(1) - (2)].pDeclList) = nullptr;
@@ -1788,14 +1789,14 @@ yyreduce:
     break;
 
   case 23:
-#line 232 "parser.y"
+#line 233 "parser.y"
     {
 		(yyval.pDeclList) = nullptr;
 	;}
     break;
 
   case 24:
-#line 238 "parser.y"
+#line 239 "parser.y"
     {
 		(yyval.pVarDecl) = new MccVariableDeclaration((yyvsp[(1) - (3)].eType), new MccIdentifier((yyvsp[(2) - (3)].pStr)));
 		delete (yyvsp[(2) - (3)].pStr);
@@ -1803,7 +1804,7 @@ yyreduce:
     break;
 
   case 25:
-#line 242 "parser.y"
+#line 243 "parser.y"
     {
 		(yyval.pVarDecl) = new MccVariableDeclaration((yyvsp[(1) - (6)].eType), new MccIdentifier((yyvsp[(2) - (6)].pStr)), ((yyvsp[(4) - (6)].pInt))->get_value());
 		delete (yyvsp[(2) - (6)].pStr);
@@ -1811,7 +1812,7 @@ yyreduce:
     break;
 
   case 26:
-#line 249 "parser.y"
+#line 250 "parser.y"
     {
 		(yyval.pStmtList) = (yyvsp[(1) - (2)].pStmtList);
 		(yyvsp[(1) - (2)].pStmtList) = nullptr;
@@ -1824,70 +1825,70 @@ yyreduce:
     break;
 
   case 27:
-#line 258 "parser.y"
+#line 259 "parser.y"
     {
 		(yyval.pStmtList) = nullptr;
 	;}
     break;
 
   case 28:
-#line 264 "parser.y"
+#line 265 "parser.y"
     {
 		(yyval.pStmt) = (yyvsp[(1) - (1)].pAssignStmt);
 	;}
     break;
 
   case 29:
-#line 267 "parser.y"
+#line 268 "parser.y"
     {
 		(yyval.pStmt) = (yyvsp[(1) - (1)].pExpr);
 	;}
     break;
 
   case 30:
-#line 270 "parser.y"
+#line 271 "parser.y"
     {
 		(yyval.pStmt) = (yyvsp[(1) - (1)].pBlockStmt);
 	;}
     break;
 
   case 31:
-#line 273 "parser.y"
+#line 274 "parser.y"
     {
 		(yyval.pStmt) = (yyvsp[(1) - (1)].pIfStmt);
 	;}
     break;
 
   case 32:
-#line 276 "parser.y"
+#line 277 "parser.y"
     {
 		(yyval.pStmt) = (yyvsp[(1) - (1)].pWhileStmt);
 	;}
     break;
 
   case 33:
-#line 279 "parser.y"
+#line 280 "parser.y"
     {
 		(yyval.pStmt) = (yyvsp[(1) - (1)].pReturnStmt);
 	;}
     break;
 
   case 34:
-#line 282 "parser.y"
+#line 283 "parser.y"
     {
 		(yyval.pStmt) = (yyvsp[(1) - (1)].pContinueStmt);
 	;}
     break;
 
   case 35:
-#line 285 "parser.y"
+#line 286 "parser.y"
     {
 		(yyval.pStmt) = (yyvsp[(1) - (1)].pBreakStmt);
 	;}
     break;
 
   case 36:
-#line 291 "parser.y"
+#line 292 "parser.y"
     {
 		printf("Block\n");
 		(yyval.pBlockStmt) = new MccBlockStatement((yyvsp[(2) - (3)].pStmtList));
@@ -1895,56 +1896,56 @@ yyreduce:
     break;
 
   case 37:
-#line 298 "parser.y"
+#line 299 "parser.y"
     {
 		(yyval.pWhileStmt) = new MccWhileStatement((yyvsp[(3) - (5)].pExpr), (yyvsp[(5) - (5)].pStmt));
 	;}
     break;
 
   case 38:
-#line 304 "parser.y"
+#line 305 "parser.y"
     {
 		(yyval.pIfStmt) = new MccIfStatement((yyvsp[(3) - (5)].pExpr), (yyvsp[(5) - (5)].pStmt));
 	;}
     break;
 
   case 39:
-#line 307 "parser.y"
+#line 308 "parser.y"
     {
 		(yyval.pIfStmt) = new MccIfStatement((yyvsp[(3) - (7)].pExpr), (yyvsp[(5) - (7)].pStmt), (yyvsp[(7) - (7)].pStmt));
 	;}
     break;
 
   case 40:
-#line 313 "parser.y"
+#line 314 "parser.y"
     {
 		(yyval.pReturnStmt) = new MccReturnStatement(nullptr);
 	;}
     break;
 
   case 41:
-#line 316 "parser.y"
+#line 317 "parser.y"
     {
 		(yyval.pReturnStmt) = new MccReturnStatement((yyvsp[(2) - (3)].pExpr));
 	;}
     break;
 
   case 42:
-#line 322 "parser.y"
+#line 323 "parser.y"
     {
 		(yyval.pContinueStmt) = new MccContinueStatement();
 	;}
     break;
 
   case 43:
-#line 328 "parser.y"
+#line 329 "parser.y"
     {
 		(yyval.pBreakStmt) = new MccBreakStatement();
 	;}
     break;
 
   case 44:
-#line 334 "parser.y"
+#line 335 "parser.y"
     {
 		(yyval.pAssignStmt) = new MccAssignStatement(new MccIdentifier((yyvsp[(1) - (4)].pStr)), (yyvsp[(3) - (4)].pExpr));
 		delete (yyvsp[(1) - (4)].pStr);
@@ -1952,7 +1953,7 @@ yyreduce:
     break;
 
   case 45:
-#line 338 "parser.y"
+#line 339 "parser.y"
     {
 		(yyval.pAssignStmt) = new MccAssignStatement(new MccArrayAccessExpression(new MccIdentifier((yyvsp[(1) - (7)].pStr)), (yyvsp[(3) - (7)].pExpr)), (yyvsp[(6) - (7)].pExpr));
 		delete (yyvsp[(1) - (7)].pStr);
@@ -1960,147 +1961,147 @@ yyreduce:
     break;
 
   case 46:
-#line 342 "parser.y"
+#line 343 "parser.y"
     {
 		(yyval.pAssignStmt) = new MccAssignStatement((yyvsp[(2) - (5)].pExpr), (yyvsp[(4) - (5)].pExpr), true);
 	;}
     break;
 
   case 47:
-#line 348 "parser.y"
+#line 349 "parser.y"
     {
 		(yyval.pExpr) = (yyvsp[(1) - (2)].pExpr);
 	;}
     break;
 
   case 48:
-#line 354 "parser.y"
+#line 355 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(OR_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 49:
-#line 357 "parser.y"
+#line 358 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(EQ_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 50:
-#line 360 "parser.y"
+#line 361 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(NE_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 51:
-#line 363 "parser.y"
+#line 364 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(LE_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 52:
-#line 366 "parser.y"
+#line 367 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(LT_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 53:
-#line 369 "parser.y"
+#line 370 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(GE_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 54:
-#line 372 "parser.y"
+#line 373 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(GT_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 55:
-#line 375 "parser.y"
+#line 376 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(AND_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 56:
-#line 378 "parser.y"
+#line 379 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(PLUS_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 57:
-#line 381 "parser.y"
+#line 382 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(MINUS_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 58:
-#line 384 "parser.y"
+#line 385 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(MULT_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 59:
-#line 387 "parser.y"
+#line 388 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(DIV_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 60:
-#line 390 "parser.y"
+#line 391 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(MD_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 61:
-#line 393 "parser.y"
+#line 394 "parser.y"
     {
 		(yyval.pExpr) = new MccUnaryOperatorExpression(NOT_UNARY, (yyvsp[(2) - (2)].pExpr));
 	;}
     break;
 
   case 62:
-#line 396 "parser.y"
+#line 397 "parser.y"
     {
 		(yyval.pExpr) = new MccUnaryOperatorExpression(PORT_UNARY, (yyvsp[(2) - (2)].pExpr));
 	;}
     break;
 
   case 63:
-#line 399 "parser.y"
+#line 400 "parser.y"
     {
 		(yyval.pExpr) = new MccUnaryOperatorExpression(NEGATIVE_UNARY, (yyvsp[(2) - (2)].pExpr));
 	;}
     break;
 
   case 64:
-#line 402 "parser.y"
+#line 403 "parser.y"
     {
 		(yyval.pExpr) = new MccUnaryOperatorExpression(POSITIVE_UNARY, (yyvsp[(2) - (2)].pExpr));
 	;}
     break;
 
   case 65:
-#line 405 "parser.y"
+#line 406 "parser.y"
     {
 		(yyval.pExpr) = (yyvsp[(2) - (3)].pExpr);
 	;}
     break;
 
   case 66:
-#line 408 "parser.y"
+#line 409 "parser.y"
     {
 		(yyval.pExpr) = new MccIdentifier((yyvsp[(1) - (1)].pStr));
 		delete (yyvsp[(1) - (1)].pStr);
@@ -2108,7 +2109,7 @@ yyreduce:
     break;
 
   case 67:
-#line 412 "parser.y"
+#line 413 "parser.y"
     {
 		(yyval.pExpr) = new MccArrayAccessExpression(new MccIdentifier((yyvsp[(1) - (4)].pStr)), (yyvsp[(3) - (4)].pExpr));
 		delete (yyvsp[(1) - (4)].pStr);
@@ -2116,7 +2117,7 @@ yyreduce:
     break;
 
   case 68:
-#line 416 "parser.y"
+#line 417 "parser.y"
     {
 		(yyval.pExpr) = new MccMethodCallExpression(new MccIdentifier((yyvsp[(1) - (4)].pStr)), (yyvsp[(3) - (4)].pExprList));
 		delete (yyvsp[(1) - (4)].pStr);
@@ -2124,70 +2125,70 @@ yyreduce:
     break;
 
   case 69:
-#line 420 "parser.y"
+#line 421 "parser.y"
     {
 		(yyval.pExpr) = (yyvsp[(1) - (1)].pInt);
 	;}
     break;
 
   case 70:
-#line 423 "parser.y"
+#line 424 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(BIT_AND_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 71:
-#line 426 "parser.y"
+#line 427 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(EXCLUSIVE_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 72:
-#line 429 "parser.y"
+#line 430 "parser.y"
     {
 		(yyval.pExpr) = new MccUnaryOperatorExpression(NEG_UNARY, (yyvsp[(2) - (2)].pExpr));
 	;}
     break;
 
   case 73:
-#line 432 "parser.y"
+#line 433 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(LSHIFT_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 74:
-#line 435 "parser.y"
+#line 436 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(RSHIFT_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 75:
-#line 438 "parser.y"
+#line 439 "parser.y"
     {
 		(yyval.pExpr) = new MccBinaryOperatorExpression(BIT_OR_BINARY, (yyvsp[(1) - (3)].pExpr), (yyvsp[(3) - (3)].pExpr));
 	;}
     break;
 
   case 76:
-#line 444 "parser.y"
+#line 445 "parser.y"
     {
 		(yyval.pExprList) = (yyvsp[(1) - (1)].pExprList);
 	;}
     break;
 
   case 77:
-#line 447 "parser.y"
+#line 448 "parser.y"
     {
 		(yyval.pExprList) = nullptr;
 	;}
     break;
 
   case 78:
-#line 453 "parser.y"
+#line 454 "parser.y"
     {
 		(yyval.pExprList) = (yyvsp[(1) - (3)].pExprList);
 		(yyvsp[(1) - (3)].pExprList) = nullptr;
@@ -2196,21 +2197,21 @@ yyreduce:
     break;
 
   case 79:
-#line 458 "parser.y"
+#line 459 "parser.y"
     {
 		(yyval.pExprList) = new MccExpressionList((yyvsp[(1) - (1)].pExpr));
 	;}
     break;
 
   case 80:
-#line 465 "parser.y"
+#line 466 "parser.y"
     {
 		(yyval.pInt) = new MccIntLiteral((yyvsp[(1) - (1)].iVal));
 	;}
     break;
 
   case 81:
-#line 468 "parser.y"
+#line 469 "parser.y"
     {
 		(yyval.pInt) = new MccIntLiteral((yyvsp[(1) - (1)].iVal));
 	;}
@@ -2218,7 +2219,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 2222 "parser.cpp"
+#line 2223 "parser.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2432,7 +2433,7 @@ yyreturn:
 }
 
 
-#line 473 "parser.y"
+#line 474 "parser.y"
 
 
 
