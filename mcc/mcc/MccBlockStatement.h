@@ -5,6 +5,7 @@
 
 #pragma once
 #include "mccstatement.h"
+#include "MccStatementList.h"
 #include <vector>
 
 using std::vector;
@@ -13,7 +14,7 @@ class MccBlockStatement :
 	public MccStatement
 {
 public:
-	MccBlockStatement(void);
+	MccBlockStatement(MccStatementList *stmt_list);
 	virtual ~MccBlockStatement(void);
 
 private:

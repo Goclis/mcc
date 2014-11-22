@@ -10,7 +10,7 @@ class MccWhileStatement :
 	public MccConditionStatement
 {
 public:
-	MccWhileStatement(void);
+	MccWhileStatement(MccExpression *condition, MccStatement *stmt);
 	virtual ~MccWhileStatement(void);
 
 private:

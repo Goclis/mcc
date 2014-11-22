@@ -2,8 +2,12 @@
 #include "MccVariableDeclaration.h"
 
 
-MccFunctionDeclaration::MccFunctionDeclaration(void)
+MccFunctionDeclaration::MccFunctionDeclaration(
+		TYPE_SPEC type_spec, MccIdentifier *identifier, MccFuncParameterList *params, 
+		MccDeclarationList *decls = nullptr, MccStatementList *stmts = nullptr)
+	: MccDeclaration(type_spec, identifier)
 {
+	
 }
 
 

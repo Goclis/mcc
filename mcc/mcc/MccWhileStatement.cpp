@@ -1,7 +1,7 @@
 #include "MccWhileStatement.h"
 
 
-MccWhileStatement::MccWhileStatement(void)
+MccWhileStatement::MccWhileStatement(MccExpression *condition, MccStatement *stmt)
 {
 }
 

@@ -8,6 +8,7 @@
 #include <vector>
 
 class MccIdentifier;
+class MccExpressionList;
 
 using std::vector;
 
@@ -15,7 +16,7 @@ class MccMethodCallExpression :
 	public MccExpression
 {
 public:
-	MccMethodCallExpression(void);
+	MccMethodCallExpression(MccIdentifier *id, MccExpressionList *expr_list);
 	virtual ~MccMethodCallExpression(void);
 
 private:

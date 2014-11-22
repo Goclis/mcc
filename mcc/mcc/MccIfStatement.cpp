@@ -1,7 +1,7 @@
 #include "MccIfStatement.h"
 
 
-MccIfStatement::MccIfStatement(void)
+MccIfStatement::MccIfStatement(MccExpression *condition, MccStatement *if_part, MccStatement *else_part = nullptr)
 {
 }
 

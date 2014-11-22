@@ -1,7 +1,7 @@
 #include "MccBlockStatement.h"
 
 
-MccBlockStatement::MccBlockStatement(void)
+MccBlockStatement::MccBlockStatement(MccStatementList *stmt_list)
 {
 }
 

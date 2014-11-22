@@ -11,7 +11,7 @@ class MccBinaryOperatorExpression :
 	public MccExpression
 {
 public:
-	MccBinaryOperatorExpression(void);
+	MccBinaryOperatorExpression(BINARY_OPERATOR op, MccExpression *left, MccExpression *right);
 	virtual ~MccBinaryOperatorExpression(void);
 
 private:

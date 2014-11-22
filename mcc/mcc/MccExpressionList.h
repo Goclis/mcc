@@ -14,8 +14,10 @@ using std::vector;
 class MccExpressionList
 {
 public:
-	MccExpressionList(void);
+	MccExpressionList(MccExpression *first);
 	virtual ~MccExpressionList(void);
+
+	void push_back(MccExpression *expr) {}
 
 	vector<MccExpression *> m_expr_list;
 };

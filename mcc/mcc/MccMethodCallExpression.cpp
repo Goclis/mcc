@@ -1,7 +1,7 @@
 #include "MccMethodCallExpression.h"
 
 
-MccMethodCallExpression::MccMethodCallExpression(void)
+MccMethodCallExpression::MccMethodCallExpression(MccIdentifier *id, MccExpressionList *expr_list)
 {
 }
 

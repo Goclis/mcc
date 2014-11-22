@@ -12,7 +12,24 @@ enum TYPE_SPEC {
 };
 
 enum BINARY_OPERATOR {
-
+	OR_BINARY, // ||
+	EQ_BINARY, // ==
+	NE_BINARY, // !=
+	LE_BINARY, // <=
+	LT_BINARY, // <
+	GE_BINARY, // >=
+	GT_BINARY, // >
+	AND_BINARY, // &&
+	PLUS_BINARY, // +
+	MINUS_BINARY, // -
+	MULT_BINARY, // *
+	DIV_BINARY, // /
+	MD_BINARY, // %
+	BIT_AND_BINARY, // &
+	EXCLUSIVE_BINARY, // ^
+	LSHIFT_BINARY, // <<
+	RSHIFT_BINARY, // >>
+	BIT_OR_BINARY, // |
 };
 
 enum UNARY_OPERATOR {

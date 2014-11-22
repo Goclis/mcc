@@ -14,6 +14,8 @@ public:
 	explicit MccIntLiteral(int value);
 	virtual ~MccIntLiteral(void);
 
+	int get_value() const {return this->m_value;}
+
 private:
 	int m_value;
 };

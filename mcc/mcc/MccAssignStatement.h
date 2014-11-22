@@ -12,7 +12,7 @@ class MccAssignStatement :
 	public MccStatement
 {
 public:
-	MccAssignStatement(void);
+	MccAssignStatement(MccExpression *left, MccExpression *right, bool is_port = false) {}
 	virtual ~MccAssignStatement(void);
 
 private:

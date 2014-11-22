@@ -1,7 +1,7 @@
 #include "MccBinaryOperatorExpression.h"
 
 
-MccBinaryOperatorExpression::MccBinaryOperatorExpression(void)
+MccBinaryOperatorExpression::MccBinaryOperatorExpression(BINARY_OPERATOR op, MccExpression *left, MccExpression *right)
 {
 }
 

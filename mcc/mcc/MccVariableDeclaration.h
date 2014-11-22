@@ -14,7 +14,7 @@ class MccVariableDeclaration :
 	public MccDeclaration
 {
 public:
-	MccVariableDeclaration(int array_size = -1);
+	MccVariableDeclaration(TYPE_SPEC type_spec, MccIdentifier *identifier, int array_size = -1);
 	virtual ~MccVariableDeclaration(void);
 
 private:
