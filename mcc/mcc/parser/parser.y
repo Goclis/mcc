@@ -128,7 +128,7 @@ program
 		theMccRobot().initialize($1);
 	}
 	| {
-		
+		theMccRobot().initialize(nullptr);
 	}
 	;
 

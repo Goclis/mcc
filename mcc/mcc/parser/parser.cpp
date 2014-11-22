@@ -1635,7 +1635,7 @@ yyreduce:
   case 3:
 #line 130 "parser.y"
     {
-		
+		theMccRobot().initialize(nullptr);
 	;}
     break;
 
