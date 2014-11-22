@@ -3,8 +3,11 @@
 
 
 MccFunctionDeclaration::MccFunctionDeclaration(
-		TYPE_SPEC type_spec, MccIdentifier *identifier, MccFuncParameterList *params, 
-		MccDeclarationList *decls = nullptr, MccStatementList *stmts = nullptr)
+		TYPE_SPEC type_spec, 
+		MccIdentifier *identifier, 
+		MccFuncParameterList *params, 
+		MccDeclarationList *decls, 
+		MccStatementList *stmts)
 	: MccDeclaration(type_spec, identifier)
 {
 	

@@ -13,6 +13,7 @@ class MccFuncParameter;
 class MccStatement;
 class MccStatementList;
 class MccDeclarationList;
+class MccFuncParameterList;
 
 using std::vector;
 
@@ -24,8 +25,11 @@ class MccFunctionDeclaration :
 {
 public:
 	MccFunctionDeclaration(
-		TYPE_SPEC type_spec, MccIdentifier *identifier, MccFuncParameterList *params, 
-		MccDeclarationList *decls = nullptr, MccStatementList *stmts = nullptr);
+		TYPE_SPEC type_spec, 
+		MccIdentifier *identifier, 
+		MccFuncParameterList *params, 
+		MccDeclarationList *decls = nullptr, 
+		MccStatementList *stmts = nullptr);
 	virtual ~MccFunctionDeclaration(void);
 
 	/**

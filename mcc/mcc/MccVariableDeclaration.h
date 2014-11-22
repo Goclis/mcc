@@ -7,6 +7,8 @@
 
 #include "MccDeclaration.h"
 
+class MccIdentifier;
+
 /**
  * @brief Variable declaration class.
  */

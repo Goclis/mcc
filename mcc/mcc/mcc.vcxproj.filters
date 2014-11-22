@@ -81,6 +81,27 @@
     <ClCompile Include="MccVariableDeclaration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MccExpressionList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MccFuncParameterList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MccDeclarationList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MccBreakStatement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MccContinueStatement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MccReturnStatement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MccStatementList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parser\parser.hpp">
@@ -134,10 +155,31 @@
     <ClInclude Include="MccPublicType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ast\MccDeclaration.h">
+    <ClInclude Include="MccExpressionList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ast\MccVariableDeclaration.h">
+    <ClInclude Include="MccFuncParameterList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccDeclarationList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccDeclaration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccVariableDeclaration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccBreakStatement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccContinueStatement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccReturnStatement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccStatementList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -8,6 +8,8 @@
 #include <string>
 #include "MccPublicType.h"
 
+class MccIdentifier;
+
 using std::string;
 
 /**
@@ -17,12 +19,12 @@ class MccDeclaration
 {
 public:
 	MccDeclaration(
-		string identifier_name = "",
-		TYPE_SPEC type_spec = VOID_TYPE_SPEC);
+		TYPE_SPEC type_spec,
+		MccIdentifier *identifier);
 	virtual ~MccDeclaration(void);
 
 private:
-	string m_identifier_name;
+	MccIdentifier *m_identifier;
 	TYPE_SPEC m_type_spec;
 };
 
