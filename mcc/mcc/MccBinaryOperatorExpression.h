@@ -5,15 +5,12 @@
 
 #pragma once
 #include "mccexpression.h"
+#include "MccPublicType.h"
 
 class MccBinaryOperatorExpression :
 	public MccExpression
 {
 public:
-	enum BINARY_OPERATOR {
-
-	};
-
 	MccBinaryOperatorExpression(void);
 	virtual ~MccBinaryOperatorExpression(void);
 

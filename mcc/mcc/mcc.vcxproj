@@ -79,11 +79,10 @@
   <ItemGroup>
     <ClCompile Include="MccArrayAccessExpression.cpp" />
     <ClCompile Include="MccAssignStatement.cpp" />
-    <ClCompile Include="ast\MccDeclaration.cpp" />
-    <ClCompile Include="ast\MccVariableDeclaration.cpp" />
     <ClCompile Include="MccBinaryOperatorExpression.cpp" />
     <ClCompile Include="MccBlockStatement.cpp" />
     <ClCompile Include="MccConditionStatement.cpp" />
+    <ClCompile Include="MccDeclaration.cpp" />
     <ClCompile Include="MccExpression.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MccFuncParameter.cpp" />
@@ -93,6 +92,7 @@
     <ClCompile Include="MccIntLiteral.cpp" />
     <ClCompile Include="MccMethodCallExpression.cpp" />
     <ClCompile Include="MccUnaryOperatorExpression.cpp" />
+    <ClCompile Include="MccVariableDeclaration.cpp" />
     <ClCompile Include="MccWhileStatement.cpp" />
     <ClCompile Include="parser\parser.cpp" />
     <ClCompile Include="parser\tokens.cpp" />
@@ -113,6 +113,7 @@
     <ClInclude Include="MccIfStatement.h" />
     <ClInclude Include="MccIntLiteral.h" />
     <ClInclude Include="MccMethodCallExpression.h" />
+    <ClInclude Include="MccPublicType.h" />
     <ClInclude Include="MccUnaryOperatorExpression.h" />
     <ClInclude Include="MccWhileStatement.h" />
     <ClInclude Include="parser\parser.hpp" />

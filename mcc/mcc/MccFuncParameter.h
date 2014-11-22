@@ -6,6 +6,7 @@
 #pragma once
 
 #include "MccDeclaration.h"
+#include "MccPublicType.h"
 
 class MccIdentifier;
 
@@ -15,7 +16,7 @@ public:
 	MccFuncParameter(void);
 	virtual ~MccFuncParameter(void);
 
-	MccDeclaration::TYPE_SPEC m_type_spec;
+	TYPE_SPEC m_type_spec;
 	MccIdentifier *m_name;	
 };
 

@@ -5,16 +5,14 @@
 
 #pragma once
 #include "mccexpression.h"
+#include "MccPublicType.h"
 
 class MccUnaryOperatorExpression :
 	public MccExpression
 {
 public:
-	enum UNARY_OPERATOR {
-
-	};
-
 	MccUnaryOperatorExpression(void);
+	MccUnaryOperatorExpression(UNARY_OPERATOR op, MccExpression *expr);
 	virtual ~MccUnaryOperatorExpression(void);
 
 private:

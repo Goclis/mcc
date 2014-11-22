@@ -14,6 +14,7 @@ class MccIdentifier :
 {
 public:
 	MccIdentifier(void);
+	explicit MccIdentifier(string *str);
 	virtual ~MccIdentifier(void);
 
 	string m_name;

@@ -11,6 +11,7 @@ class MccIntLiteral :
 {
 public:
 	MccIntLiteral(void);
+	explicit MccIntLiteral(int value);
 	virtual ~MccIntLiteral(void);
 
 private:

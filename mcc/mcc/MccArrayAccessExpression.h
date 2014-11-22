@@ -13,6 +13,7 @@ class MccArrayAccessExpression :
 {
 public:
 	MccArrayAccessExpression(void);
+	MccArrayAccessExpression(MccIdentifier *id, MccExpression *index);
 	virtual ~MccArrayAccessExpression(void);
 
 private:

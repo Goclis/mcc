@@ -6,6 +6,8 @@
 #pragma once
 
 #include <string>
+#include "MccPublicType.h"
+
 using std::string;
 
 /**
@@ -14,11 +16,6 @@ using std::string;
 class MccDeclaration
 {
 public:
-	enum TYPE_SPEC {
-		VOID_TYPE_SPEC, 
-		INT_TYPE_SPEC
-	};
-
 	MccDeclaration(
 		string identifier_name = "",
 		TYPE_SPEC type_spec = VOID_TYPE_SPEC);
