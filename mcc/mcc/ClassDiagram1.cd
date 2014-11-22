@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MccAssignStatement" Collapsed="true">
+    <Position X="0.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAABAAAAAAAAAAAAAAAAAAAAIAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>MccAssignStatement.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccDeclaration" Collapsed="true">
+    <Position X="10.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgIAAAAAAABAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>ast\MccDeclaration.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccExpression" Collapsed="true">
+    <Position X="3.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MccExpression.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccFuncParameter" Collapsed="true">
+    <Position X="8" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAIAAAAAAAAAAAAAAAAEACAAAAAAAAAAA=</HashCode>
+      <FileName>MccFuncParameter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccFunctionDeclaration" Collapsed="true">
+    <Position X="9.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAgAAAAAAAAAAAAAAEAAAAAAAQAAIAAAAA=</HashCode>
+      <FileName>MccFunctionDeclaration.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccIdentifier" Collapsed="true">
+    <Position X="1" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>MccIdentifier.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccStatement" Collapsed="true">
+    <Position X="3.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAACAAAAAAAAAAA=</HashCode>
+      <FileName>MccStatement.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccVariableDeclaration" Collapsed="true">
+    <Position X="11.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAgAAAAEAA=</HashCode>
+      <FileName>ast\MccVariableDeclaration.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccBlockStatement" Collapsed="true">
+    <Position X="0.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAACAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MccBlockStatement.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccConditionStatement" Collapsed="true">
+    <Position X="7" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAQAAA=</HashCode>
+      <FileName>MccConditionStatement.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccIfStatement" Collapsed="true">
+    <Position X="8.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAABAAACAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>MccIfStatement.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccWhileStatement" Collapsed="true">
+    <Position X="5.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAACAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MccWhileStatement.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccArrayAccessExpression" Collapsed="true">
+    <Position X="3" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAEAAAAAAAAAAAAAAAAAAAAAQAAQAAAAAAAAA=</HashCode>
+      <FileName>MccArrayAccessExpression.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccBinaryOperatorExpression" Collapsed="true">
+    <Position X="5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAABAAAAAAAAAAAAAAAAAAAAAAAAAAIAAQgAAAAA=</HashCode>
+      <FileName>MccBinaryOperatorExpression.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccIntLiteral" Collapsed="true">
+    <Position X="9.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MccIntLiteral.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccMethodCallExpression" Collapsed="true">
+    <Position X="11.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAIAAAgAAAAAACAAAAAAA=</HashCode>
+      <FileName>MccMethodCallExpression.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MccUnaryOperatorExpression" Collapsed="true">
+    <Position X="7.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAQAAEAAQAAAAAA=</HashCode>
+      <FileName>MccUnaryOperatorExpression.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Microsoft YaHei" Size="9" />
+</ClassDiagram>

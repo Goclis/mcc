@@ -77,28 +77,49 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="MccArrayAccessExpression.cpp" />
     <ClCompile Include="MccAssignStatement.cpp" />
     <ClCompile Include="ast\MccDeclaration.cpp" />
     <ClCompile Include="ast\MccVariableDeclaration.cpp" />
+    <ClCompile Include="MccBinaryOperatorExpression.cpp" />
+    <ClCompile Include="MccBlockStatement.cpp" />
+    <ClCompile Include="MccConditionStatement.cpp" />
     <ClCompile Include="MccExpression.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MccFuncParameter.cpp" />
     <ClCompile Include="MccFunctionDeclaration.cpp" />
     <ClCompile Include="MccIdentifier.cpp" />
+    <ClCompile Include="MccIfStatement.cpp" />
+    <ClCompile Include="MccIntLiteral.cpp" />
+    <ClCompile Include="MccMethodCallExpression.cpp" />
+    <ClCompile Include="MccUnaryOperatorExpression.cpp" />
+    <ClCompile Include="MccWhileStatement.cpp" />
     <ClCompile Include="parser\parser.cpp" />
     <ClCompile Include="parser\tokens.cpp" />
     <ClCompile Include="MccStatement.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MccArrayAccessExpression.h" />
     <ClInclude Include="MccAssignStatement.h" />
     <ClInclude Include="ast\MccDeclaration.h" />
     <ClInclude Include="ast\MccVariableDeclaration.h" />
+    <ClInclude Include="MccBinaryOperatorExpression.h" />
+    <ClInclude Include="MccBlockStatement.h" />
+    <ClInclude Include="MccConditionStatement.h" />
     <ClInclude Include="MccExpression.h" />
     <ClInclude Include="MccFuncParameter.h" />
     <ClInclude Include="MccFunctionDeclaration.h" />
     <ClInclude Include="MccIdentifier.h" />
+    <ClInclude Include="MccIfStatement.h" />
+    <ClInclude Include="MccIntLiteral.h" />
+    <ClInclude Include="MccMethodCallExpression.h" />
+    <ClInclude Include="MccUnaryOperatorExpression.h" />
+    <ClInclude Include="MccWhileStatement.h" />
     <ClInclude Include="parser\parser.hpp" />
     <ClInclude Include="MccStatement.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
