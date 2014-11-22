@@ -38,6 +38,26 @@
 #include "../MccExpression.h"
 #include "../MccIdentifier.h"
 #include "../MccIntLiteral.h"
+#include "../MccUnaryOperatorExpression.h"
+#include "../MccFuncParameter.h"
+#include "../MccFuncParameterList.h"
+#include "../MccArrayAccessExpression.h"
+#include "../MccDeclaration.h"
+#include "../MccDeclarationList.h"
+#include "../MccFunctionDeclaration.h"
+#include "../MccVariableDeclaration.h"
+#include "../MccStatement.h"
+#include "../MccStatementList.h"
+#include "../MccBlockStatement.h"
+#include "../MccWhileStatement.h"
+#include "../MccIfStatement.h"
+#include "../MccAssignStatement.h"
+#include "../MccExpressionList.h"
+#include "../MccMethodCallExpression.h"
+#include "../MccBinaryOperatorExpression.h"
+#include "../MccReturnStatement.h"
+#include "../MccContinueStatement.h"
+#include "../MccBreakStatement.h"
 using std::string;
 
 /* Tokens.  */
@@ -97,14 +117,33 @@ using std::string;
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 53 "parser.y"
+#line 40 "parser.y"
 {
 	int iVal;
 	string* pStr;
 	TYPE_SPEC eType;
+	MccExpression* pExpr;
+	MccExpressionList* pExprList;
+	MccIdentifier* pIdent;
+	MccIntLiteral* pInt;
+	MccFuncParameter* pFuncParam;
+	MccFuncParameterList* pFuncParamList;
+	MccDeclaration* pDecl;
+	MccDeclarationList* pDeclList;
+	MccFunctionDeclaration* pFuncDecl;
+	MccVariableDeclaration* pVarDecl;
+	MccStatement* pStmt;
+	MccStatementList* pStmtList;
+	MccBlockStatement* pBlockStmt;
+	MccWhileStatement* pWhileStmt;
+	MccIfStatement* pIfStmt;
+	MccAssignStatement* pAssignStmt;
+	MccReturnStatement* pReturnStmt;
+	MccContinueStatement* pContinueStmt;
+	MccBreakStatement* pBreakStmt;
 }
 /* Line 1529 of yacc.c.  */
-#line 101 "parser.hpp"
+#line 120 "parser.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
