@@ -33,6 +33,13 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
+#include <string>
+#include "../MccPublicType.h"
+#include "../MccExpression.h"
+#include "../MccIdentifier.h"
+#include "../MccIntLiteral.h"
+using std::string;
+
 /* Tokens.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
@@ -90,13 +97,14 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 51 "parser.y"
+#line 53 "parser.y"
 {
-	char *id_name;
-	int int_val;
+	int iVal;
+	string* pStr;
+	TYPE_SPEC eType;
 }
 /* Line 1529 of yacc.c.  */
-#line 100 "parser.hpp"
+#line 101 "parser.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

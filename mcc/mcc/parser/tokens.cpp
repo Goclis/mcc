@@ -841,17 +841,17 @@ return RETURN;
 case 12:
 YY_RULE_SETUP
 #line 34 "tokens.l"
-{yylval.id_name = yytext; return IDENT;}
+{yylval.pStr = new string(yytext); return IDENT;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 35 "tokens.l"
-{yylval.int_val = atoi(yytext); return DECNUM;}
+{yylval.iVal = atoi(yytext); return DECNUM;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 36 "tokens.l"
-{yylval.int_val = myatoi(yytext, 16); return HEXNUM;}
+{yylval.iVal = myatoi(yytext, 16); return HEXNUM;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP

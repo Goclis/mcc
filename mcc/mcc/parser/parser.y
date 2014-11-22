@@ -1,5 +1,12 @@
 %{
 #include <stdio.h>
+#include <string>
+#include "../MccPublicType.h"
+#include "../MccExpression.h"
+#include "../MccIdentifier.h"
+#include "../MccIntLiteral.h"
+#include "../MccUnaryOperatorExpression.h"
+using std::string;
 
 extern int yylex();
 extern int yylineno;
@@ -13,7 +20,6 @@ void yyerror(const char *s)
 %token IDENT 						/* Identifier */
 %token DECNUM 						/* decimal number*/
 %token HEXNUM
-
 %token VOID
 %token INT
 %token WHILE
@@ -47,11 +53,19 @@ void yyerror(const char *s)
 %nonassoc ELSE
 
 
-
 %union {
-	char *id_name;
-	int int_val;
+	int iVal;
+	string* pStr;
+	TYPE_SPEC eType;
+	MccExpression* pExpr;
+	MccIdentifier* pIdent;
+	MccIntLiteral* pInt;
 }
+
+%type<eType> type_spec
+%type<pExpr> expr
+%type<pInt> int_literal
+
 
 %start program
 
@@ -83,8 +97,12 @@ fun_decl
 	;
 
 type_spec
-	: VOID
-	| INT
+	: VOID {
+		$$ = VOID_TYPE_SPEC;
+	}
+	| INT {
+		$$ = INT_TYPE_SPEC;	
+	}
 	;
 
 params
@@ -184,18 +202,38 @@ expr
 	| expr '*' expr
 	| expr '/' expr
 	| expr '%' expr
-	| '!' expr %prec UNARY
-	| '$' expr %prec UNARY
-	| '-' expr %prec UNARY
-	| '+' expr %prec UNARY
-	| '(' expr ')'
-	| IDENT
-	| IDENT '[' expr ']'
+	| '!' expr %prec UNARY {
+		$$ = new MccUnaryOperatorExpression(NOT_UNARY, $2);
+	}
+	| '$' expr %prec UNARY {
+		$$ = new MccUnaryOperatorExpression(PORT_UNARY, $2);
+	}
+	| '-' expr %prec UNARY {
+		$$ = new MccUnaryOperatorExpression(NEGATIVE_UNARY, $2);
+	}
+	| '+' expr %prec UNARY {
+		$$ = new MccUnaryOperatorExpression(POSITIVE_UNARY, $2);
+	}
+	| '(' expr ')' {
+		$$ = $2;
+	}
+	| IDENT {
+		$$ = new MccIdentifier($1);
+		delete $1;
+	}
+	| IDENT '[' expr ']' {
+		MccIdentifier *identifier = new MccIdentifier($1);
+		$$ = new MccArrayAccessExpression(identifier, $3);
+	}
 	| IDENT '(' args ')'
-	| int_literal
+	| int_literal {
+		$$ = $1;
+	}
 	| expr '&' expr
 	| expr '^' expr
-	| '~' expr
+	| '~' expr {
+		$$ = new MccUnaryOperatorExpression(NEG_UNARY, $2);
+	}
 	| expr LSHIFT expr
 	| expr RSHIFT expr
 	| expr '|' expr
@@ -212,8 +250,12 @@ args
 	;
 
 int_literal
-	: DECNUM	/* decimal number */
-	| HEXNUM
+	: DECNUM {
+		$$ = new MccIntLiteral($1);
+	}
+	| HEXNUM {
+		$$ = new MccIntLiteral($1);
+	}
 	;
 
 %%

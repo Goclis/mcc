@@ -119,6 +119,9 @@
 #line 1 "parser.y"
 
 #include <stdio.h>
+#include <string>
+#include "../MccPublicType.h"
+using std::string;
 
 extern int yylex();
 extern int yylineno;
@@ -149,13 +152,14 @@ void yyerror(const char *s)
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 51 "parser.y"
+#line 53 "parser.y"
 {
-	char *id_name;
-	int int_val;
+	int iVal;
+	string* pStr;
+	TYPE_SPEC eType;
 }
 /* Line 193 of yacc.c.  */
-#line 159 "parser.cpp"
+#line 163 "parser.cpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -168,7 +172,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 172 "parser.cpp"
+#line 176 "parser.cpp"
 
 #ifdef short
 # undef short
@@ -487,15 +491,15 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    61,    61,    62,    66,    67,    71,    72,    76,    77,
-      81,    82,    86,    87,    91,    92,    96,    97,   101,   102,
-     103,   104,   108,   112,   113,   117,   118,   122,   123,   127,
-     128,   129,   130,   131,   132,   133,   134,   138,   142,   146,
-     147,   151,   152,   156,   160,   164,   165,   166,   170,   174,
-     175,   176,   177,   178,   179,   180,   181,   182,   183,   184,
+       0,    67,    67,    68,    72,    73,    77,    78,    82,    83,
+      87,    88,    92,    95,   101,   102,   106,   107,   111,   112,
+     113,   114,   118,   122,   123,   127,   128,   132,   133,   137,
+     138,   139,   140,   141,   142,   143,   144,   148,   152,   156,
+     157,   161,   162,   166,   170,   174,   175,   176,   180,   184,
      185,   186,   187,   188,   189,   190,   191,   192,   193,   194,
-     195,   196,   197,   198,   199,   200,   201,   205,   206,   210,
-     211,   215,   216
+     195,   196,   197,   198,   199,   200,   201,   202,   203,   204,
+     205,   206,   207,   208,   209,   210,   211,   215,   216,   220,
+     221,   225,   226
 };
 #endif
 
@@ -1575,14 +1579,28 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 37:
-#line 138 "parser.y"
+        case 12:
+#line 92 "parser.y"
+    {
+		(yyval.eType) = VOID_TYPE_SPEC;
+	;}
+    break;
+
+  case 13:
+#line 95 "parser.y"
+    {
+		(yyval.eType) = INT_TYPE_SPEC;	
+	;}
+    break;
+
+  case 37:
+#line 148 "parser.y"
     {printf("Block\n");;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1586 "parser.cpp"
+#line 1604 "parser.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1796,7 +1814,7 @@ yyreturn:
 }
 
 
-#line 219 "parser.y"
+#line 229 "parser.y"
 
 
 

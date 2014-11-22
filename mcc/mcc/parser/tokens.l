@@ -31,9 +31,9 @@ hex 				0(x|X)({letter}|{digit})+
 "continue" 				return CONTINUE;
 "return" 				return RETURN;
 
-{id} 					{yylval.id_name = yytext; return IDENT;}
-{num}					{yylval.int_val = atoi(yytext); return DECNUM;}
-{hex}					{yylval.int_val = myatoi(yytext, 16); return HEXNUM;}
+{id} 					{yylval.pStr = new string(yytext); return IDENT;}
+{num}					{yylval.iVal = atoi(yytext); return DECNUM;}
+{hex}					{yylval.iVal = myatoi(yytext, 16); return HEXNUM;}
 
 ","						return ',';
 ";"						return ';';
