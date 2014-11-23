@@ -2,7 +2,7 @@ Note
 ======
 
 ##Why this file?
-After finishing the phase to build the abstract syntax tree, I decided to let the semantic error check alone temporarily and enter the code generation phase. However, it's new to me, so learning is neccessary. Hence, I create this file to write down some information which will help me in future when I really start code generation phase.
+After finishing the phase to build the abstract syntax tree, I decided to ignore the semantic error check temporarily and enter the code generation phase. However, it's new to me, so learning is neccessary. Hence, I create this file to write down some information which will help me in future when I really start code generation phase.
 
 ##MIPS Instruction Set
 The generated code is based on MIPS instruction set, which has following convention.
