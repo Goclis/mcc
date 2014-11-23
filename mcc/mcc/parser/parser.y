@@ -126,6 +126,9 @@ void yyerror(const char *s)
 program
 	: decl_list {
 		theMccRobot().initialize($1);
+		if ($1 != nullptr) {
+			delete $1;
+		}
 	}
 	| {
 		theMccRobot().initialize(nullptr);
@@ -167,10 +170,26 @@ fun_decl
 	: type_spec IDENT '(' params ')' '{' local_decls stmt_list '}' {
 		$$ = new MccFunctionDeclaration($1, new MccIdentifier($2), $4, $7, $8);
 		delete $2;
+		if ($4 != nullptr) {
+			delete $4;
+		}
+
+		if ($7 != nullptr) {
+			delete $7;
+		}
+
+		if ($8 != nullptr) {
+			delete $8;
+		}
+		
 	}
 	| type_spec IDENT '(' params ')' ';' {
 		$$ = new MccFunctionDeclaration($1, new MccIdentifier($2), $4);
 		delete $2;
+
+		if ($4 != nullptr) {
+			delete $4;
+		}
 	}
 	;
 
@@ -292,6 +311,10 @@ block_stmt
 	: '{' stmt_list '}' {
 		printf("Block\n");
 		$$ = new MccBlockStatement($2);
+
+		if ($2 != nullptr) {
+			delete $2;
+		}
 	}
 	;
 
@@ -417,6 +440,10 @@ expr
 	| IDENT '(' args ')' {
 		$$ = new MccMethodCallExpression(new MccIdentifier($1), $3);
 		delete $1;
+
+		if ($3 != nullptr) {
+			delete $3;
+		}
 	}
 	| int_literal {
 		$$ = $1;

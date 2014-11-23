@@ -33,6 +33,7 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
+#include <string>
 #include "../MccRobot.h"
 #include "../MccPublicType.h"
 #include "../MccExpression.h"
@@ -59,6 +60,7 @@
 #include "../MccContinueStatement.h"
 #include "../MccBreakStatement.h"
 using std::string;
+
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
