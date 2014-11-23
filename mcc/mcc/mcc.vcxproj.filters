@@ -102,6 +102,9 @@
     <ClCompile Include="MccStatementList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MccRobot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parser\parser.hpp">
@@ -180,6 +183,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MccStatementList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccRobot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

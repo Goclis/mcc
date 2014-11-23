@@ -28,16 +28,9 @@ public:
 		TYPE_SPEC type_spec, 
 		MccIdentifier *identifier, 
 		MccFuncParameterList *params, 
-		MccDeclarationList *decls = nullptr, 
+		MccDeclarationList *decls = nullptr,
 		MccStatementList *stmts = nullptr);
 	virtual ~MccFunctionDeclaration(void);
-
-	/**
-	 * @brief Add new local variable declaration.
-	 *
-	 * @param decl
-	 */
-	void add_local_decl(MccVariableDeclaration *decl);
 
 private:
 	/**
@@ -54,5 +47,10 @@ private:
 	 * @brief Statement list.
 	 */
 	vector<MccStatement *> m_statement_list;
+
+	/**
+	 * @brief Indicate that whether the declaration contains definition or not;
+	 */
+	bool m_contain_definition;
 };
 

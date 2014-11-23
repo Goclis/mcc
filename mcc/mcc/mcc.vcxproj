@@ -97,6 +97,7 @@
     <ClCompile Include="MccIntLiteral.cpp" />
     <ClCompile Include="MccMethodCallExpression.cpp" />
     <ClCompile Include="MccReturnStatement.cpp" />
+    <ClCompile Include="MccRobot.cpp" />
     <ClCompile Include="MccStatementList.cpp" />
     <ClCompile Include="MccUnaryOperatorExpression.cpp" />
     <ClCompile Include="MccVariableDeclaration.cpp" />
@@ -126,6 +127,7 @@
     <ClInclude Include="MccMethodCallExpression.h" />
     <ClInclude Include="MccPublicType.h" />
     <ClInclude Include="MccReturnStatement.h" />
+    <ClInclude Include="MccRobot.h" />
     <ClInclude Include="MccStatementList.h" />
     <ClInclude Include="MccUnaryOperatorExpression.h" />
     <ClInclude Include="MccVariableDeclaration.h" />

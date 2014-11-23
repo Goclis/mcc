@@ -10,7 +10,10 @@ class MccIfStatement :
 	public MccConditionStatement
 {
 public:
-	MccIfStatement(MccExpression *condition, MccStatement *if_part, MccStatement *else_part = nullptr);
+	MccIfStatement(
+		MccExpression *condition, 
+		MccStatement *if_part, 
+		MccStatement *else_part = nullptr);
 	virtual ~MccIfStatement(void);
 
 private:

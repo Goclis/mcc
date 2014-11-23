@@ -5,13 +5,14 @@
 
 #pragma once
 #include "mccstatement.h"
-#include "MccExpression.h"
+
+class MccExpression;
 
 class MccConditionStatement :
 	public MccStatement
 {
 public:
-	MccConditionStatement(void);
+	MccConditionStatement(MccExpression *condtion);
 	virtual ~MccConditionStatement(void);
 
 protected:

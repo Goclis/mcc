@@ -14,12 +14,22 @@ using std::vector;
 class MccFuncParameterList
 {
 public:
-	MccFuncParameterList(void);
-	explicit MccFuncParameterList(MccFuncParameter *first) {}
+	explicit MccFuncParameterList(MccFuncParameter *first);
 	virtual ~MccFuncParameterList(void);
 
-	void push_back(MccFuncParameter *param) {}
+	/**
+	 * @brief Same as vector::push_back.
+	 */
+	void push_back(MccFuncParameter *param);
 
+	/**
+	 * @brief Copy content to other list.
+	 *
+	 * @param list Destination list.
+     */
+	void copy_to_list(vector<MccFuncParameter *> &list);
+	
+private:
 	vector<MccFuncParameter *> m_parameter_list;
 };
 

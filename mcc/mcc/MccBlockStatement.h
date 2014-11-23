@@ -18,6 +18,6 @@ public:
 	virtual ~MccBlockStatement(void);
 
 private:
-	vector<MccStatement *> m_statement_list;		
+	vector<MccStatement *> m_statement_list;
 };
 

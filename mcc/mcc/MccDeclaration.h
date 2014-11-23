@@ -23,7 +23,7 @@ public:
 		MccIdentifier *identifier);
 	virtual ~MccDeclaration(void);
 
-private:
+protected:
 	MccIdentifier *m_identifier;
 	TYPE_SPEC m_type_spec;
 };

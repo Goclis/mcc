@@ -12,7 +12,10 @@ class MccAssignStatement :
 	public MccStatement
 {
 public:
-	MccAssignStatement(MccExpression *left, MccExpression *right, bool is_port = false) {}
+	MccAssignStatement(
+		MccExpression *left, 
+		MccExpression *right, 
+		bool is_port = false);
 	virtual ~MccAssignStatement(void);
 
 private:
@@ -29,5 +32,10 @@ private:
 	 * @brief Right operand.
 	 */
 	MccExpression *m_right_operand;
+
+	/**
+	 * @brief Indicate that whether the statement is port assignment.
+	 */
+	bool m_is_port;
 };
 

@@ -1,4 +1,5 @@
 #include "MccDeclaration.h"
+#include "MccIdentifier.h"
 
 
 MccDeclaration::MccDeclaration(TYPE_SPEC type_spec, MccIdentifier *identifier)
@@ -11,4 +12,7 @@ MccDeclaration::MccDeclaration(TYPE_SPEC type_spec, MccIdentifier *identifier)
 
 MccDeclaration::~MccDeclaration(void)
 {
+	if (this->m_identifier) {
+		delete this->m_identifier;
+	}
 }
