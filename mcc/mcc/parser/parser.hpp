@@ -61,7 +61,6 @@
 #include "../MccBreakStatement.h"
 using std::string;
 
-
 /* Tokens.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE

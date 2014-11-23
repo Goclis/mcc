@@ -243,14 +243,10 @@ local_decls
 	: local_decls local_decl {
 		$$ = $1;
 		$1 = nullptr;
-		if ($$ == nullptr) {
-			$$ = new MccDeclarationList($2);
-		} else {
-			($$)->push_back($2);
-		}
+		($$)->push_back($2);
 	}
 	| {
-		$$ = nullptr;
+		$$ = new MccDeclarationList(nullptr);
 	}
 	;
 
@@ -269,14 +265,10 @@ stmt_list
 	: stmt_list stmt {
 		$$ = $1;
 		$1 = nullptr;
-		if ($$ == nullptr) {
-			$$ = new MccStatementList($2);
-		} else {
-			($$)->push_back($2);
-		}
+		($$)->push_back($2);
 	}
 	| {
-		$$ = nullptr;
+		$$ = new MccStatementList(nullptr);
 	}
 	;
 
