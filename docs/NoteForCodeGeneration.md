@@ -1,4 +1,4 @@
-Note
+Note for Code Generation
 ======
 
 ##Why this file?
