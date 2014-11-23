@@ -12,12 +12,18 @@ class MccDeclaration;
 
 using std::vector;
 
+/**
+ * @brief Global robot, singleton.
+ */
 class MccRobot
 {
 public:
 	virtual ~MccRobot(void);
 	friend MccRobot& theMccRobot();
-
+	
+	/**
+	 * @brief Use declaration list to initialize robot.
+	 */
 	void initialize(MccDeclarationList *decl_list);
 
 private:

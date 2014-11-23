@@ -1,4 +1,5 @@
 #include "MccArrayAccessExpression.h"
+#include "MccIdentifier.h"
 
 
 MccArrayAccessExpression::MccArrayAccessExpression(void)
