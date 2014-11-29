@@ -207,6 +207,78 @@ multiu $s0 $s0 4
 addu $a0 $s0
 ```
 
+__MccMethodCallExpression__
+
+```
+; 1. 压入当前活动记录的frame pointer
+sw $fp 0($sp)
+addiu $sp $sp -4
+
+; 2. 从后往前计算各个参数对应的Expression，将它们的返回值压入栈，下面随便举个栗子
+exec expr2
+sw $a0 0($sp)
+addiu $sp $sp -4
+exec expr1
+sw $a0 0($sp)
+addiu $sp $sp -4
+
+; 3. 编译器查照IDENT对应的地址
+jal fun
+```
+
+__MccBinaryOperatorExpression__
+
+```
+; 1. 计算左操作数对应的Expression，存到$a0中
+...
+
+; 2. 保存左操作数的值到栈中，准备执行右操作数
+sw $a0 0($sp)
+addiu $sp $sp -4
+
+; 3. 计算右操作数对应的Expression，存到$a0中
+...
+
+; 4. 取出存到栈中的左操作数
+lw $s0 4($sp)
+addiu $sp $sp 4
+
+; 5. 根据不同的操作数，进行不同的指令计算，左值在$s0，右值在$a0，结果放在$a0中
+...
+
+; 5.1 OR_BINARY     特殊处理，只要有一个操作数计算出了真值，就结束
+; 5.2 EQ_BINARY
+; 5.3 NE_BINARY
+; 5.4 LE_BINARY
+; 5.5 LT_BINARY
+; 5.6 GT_BINARY
+; 5.7 GE_BINARY
+; 5.8 AND_BINARY    特殊处理，只要有一个操作数计算出了非真的值，就结束
+; 5.9 PLUS_BINARY
+; 5.10 MINUS_BINARY
+; 5.11 MULT_BINARY
+; 5.12 DIV_BINARY
+; 5.13 MD_BINARY
+; 5.14 BIT_AND_BINARY
+; 5.15 EXCLUSIVE_BINARY
+; 5.16 LSHIFT_BINARY
+; 5.17 RSHIFT_BINARY
+; 5.18 BIT_OR_BINARY
+```
+
+__MccUnaryOperatorExpression__
+
+```
+; 1. 计算操作数对应的Expression，存到$a0中
+...
+
+; 2. 根据操作符的不同，对$a0执行不同的操作，存到$a0中
+; 2.1 NEG_UNARY
+; 2.2 NEGATIVE_UNARY
+; 2.3 POSITIVE_UNARY
+; 2.4 NOT_UNARY
+; 2.5 PORT_UNARY
+```
 
 ##二、语义错误检查
 目前有如下需要进行的语义错误检查。
