@@ -282,14 +282,17 @@ __MccUnaryOperatorExpression__
 
 __MccBreakStatement__
 
-一个跳转语句，需要跳转到循环的结束处，由编译器负责记录位置。
+一个跳转语句，需要跳转到循环的结束处，由编译器负责记录位置，如MccRobot记录一个current_break_label。
 
 __MccContinueStatement__
 
-一个跳转语句，需要跳转到循环的条件表达式开始处，由编译器负责记录位置。
+一个跳转语句，需要跳转到循环的条件表达式开始处，由编译器负责记录位置，如MccRobot记录一个current_continue_label。
 
 __MccReturnStatement__
 
+需要访问它所对应的方法定义，即包含它的MccFunctionDeclaration，由编译器跟踪，如MccRobot记录一个current_function_decl。
+
+另外，返回语句需要考虑不少信息，比如说，一个返回为`void`的方法可以在一个if语句中加入`return;`而在方法结尾不加入，这个情形对于它的MccFunctionDeclaration来说，仍旧需要MccFunctionDeclaration在所有语句生成结束后生成回收空间等代码，因为不是所有的返回路径都能回收空间。
 ```
 ; 1. 计算相关的表达式的值，保存到$a0中
 ...
@@ -349,14 +352,8 @@ __MccVariableDeclaration__
 
 其实就是一个简单的申请栈空间，编译器记录变量名的过程。
 ```
-; 1. 如果为数组变量，将数组的大小存于$a0中，否则$a0设置为1
-...
-
-; 2. 计算需要分配的栈空间，即$a0 * 4
-mult $a0 $a0 4
-
-; 3. 根据计算出来的大小分配栈空间，编译器需要记录当前的栈位置为该变量名的起始，以$fp为基准记录吧
-subiu $sp $sp $a0
+; 1. 如果为数组变量，申请的空间大小为4*array_size，否则为4，编译器可以静态计算出来，假设为num，则可申请空间了
+subiu $sp $sp num
 ```
 
 __MccFunctionDeclaration__
