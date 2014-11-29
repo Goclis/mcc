@@ -280,6 +280,102 @@ __MccUnaryOperatorExpression__
 ; 2.5 PORT_UNARY
 ```
 
+__MccBreakStatement__
+
+一个跳转语句，需要跳转到循环的结束处，由编译器负责记录位置。
+
+__MccContinueStatement__
+
+一个跳转语句，需要跳转到循环的条件表达式开始处，由编译器负责记录位置。
+
+__MccReturnStatement__
+
+```
+; 1. 计算相关的表达式的值，保存到$a0中
+...
+
+; 2. 回收当前活动记录的空间，取出返回地址，跳转，参见一开始的fun的例子
+...
+```
+
+__MccBlockStatement__
+
+按照各自的规则生成列表中的每一个语句即可。
+
+__MccIfStatement__
+
+```
+; 1. 生成条件表达式的代码，表达式运行的结果存在$a0中
+...
+
+; 2. 判断$a0的值，决定是否跳转false_branch
+beq $a0 0 false_branch
+
+; 3. 生成true_branch的语句块，即if_part语句
+...
+
+; 4. 加上false_branch的标头，名字由编译器去决定
+...
+
+; 5. 生成false_branch的语句块，即else_part语句
+...
+```
+
+__MccWhileStatement__
+
+```
+; 1. 增加while_condition的标号，用于跳转回来，名字由编译器决定，这里定位while_condition
+...
+
+; 2. 生成条件表达式的代码，表达式运行结果存在$a0中
+...
+
+; 3. 判断$a0的值，决定是否跳过while body，即跳到while_end标号，名字同样由编译器决定
+beq $a0 0 while_end
+
+; 4. 生成while body的语句的代码
+...
+
+; 5. while body结束，跳转回while_condition
+jp while_condition
+
+; 6. 生成while_end的标号
+...
+```
+
+__MccVariableDeclaration__
+
+目前不区分全局变量和局部变量，全局变量占用的栈算在main的活动记录中。
+
+其实就是一个简单的申请栈空间，编译器记录变量名的过程。
+```
+; 1. 如果为数组变量，将数组的大小存于$a0中，否则$a0设置为1
+...
+
+; 2. 计算需要分配的栈空间，即$a0 * 4
+mult $a0 $a0 4
+
+; 3. 根据计算出来的大小分配栈空间，编译器需要记录当前的栈位置为该变量名的起始，以$fp为基准记录吧
+subiu $sp $sp $a0
+```
+
+__MccFunctionDeclaration__
+
+这个也是一个记录名字，生成代码的过程。
+```
+; 1. 以方法的名字为标号名，生成该标号，编译器记录下该位置
+...
+
+; 2. 方法内部的声明的代码生成
+...
+
+; 3. 方法内部的语句的代码生成
+...
+
+; 4. 方法结尾处如果没有return语句进行回收，需要手动生成回收活动记录以及跳转返回的过程，参见MccReturnStatement
+...
+```
+
 ##二、语义错误检查
 目前有如下需要进行的语义错误检查。
 
