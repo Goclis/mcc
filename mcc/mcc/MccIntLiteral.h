@@ -13,6 +13,8 @@ public:
 	explicit MccIntLiteral(int value);
 	virtual ~MccIntLiteral(void);
 
+	int generate_code() const;
+
 	/**
 	 * @brief Get value of int literal.
 	 */

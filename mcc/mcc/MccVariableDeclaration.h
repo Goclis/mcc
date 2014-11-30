@@ -22,6 +22,8 @@ public:
 		int array_size = -1);
 	virtual ~MccVariableDeclaration(void);
 
+	int generate_code();
+
 private:
 	/**
 	 * @brief -1 indicates normal variable,

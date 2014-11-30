@@ -15,6 +15,9 @@ MccFunctionDeclaration::MccFunctionDeclaration(
 		MccStatementList *stmts)
 	: MccDeclaration(type_spec, identifier)
 {
+	this->m_if_levels = 0;
+	this->m_has_retrieved = false;
+
 	if (params != nullptr) {
 		params->copy_to_list(this->m_parameter_list);
 	}
@@ -58,4 +61,52 @@ MccFunctionDeclaration::~MccFunctionDeclaration(void)
 	}
 
 	// Identifier released by base class destructor.
+}
+
+
+int MccFunctionDeclaration::generate_code()
+{
+	// Each parameter is an address in function activation record.
+	this->m_ar_size = 4 * this->m_parameter_list.size();
+
+	for (size_t i = 0, len = this->m_local_variable_decls.size();
+			i < len; ++i) {
+		this->m_ar_size += this->m_local_variable_decls[i]->generate_code();
+	}
+
+	for (size_t i = 0, len = this->m_statement_list.size(); i < len; ++i) {
+		this->m_statement_list[i]->generate_code();
+	}
+
+	return 0;
+}
+
+
+int MccFunctionDeclaration::get_if_levels() const
+{
+	return this->m_if_levels;
+}
+
+
+void MccFunctionDeclaration::increase_if_level()
+{
+	++this->m_if_levels;
+}
+
+
+void MccFunctionDeclaration::decrease_if_level()
+{
+	--this->m_if_levels;
+}
+
+
+void MccFunctionDeclaration::set_has_retrieved()
+{
+	this->m_has_retrieved = true;
+}
+
+
+int MccFunctionDeclaration::get_ar_size() const
+{
+	return this->m_ar_size;
 }

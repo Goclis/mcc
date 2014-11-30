@@ -12,4 +12,6 @@ class MccContinueStatement :
 public:
 	MccContinueStatement(void);
 	virtual ~MccContinueStatement(void);
+
+	int generate_code() const;
 };

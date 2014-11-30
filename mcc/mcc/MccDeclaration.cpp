@@ -16,3 +16,11 @@ MccDeclaration::~MccDeclaration(void)
 		delete this->m_identifier;
 	}
 }
+
+//@todo Remove it.
+int MccDeclaration::generate_code()
+{
+	cout << "MccDeclaration generation." << endl;
+
+	return 0;
+}

@@ -12,4 +12,6 @@ class MccBreakStatement :
 public:
 	MccBreakStatement(void);
 	virtual ~MccBreakStatement(void);
+
+	int generate_code() const;
 };
