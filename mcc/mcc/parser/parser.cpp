@@ -1901,7 +1901,6 @@ yyreduce:
   case 36:
 #line 303 "parser.y"
     {
-		printf("Block\n");
 		(yyval.pBlockStmt) = new MccBlockStatement((yyvsp[(2) - (3)].pStmtList));
 
 		if ((yyvsp[(2) - (3)].pStmtList) != nullptr) {

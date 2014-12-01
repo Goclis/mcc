@@ -301,7 +301,6 @@ stmt
 
 block_stmt
 	: '{' stmt_list '}' {
-		printf("Block\n");
 		$$ = new MccBlockStatement($2);
 
 		if ($2 != nullptr) {
