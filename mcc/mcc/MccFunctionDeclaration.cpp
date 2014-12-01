@@ -108,7 +108,9 @@ int MccFunctionDeclaration::generate_code()
 	// If no return statement at last, need to generate code to retrieving 
 	// activation record.
 	if (!this->m_has_retrieved) {
-		cout << "addiu $sp $sp " << this->m_local_var_size << endl;
+		if (this->m_local_var_size > 0) {
+			cout << "addiu $sp $sp " << this->m_local_var_size << endl;
+		}
 		cout << "lw $ra 4($sp)" << endl;
 		cout << "addiu $sp $sp " << this->m_ar_size - this->m_local_var_size << endl;
 		cout << "lw $fp 0($sp)" << endl;

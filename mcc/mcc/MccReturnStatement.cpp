@@ -31,7 +31,9 @@ int MccReturnStatement::generate_code() const
 	int vars_size = func_decl->get_vars_size();
 	int final_pop_size = ar_size - vars_size;
 
-	cout << "addiu $sp $sp " << vars_size << endl;
+	if (vars_size > 0) {
+		cout << "addiu $sp $sp " << vars_size << endl;
+	}
 	cout << "lw $ra 4($sp)" << endl;
 	cout << "addiu $sp $sp " << final_pop_size << endl;
 	cout << "lw $fp 0($sp)" << endl;

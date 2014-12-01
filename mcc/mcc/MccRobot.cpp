@@ -27,10 +27,10 @@ MccRobot::~MccRobot(void)
 
 void MccRobot::initialize(MccDeclarationList *decl_list)
 {
-	cout << "Hello" << endl;
+	// cout << "Hello" << endl;
 	if (decl_list != nullptr) {
 		// copy to m_decls
-		cout << "Not empty program" << endl;
+		// cout << "Not empty program" << endl;
 		decl_list->copy_to_list(this->m_decls);
 	}
 
