@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+#include "MccPublicType.h"
 
 class MccDeclarationList;
 class MccDeclaration;
@@ -33,7 +34,21 @@ public:
 	/**
 	 * @brief Generate code.
 	 */
-	void generate_code() const;
+	void generate_code();
+
+	/**
+	 * @brief Add new declration.
+	 *
+	 * @param name the name of the declaration variable.
+	 *
+	 * @param decl_size the size of the declaration variable.
+	 *		0 indicates function declaration,
+	 *		4 indicates global normal variable,
+	 *	    4+ indicates global array variable.
+	 *
+	 * @return The info struct of the declaration.
+	 */
+	IdentifierInfo* add_global_decl(const string &name, int decl_size);
 
 	/**
 	 * @brief Setters and Getters.
@@ -55,5 +70,10 @@ private:
 	string m_current_break_label; // Current while statement end.
 	string m_current_continue_label; // Current while statement start.
 	MccFunctionDeclaration *m_current_func_decl; // Current function declaration.
+	
+	/**
+	 * @brief A map to save information for each declaration.
+	 */
+	IdentifierMap m_decl_infos;
 };
 

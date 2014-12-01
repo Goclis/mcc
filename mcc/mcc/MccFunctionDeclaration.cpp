@@ -5,6 +5,7 @@
 #include "MccDeclarationList.h"
 #include "MccStatement.h"
 #include "MccFuncParameter.h"
+#include "MccRobot.h"
 
 
 MccFunctionDeclaration::MccFunctionDeclaration(
@@ -15,7 +16,7 @@ MccFunctionDeclaration::MccFunctionDeclaration(
 		MccStatementList *stmts)
 	: MccDeclaration(type_spec, identifier)
 {
-	this->m_if_levels = 0;
+	this->m_condition_block_levels = 0;
 	this->m_has_retrieved = false;
 
 	if (params != nullptr) {
@@ -60,43 +61,79 @@ MccFunctionDeclaration::~MccFunctionDeclaration(void)
 		}
 	}
 
+	// Release the map of local variable declarations.
+	for (IdentifierMap::iterator iter = this->m_local_identifiers.begin(),
+			the_end = this->m_local_identifiers.end(); iter != the_end; ++iter) {
+		delete iter->second;
+	}
+
 	// Identifier released by base class destructor.
 }
 
 
 int MccFunctionDeclaration::generate_code()
 {
-	// Each parameter is an address in function activation record.
-	this->m_ar_size = 4 * this->m_parameter_list.size();
+	cout << "MccFunctionDelcaration generation." << endl;
 
-	for (size_t i = 0, len = this->m_local_variable_decls.size();
-			i < len; ++i) {
-		this->m_ar_size += this->m_local_variable_decls[i]->generate_code();
+	string func_label = this->get_decl_name();
+	IdentifierInfo *info = theMccRobot().add_global_decl(func_label, 0);
+
+	if (!this->m_contain_definition) {
+		return 0;
 	}
 
+	theMccRobot().set_current_func_decl(this);
+	// Initialization.
+	this->m_ar_size = 0;
+	this->m_local_var_size = 0;
+
+	// Each parameter is an address in function activation record.
+	this->m_ar_size = 4 * this->m_parameter_list.size();
+	this->m_ar_size += 4; // The old frame pointer.
+	this->m_ar_size += 4; // $ra, return address.
+
+	cout << func_label << ":" << endl;
+
+	// Iterate local variable declaration.
+	for (size_t i = 0, len = this->m_local_variable_decls.size();
+			i < len; ++i) {
+		this->m_local_variable_decls[i]->generate_code();
+	}
+	
+	// Iterate statement list.
 	for (size_t i = 0, len = this->m_statement_list.size(); i < len; ++i) {
 		this->m_statement_list[i]->generate_code();
+	}
+
+	// If no return statement at last, need to generate code to retrieving 
+	// activation record.
+	if (!this->m_has_retrieved) {
+		cout << "addiu $sp $sp " << this->m_local_var_size << endl;
+		cout << "lw $ra 4($sp)" << endl;
+		cout << "addiu $sp $sp " << this->m_ar_size - this->m_local_var_size << endl;
+		cout << "lw $fp 0($sp)" << endl;
+		cout << "jr $ra" << endl;
 	}
 
 	return 0;
 }
 
 
-int MccFunctionDeclaration::get_if_levels() const
+int MccFunctionDeclaration::get_cond_stmt_level() const
 {
-	return this->m_if_levels;
+	return this->m_condition_block_levels;
 }
 
 
-void MccFunctionDeclaration::increase_if_level()
+void MccFunctionDeclaration::increase_cond_stmt_level()
 {
-	++this->m_if_levels;
+	++this->m_condition_block_levels;
 }
 
 
-void MccFunctionDeclaration::decrease_if_level()
+void MccFunctionDeclaration::decrease_cond_stmt_level()
 {
-	--this->m_if_levels;
+	--this->m_condition_block_levels;
 }
 
 
@@ -109,4 +146,28 @@ void MccFunctionDeclaration::set_has_retrieved()
 int MccFunctionDeclaration::get_ar_size() const
 {
 	return this->m_ar_size;
+}
+
+
+void MccFunctionDeclaration::add_local_var_decl(const string &name, int var_size)
+{
+	IdentifierInfo *new_info = new IdentifierInfo;
+	this->m_local_var_size += var_size;
+	new_info->position = "$fp - " + this->m_local_var_size;
+	if (var_size > 4) {
+		new_info->id_type = ARRAY_VAR;
+	} else {
+		new_info->id_type = NOMARL_VAR;
+	}
+	this->m_ar_size += var_size;
+
+	this->m_local_identifiers.insert(IdentifierMap::value_type(name, new_info));
+
+	cout << "subiu $sp $sp " << var_size << endl;
+}
+
+
+int MccFunctionDeclaration::get_vars_size() const
+{
+	return this->m_local_var_size;
 }

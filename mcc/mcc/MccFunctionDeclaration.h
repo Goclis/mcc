@@ -15,6 +15,7 @@ class MccStatementList;
 class MccDeclarationList;
 class MccFuncParameterList;
 class MccReturnStatement;
+class IdentifierInfo;
 
 using std::vector;
 
@@ -25,8 +26,6 @@ class MccFunctionDeclaration :
 	public MccDeclaration
 {
 public:
-	friend class MccReturnStatement;
-
 	MccFunctionDeclaration(
 		TYPE_SPEC type_spec, 
 		MccIdentifier *identifier, 
@@ -36,6 +35,18 @@ public:
 	virtual ~MccFunctionDeclaration(void);
 
 	int generate_code();
+
+	/**
+	 * @brief Add a new variable declaration (locally).
+	 *
+	 *	This method doesn't do any check for conflict. Before call this
+	 *	method, do check for exsitent conflict.
+	 *
+	 * @param name the name of the variable.
+	 *
+	 * @param var_size the size of the variable.
+	 */
+	void add_local_var_decl(const string &name, int var_size);
 
 	/**
 	 * @brief Setters and Getters.
@@ -48,11 +59,12 @@ public:
 	 *	block level. (3) MccReturnStatement needs to report whether the func should
 	 *	generate code for retrieving activation record or not.
 	 */
-	int get_if_levels() const;
-	void increase_if_level();
-	void decrease_if_level();
+	int get_cond_stmt_level() const;
+	void increase_cond_stmt_level();
+	void decrease_cond_stmt_level();
 	void set_has_retrieved();
 	int get_ar_size() const;
+	int get_vars_size() const;
 
 private:
 	/**
@@ -71,18 +83,17 @@ private:
 	vector<MccStatement *> m_statement_list;
 
 	/**
-	 * @brief Indicate that whether the declaration contains definition or not;
+	 * @brief To figure out that this is a declaration or a definition.
 	 */
 	bool m_contain_definition;
 
 	/**
-	 * @brief A number to indicate the current of if statement(s).
-	 *	
-	 *	0 means there is no if statement.
-	 *	1 means there is an if statement.
-	 *	1+ means there are nested if statements.
+	 * @brief When enter a condition statement block, increase by 1,
+	 *	When exit a condition statement block, decrease by 1.
+	 *
+	 *	Condtion statements include if and while.
 	 */
-	int m_if_levels;
+	int m_condition_block_levels;
 	
 	/**
 	 * @brief Indicate whether the declaration has generated code to
@@ -91,6 +102,11 @@ private:
 	 *	A return statement may set this value to true.
 	 */
 	bool m_has_retrieved;
+	
+	/**
+	 * @brief The value is the size of local variables.
+	 */
+	int m_local_var_size;
 
 	/**
 	 * @brief The value is the size of activation record.
@@ -98,5 +114,10 @@ private:
 	 *	Include $fp, arguments and local variables.
 	 */
 	int m_ar_size;
+
+	/**
+	 * @brief A map to save the information of local variable definitions.
+	 */
+	IdentifierMap m_local_identifiers;
 };
 

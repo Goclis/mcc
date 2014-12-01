@@ -38,8 +38,15 @@ void MccRobot::initialize(MccDeclarationList *decl_list)
 }
 
 
-void MccRobot::generate_code() const
+void MccRobot::generate_code()
 {
+	// Initialization.
+	this->m_current_break_label = "";
+	this->m_current_continue_label = "";
+	this->m_current_func_decl = nullptr; // Indicates global scope.
+
+	cout << "MccRobot generation." << endl;
+
 	for (size_t i = 0, len = this->m_decls.size(); i < len; ++i) {
 		this->m_decls[i]->generate_code();
 	}
@@ -79,6 +86,31 @@ void MccRobot::set_current_func_decl(MccFunctionDeclaration *new_fun)
 MccFunctionDeclaration* MccRobot::get_current_func_decl() const
 {
 	return this->m_current_func_decl;
+}
+
+
+IdentifierInfo* MccRobot::add_global_decl(const string &name, int decl_size)
+{
+	IdentifierMap::iterator iter = this->m_decl_infos.find(name);
+	IdentifierInfo *info = nullptr;
+	if (iter == this->m_decl_infos.end()) {
+		IdentifierInfo *info = new IdentifierInfo;
+		if (decl_size == 0) {
+			info->id_type = FUNC;
+		} else if (decl_size == 4) {
+			info->id_type = NOMARL_VAR;
+		} else {
+			info->id_type = ARRAY_VAR;
+		}
+
+		//@todo position field.
+
+		this->m_decl_infos.insert(IdentifierMap::value_type(name, info));
+	} else {
+		info = iter->second;
+	}
+
+	return info;	
 }
 
 

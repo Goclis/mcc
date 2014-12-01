@@ -24,3 +24,9 @@ int MccDeclaration::generate_code()
 
 	return 0;
 }
+
+
+string MccDeclaration::get_decl_name() const
+{
+	return this->m_identifier->m_name;
+}

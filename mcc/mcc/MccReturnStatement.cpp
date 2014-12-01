@@ -27,12 +27,19 @@ int MccReturnStatement::generate_code() const
 	this->m_expr->generate_code();
 
 	// Retrieving activation record.
-	int ar_size = func_decl->m_ar_size;
-	int args_size = func_decl->m_parameter_list.size();
+	int ar_size = func_decl->get_ar_size();
+	int vars_size = func_decl->get_vars_size();
+	int final_pop_size = ar_size - vars_size;
+
+	cout << "addiu $sp $sp " << vars_size << endl;
+	cout << "lw $ra 4($sp)" << endl;
+	cout << "addiu $sp $sp " << final_pop_size << endl;
+	cout << "lw $fp 0($sp)" << endl;
+	cout << "jr $ra" << endl;
 	
 	// The return statement is out of any if statements, so the function 
 	// declaration no need to generate codes for retrieving activation record.
-	if (func_decl->get_if_levels() == 0) {
+	if (func_decl->get_cond_stmt_level() == 0) {
 		func_decl->set_has_retrieved();
 	}
 

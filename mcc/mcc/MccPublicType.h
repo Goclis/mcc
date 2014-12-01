@@ -6,6 +6,11 @@
 #ifndef MCC_PUBLIC_TYPE_H
 #define MCC_PUBLIC_TYPE_H
 
+#include <string>
+#include <map>
+using std::string;
+using std::map;
+
 enum TYPE_SPEC {
 	VOID_TYPE_SPEC,
 	INT_TYPE_SPEC
@@ -39,5 +44,20 @@ enum UNARY_OPERATOR {
 	POSITIVE_UNARY, // +
 	NEG_UNARY // ~
 };
+
+enum IdentifierType {
+	NOMARL_VAR,
+	ARRAY_VAR,
+	FUNC
+};
+
+class IdentifierInfo
+{
+public:
+	string position;
+	IdentifierType id_type;
+};
+
+typedef map<string, IdentifierInfo*> IdentifierMap;
 
 #endif // MCC_PUBILC_TYPE_H

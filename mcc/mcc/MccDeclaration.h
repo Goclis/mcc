@@ -34,6 +34,8 @@ public:
 	 */
 	virtual int generate_code();
 
+	string get_decl_name() const;
+
 protected:
 	MccIdentifier *m_identifier;
 	TYPE_SPEC m_type_spec;
