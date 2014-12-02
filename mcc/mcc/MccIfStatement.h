@@ -16,6 +16,8 @@ public:
 		MccStatement *else_part = nullptr);
 	virtual ~MccIfStatement(void);
 
+	int generate_code() const;
+
 private:
 	MccStatement *m_if;
 	MccStatement *m_else;

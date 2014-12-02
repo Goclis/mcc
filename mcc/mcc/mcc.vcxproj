@@ -134,6 +134,7 @@
     <ClInclude Include="MccWhileStatement.h" />
     <ClInclude Include="parser\parser.hpp" />
     <ClInclude Include="MccStatement.h" />
+    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />

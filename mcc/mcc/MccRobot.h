@@ -51,6 +51,13 @@ public:
 	IdentifierInfo* add_global_decl(const string &name, int decl_size);
 
 	/**
+	 * @brief Generate false branch label for if statement.
+	 *
+	 * @return The label of the branch.
+	 */
+	string generate_false_branch_label();
+
+	/**
 	 * @brief Setters and Getters.
 	 */
 	void set_current_break_label(const string &new_label);
@@ -70,6 +77,7 @@ private:
 	string m_current_break_label; // Current while statement end.
 	string m_current_continue_label; // Current while statement start.
 	MccFunctionDeclaration *m_current_func_decl; // Current function declaration.
+	int m_false_branch_nums;
 	
 	/**
 	 * @brief A map to save information for each declaration.
