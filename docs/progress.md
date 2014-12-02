@@ -1,5 +1,4 @@
 ###Todos
-- MccIfStatement
 - MccWhileStatement
 - MccExpression
 - 考虑一下全局变量的内存分配问题。
@@ -14,3 +13,4 @@
 - 完成了对各个语句代码生成的分析。
 - 完成了对局部变量内存分配的分析，直接放到AR中。
 - 完成了在MccRobot和MccFunctionDeclaration中对代码生成运行状态的记录。
+- 完成了MccIfStatement的生成代码。
