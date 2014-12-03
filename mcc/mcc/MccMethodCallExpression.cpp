@@ -1,6 +1,7 @@
 #include "MccMethodCallExpression.h"
 #include "MccExpressionList.h"
 #include "MccIdentifier.h"
+#include "MccRobot.h"
 
 
 MccMethodCallExpression::MccMethodCallExpression(MccIdentifier *id, MccExpressionList *expr_list)
@@ -23,4 +24,26 @@ MccMethodCallExpression::~MccMethodCallExpression(void)
 			delete this->m_args[i];
 		}
 	}
+}
+
+
+int MccMethodCallExpression::generate_code() const
+{
+	MccRobot &robot = theMccRobot();
+	string func_name = this->m_method_id->m_name;
+
+	cout << "MccMethodCallExpression generation." << endl;
+	cout << "sw $fp 0($sp)" << endl;
+	cout << "addiu $sp $sp -4" << endl;
+
+	int i = this->m_args.size() - 1;
+	for (; i >= 0; --i) {
+		this->m_args[i]->generate_code();
+		cout << "sw $a0 0($sp)" << endl;
+		cout << "addiu $sp $sp -4" << endl;
+	}
+	
+	cout << "jal " << func_name << endl;
+
+	return 0;
 }

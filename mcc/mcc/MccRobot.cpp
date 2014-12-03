@@ -131,4 +131,12 @@ string MccRobot::generate_while_label()
 }
 
 
-
+IdentifierInfo* MccRobot::get_identifier_info(const string &name)
+{
+	IdentifierMap::iterator iter = this->m_decl_infos.find(name);
+	if (iter != this->m_decl_infos.end()) {
+		return iter->second;
+	} else {
+		return nullptr;
+	}
+}

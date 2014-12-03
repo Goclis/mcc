@@ -1,5 +1,6 @@
 ###Todos
-- MccExpression
+- MccUnaryOperatorExpression
+- MccBinaryOperatorExpression
 - 考虑一下全局变量的内存分配问题。
 - 考虑一下main函数放置的位置，是否需要特别的移至生成的代码的最下端。
 - 结束代码生成后，考虑语义错误检查，可能需要修改.l和.y来加入定位信息。
@@ -20,3 +21,6 @@
 - 完成了MccBlockStatement的生成代码。
 - 完成了MccAssignStatement的生成代码。
 - 修改了parser.y中关于端口赋值的文法语义动作。
+- 完成了MccIntLiteral的生成代码。
+- 完成了MccArrayAccessExpression的生成代码。
+- 完成了MccMethodCallExpression的生成代码。

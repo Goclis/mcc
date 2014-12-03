@@ -16,6 +16,11 @@ public:
 	MccIdentifier(void);
 	explicit MccIdentifier(string *str);
 	virtual ~MccIdentifier(void);
+	
+	/**
+	 * @brief Save the address of the identifier into the return register.
+	 */
+	int generate_code() const;
 
 	string m_name;
 };

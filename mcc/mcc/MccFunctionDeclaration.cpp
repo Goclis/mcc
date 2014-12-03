@@ -6,6 +6,7 @@
 #include "MccStatement.h"
 #include "MccFuncParameter.h"
 #include "MccRobot.h"
+#include "Utility.h"
 
 
 MccFunctionDeclaration::MccFunctionDeclaration(
@@ -155,7 +156,8 @@ void MccFunctionDeclaration::add_local_var_decl(const string &name, int var_size
 {
 	IdentifierInfo *new_info = new IdentifierInfo;
 	this->m_local_var_size += var_size;
-	new_info->position = "$fp - " + this->m_local_var_size;
+	new_info->position 
+		= Utility::string_concat_int("$fp - ", this->m_local_var_size);
 	if (var_size > 4) {
 		new_info->id_type = ARRAY_VAR;
 	} else {
@@ -172,4 +174,26 @@ void MccFunctionDeclaration::add_local_var_decl(const string &name, int var_size
 int MccFunctionDeclaration::get_vars_size() const
 {
 	return this->m_local_var_size;
+}
+
+
+IdentifierInfo* MccFunctionDeclaration::get_identifier_info(const string &name)
+{
+	IdentifierMap::iterator iter = this->m_local_identifiers.find(name);
+	if (iter != this->m_local_identifiers.end()) {
+		return iter->second;
+	} else {
+		return nullptr;
+	}
+}
+
+
+IdentifierInfo* MccFunctionDeclaration::search_identifier_info(const string &name)
+{
+	IdentifierInfo *info = this->get_identifier_info(name);
+	if (nullptr == info) {
+		return theMccRobot().get_identifier_info(name);
+	} else {
+		return info;
+	}
 }

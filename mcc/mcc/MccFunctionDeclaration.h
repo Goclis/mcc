@@ -49,6 +49,24 @@ public:
 	void add_local_var_decl(const string &name, int var_size);
 
 	/**
+	 * @brief Get the information of the local identifer in function.
+	 *
+	 * @param name the name of the identifer.
+	 *
+	 * @return if find return the information, otherwise, return null.
+	 */
+	IdentifierInfo* get_identifier_info(const string &name);
+	
+	/**
+	 * @brief Search the information of the identifier, from local to global.
+	 *
+	 * @param name the name of the identifier.
+	 *
+	 * @return if find return the information, otherwise, return null.
+	 */
+	IdentifierInfo* search_identifier_info(const string &name);
+
+	/**
 	 * @brief Setters and Getters.
 	 *
 	 * @todo FunctionDeclaration needs to offer several functions for these 

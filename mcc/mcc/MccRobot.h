@@ -65,6 +65,15 @@ public:
 	string generate_while_label();
 
 	/**
+	 * @brief Get the information of the global identifer.
+	 *
+	 * @param name the name of the identifer.
+	 *
+	 * @return if find return the information, otherwise, return null.
+	 */
+	IdentifierInfo* get_identifier_info(const string &name);
+
+	/**
 	 * @brief Setters and Getters.
 	 */
 	void set_current_break_label(const string &new_label);

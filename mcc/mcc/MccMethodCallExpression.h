@@ -19,6 +19,8 @@ public:
 	MccMethodCallExpression(MccIdentifier *id, MccExpressionList *expr_list);
 	virtual ~MccMethodCallExpression(void);
 
+	int generate_code() const;
+
 private:
 	MccIdentifier *m_method_id;
 	vector<MccExpression *> m_args;
