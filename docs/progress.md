@@ -1,6 +1,4 @@
 ###Todos
-- MccBreakStatement
-- MccContinueStatement
 - MccExpression
 - 考虑一下全局变量的内存分配问题。
 - 考虑一下main函数放置的位置，是否需要特别的移至生成的代码的最下端。
@@ -17,3 +15,8 @@
 - 完成了MccReturnStatement的生成代码。
 - 完成了MccIfStatement的生成代码。
 - 完成了MccWhileStatement的生成代码。
+- 完成了MccBreakStatement的生成代码。
+- 完成了MccContinueStatement的生成代码。
+- 完成了MccBlockStatement的生成代码。
+- 完成了MccAssignStatement的生成代码。
+- 修改了parser.y中关于端口赋值的文法语义动作。

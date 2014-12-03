@@ -346,6 +346,25 @@ jp while_condition
 ...
 ```
 
+__MccAssignStatement__
+
+```
+; 1. 计算左表达式，结果存在$a0中
+...
+
+; 2. $a0压栈，保存值，以便执行右表达式
+sw $a0 0($sp)
+addiu $sp $sp -4
+
+; 3. 计算右表达式，结果保存在$a0中
+...
+
+; 4. 赋值操作
+lw $t0 4($sp)
+addiu $sp $sp 4
+sw $a0 0($t0)
+```
+
 __MccVariableDeclaration__
 
 目前不区分全局变量和局部变量，全局变量占用的栈算在main的活动记录中。
