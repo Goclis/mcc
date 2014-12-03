@@ -45,6 +45,7 @@ void MccRobot::generate_code()
 	this->m_current_break_label = "";
 	this->m_current_continue_label = "";
 	this->m_false_branch_nums = 0;
+	this->m_while_nums = 0;
 	this->m_current_func_decl = nullptr; // Indicates global scope.
 
 	cout << "MccRobot generation." << endl;
@@ -120,6 +121,13 @@ string MccRobot::generate_false_branch_label()
 {
 	static string base_name = "false_branch_";
 	return Utility::string_concat_int(base_name, this->m_false_branch_nums++);
+}
+
+
+string MccRobot::generate_while_label()
+{
+	static string base_name = "while_stmt_";
+	return Utility::string_concat_int(base_name, this->m_while_nums++);
 }
 
 

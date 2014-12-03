@@ -13,6 +13,8 @@ public:
 	MccWhileStatement(MccExpression *condition, MccStatement *stmt);
 	virtual ~MccWhileStatement(void);
 
+	int generate_code() const;
+
 private:
 	MccStatement *m_statement;
 };

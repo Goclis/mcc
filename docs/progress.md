@@ -1,5 +1,6 @@
 ###Todos
-- MccWhileStatement
+- MccBreakStatement
+- MccContinueStatement
 - MccExpression
 - 考虑一下全局变量的内存分配问题。
 - 考虑一下main函数放置的位置，是否需要特别的移至生成的代码的最下端。
@@ -13,4 +14,6 @@
 - 完成了对各个语句代码生成的分析。
 - 完成了对局部变量内存分配的分析，直接放到AR中。
 - 完成了在MccRobot和MccFunctionDeclaration中对代码生成运行状态的记录。
+- 完成了MccReturnStatement的生成代码。
 - 完成了MccIfStatement的生成代码。
+- 完成了MccWhileStatement的生成代码。
