@@ -355,7 +355,7 @@ assign_stmt
 		delete $1;
 	}
 	| '$' expr '=' expr ';' {
-		$$ = new MccAssignStatement($2, $4, true);
+		$$ = new MccAssignStatement(new MccUnaryOperatorExpression(PORT_UNARY, $2), $4, true);
 	}
 	;
 

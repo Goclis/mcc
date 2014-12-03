@@ -1977,7 +1977,7 @@ yyreduce:
   case 46:
 #line 358 "parser.y"
     {
-		(yyval.pAssignStmt) = new MccAssignStatement((yyvsp[(2) - (5)].pExpr), (yyvsp[(4) - (5)].pExpr), true);
+		(yyval.pAssignStmt) = new MccAssignStatement(new MccUnaryOperatorExpression(PORT_UNARY, (yyvsp[(2) - (5)].pExpr)), (yyvsp[(4) - (5)].pExpr), true);
 	;}
     break;
 
