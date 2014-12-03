@@ -18,6 +18,8 @@ public:
 		bool is_port = false);
 	virtual ~MccAssignStatement(void);
 
+	int generate_code() const;
+
 private:
 	/**
 	 * @brief Left operand. According to yacc grammar, 

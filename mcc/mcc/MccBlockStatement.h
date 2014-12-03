@@ -17,6 +17,8 @@ public:
 	MccBlockStatement(MccStatementList *stmt_list);
 	virtual ~MccBlockStatement(void);
 
+	int generate_code() const;
+
 private:
 	vector<MccStatement *> m_statement_list;
 };

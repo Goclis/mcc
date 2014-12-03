@@ -24,3 +24,18 @@ MccAssignStatement::~MccAssignStatement(void)
 		delete this->m_right_operand;
 	}
 }
+
+
+int MccAssignStatement::generate_code() const
+{
+	cout << "MccAssignStatement generation." << endl;
+	this->m_left_operand->generate_code();
+	cout << "sw $a0 0($sp)" << endl;
+	cout << "addiu $sp $sp -4" << endl;
+	this->m_right_operand->generate_code();
+	cout << "sw $t0 4($sp)" << endl;
+	cout << "addiu $sp $sp 4" << endl;
+	cout << "sw $a0 0($t0)" << endl;
+
+	return 0;
+}
