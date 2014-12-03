@@ -21,3 +21,28 @@ MccUnaryOperatorExpression::~MccUnaryOperatorExpression(void)
 		delete this->m_operand;
 	}
 }
+
+
+int MccUnaryOperatorExpression::generate_code() const
+{
+	cout << "MccUnaryOperatorExpression generation." << endl;
+	this->m_operand->generate_code();
+	switch (this->m_operator)
+	{
+	case NEG_UNARY:
+		break;
+
+	case NEGATIVE_UNARY:
+		break;
+
+	case POSITIVE_UNARY:
+		break;
+
+	case NOT_UNARY:
+		break;
+
+	case PORT_UNARY:
+		break;
+	}
+	return 0;
+}

@@ -46,6 +46,7 @@ void MccRobot::generate_code()
 	this->m_current_continue_label = "";
 	this->m_false_branch_nums = 0;
 	this->m_while_nums = 0;
+	this->m_quick_branch_nums = 0;
 	this->m_current_func_decl = nullptr; // Indicates global scope.
 
 	cout << "MccRobot generation." << endl;
@@ -139,4 +140,11 @@ IdentifierInfo* MccRobot::get_identifier_info(const string &name)
 	} else {
 		return nullptr;
 	}
+}
+
+
+string MccRobot::generate_quick_branch_label()
+{
+	static string base_name = "quick_logical_";
+	return Utility::string_concat_int(base_name, this->m_quick_branch_nums++);
 }

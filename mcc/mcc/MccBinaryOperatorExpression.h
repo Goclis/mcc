@@ -17,6 +17,11 @@ public:
 		MccExpression *right);
 	virtual ~MccBinaryOperatorExpression(void);
 
+	/**
+	 * @brief Save the result of the binary expression into return register.
+	 */
+	int generate_code() const;
+
 private:
 	BINARY_OPERATOR m_operator;
 	MccExpression *m_left_operand;

@@ -63,6 +63,13 @@ public:
 	 * @return The label of the beginning of the while statement.
 	 */
 	string generate_while_label();
+	
+	/**
+	 * @brief Generate a label for binary logical operator.
+	 *
+	 * @return The label needed.
+	 */
+	string generate_quick_branch_label();
 
 	/**
 	 * @brief Get the information of the global identifer.
@@ -95,6 +102,7 @@ private:
 	MccFunctionDeclaration *m_current_func_decl; // Current function declaration.
 	int m_false_branch_nums;
 	int m_while_nums;
+	int m_quick_branch_nums;
 	
 	/**
 	 * @brief A map to save information for each declaration.
