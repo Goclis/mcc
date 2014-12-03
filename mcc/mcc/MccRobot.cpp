@@ -47,6 +47,7 @@ void MccRobot::generate_code()
 	this->m_false_branch_nums = 0;
 	this->m_while_nums = 0;
 	this->m_quick_branch_nums = 0;
+	this->m_global_var_size = 0;
 	this->m_current_func_decl = nullptr; // Indicates global scope.
 
 	cout << "MccRobot generation." << endl;
@@ -103,8 +104,12 @@ IdentifierInfo* MccRobot::add_global_decl(const string &name, int decl_size)
 			info->id_type = FUNC;
 		} else if (decl_size == 4) {
 			info->id_type = NOMARL_VAR;
+			this->m_global_var_size += 4;
+			info->position = Utility::string_concat_int("-", this->m_global_var_size);
 		} else {
 			info->id_type = ARRAY_VAR;
+			this->m_global_var_size += decl_size;
+			info->position = Utility::string_concat_int("-", this->m_global_var_size);
 		}
 
 		//@todo position field.

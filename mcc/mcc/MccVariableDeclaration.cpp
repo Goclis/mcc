@@ -34,9 +34,11 @@ int MccVariableDeclaration::generate_code()
 	MccFunctionDeclaration *func_decl = theMccRobot().get_current_func_decl();
 	if (func_decl != nullptr) {
 		func_decl->add_local_var_decl(var_name, stack_used);
+		cout << "subiu $sp $sp " << stack_used << endl;
 	} else {
 		// Global variable declaration.
 		theMccRobot().add_global_decl(var_name, stack_used);
+		cout << "subiu $sp $sp " << stack_used << endl;
 	}
 
 	return stack_used;

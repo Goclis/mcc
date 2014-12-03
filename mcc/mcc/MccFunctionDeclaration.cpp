@@ -156,7 +156,7 @@ void MccFunctionDeclaration::add_local_var_decl(const string &name, int var_size
 {
 	IdentifierInfo *new_info = new IdentifierInfo;
 	this->m_local_var_size += var_size;
-	new_info->position 
+	new_info->position
 		= Utility::string_concat_int("$fp - ", this->m_local_var_size);
 	if (var_size > 4) {
 		new_info->id_type = ARRAY_VAR;
@@ -166,8 +166,6 @@ void MccFunctionDeclaration::add_local_var_decl(const string &name, int var_size
 	this->m_ar_size += var_size;
 
 	this->m_local_identifiers.insert(IdentifierMap::value_type(name, new_info));
-
-	cout << "subiu $sp $sp " << var_size << endl;
 }
 
 

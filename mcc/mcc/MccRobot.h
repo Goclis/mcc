@@ -103,6 +103,7 @@ private:
 	int m_false_branch_nums;
 	int m_while_nums;
 	int m_quick_branch_nums;
+	int m_global_var_size;
 	
 	/**
 	 * @brief A map to save information for each declaration.
