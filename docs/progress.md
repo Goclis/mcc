@@ -1,6 +1,6 @@
 ###Todos
 - 优化下branch名字的生成，只要一个方法即可，没必要区分。
-- add、sub指令的几个版本需要细致考虑下哪边用哪个。
+- 修改栈的递减使用了addiu -4的bug。
 - >>是逻辑右移还是算术右移，目前是逻辑右移。
 - MccIntLiteral需要去考虑立即数只有16位的问题，大于16位有个LUI指令。
 - MccUnaryOperatorExpression的按位取反（~）和端口（$）操作需要填充。
