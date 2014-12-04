@@ -32,7 +32,7 @@ int MccUnaryOperatorExpression::generate_code() const
 	switch (this->m_operator)
 	{
 	case NEG_UNARY:
-		code_buffer += "mov $a0 !$a0\n";
+		code_buffer += "mov $a0 ~$a0\n";
 		break;
 
 	case NEGATIVE_UNARY:
@@ -44,7 +44,7 @@ int MccUnaryOperatorExpression::generate_code() const
 		break;
 
 	case NOT_UNARY:
-		code_buffer += "mov $a0 ~$a0\n";
+		code_buffer += "mov $a0 !$a0\n";
 		break;
 
 	case PORT_UNARY:
