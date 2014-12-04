@@ -3,6 +3,9 @@ Mini C Compiler
 
 一个简单的编译器，语法为C的子集，目标代码的运行环境为MIPS。
 
+###开发环境
+- Visual Studio 2010
+
 ###MIPS指令集
 目标的机器代码是基于MIPS指令集的，所以需要考虑一些MIPS指令的规则：
 
