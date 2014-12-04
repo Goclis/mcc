@@ -20,7 +20,7 @@ MccDeclaration::~MccDeclaration(void)
 //@todo Remove it.
 int MccDeclaration::generate_code()
 {
-	cout << "MccDeclaration generation." << endl;
+	// cout << "MccDeclaration generation." << endl;
 
 	return 0;
 }

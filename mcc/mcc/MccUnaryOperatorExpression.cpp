@@ -1,4 +1,5 @@
 #include "MccUnaryOperatorExpression.h"
+#include "MccRobot.h"
 
 
 MccUnaryOperatorExpression::MccUnaryOperatorExpression(void)
@@ -25,23 +26,29 @@ MccUnaryOperatorExpression::~MccUnaryOperatorExpression(void)
 
 int MccUnaryOperatorExpression::generate_code() const
 {
-	cout << "MccUnaryOperatorExpression generation." << endl;
+	// cout << "MccUnaryOperatorExpression generation." << endl;
+	string &code_buffer = theMccRobot().get_code_buffer();
 	this->m_operand->generate_code();
 	switch (this->m_operator)
 	{
 	case NEG_UNARY:
+		code_buffer += "mov $a0 !$a0\n";
 		break;
 
 	case NEGATIVE_UNARY:
+		code_buffer += "mov $a0 -$a0\n";
 		break;
 
 	case POSITIVE_UNARY:
+		code_buffer += "// mov $a0 $a0\n";
 		break;
 
 	case NOT_UNARY:
+		code_buffer += "mov $a0 ~$a0\n";
 		break;
 
 	case PORT_UNARY:
+		code_buffer += "mov $a0 PORT($a0)\n";
 		break;
 	}
 	return 0;

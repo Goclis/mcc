@@ -2,6 +2,7 @@
 #include "MccRobot.h"
 #include "MccFunctionDeclaration.h"
 #include "MccExpression.h"
+#include "Utility.h"
 
 MccReturnStatement::MccReturnStatement(MccExpression *expr)
 	: m_expr(expr)
@@ -19,9 +20,10 @@ MccReturnStatement::~MccReturnStatement()
 
 int MccReturnStatement::generate_code() const
 {
-	cout << "MccReturnStatement generation." << endl;
-
-	MccFunctionDeclaration *func_decl = theMccRobot().get_current_func_decl();
+	// cout << "MccReturnStatement generation." << endl;
+	MccRobot &robot = theMccRobot();
+	string &code_buffer = robot.get_code_buffer();
+	MccFunctionDeclaration *func_decl = robot.get_current_func_decl();
 
 	// Generate code for expression.
 	this->m_expr->generate_code();
@@ -32,12 +34,14 @@ int MccReturnStatement::generate_code() const
 	int final_pop_size = ar_size - vars_size;
 
 	if (vars_size > 0) {
-		cout << "addiu $sp $sp " << vars_size << endl;
+		code_buffer += Utility::string_concat_int("addiu $sp $sp ", vars_size)
+			+ "\n";
 	}
-	cout << "lw $ra 4($sp)" << endl;
-	cout << "addiu $sp $sp " << final_pop_size << endl;
-	cout << "lw $fp 0($sp)" << endl;
-	cout << "jr $ra" << endl;
+	code_buffer += "lw $ra 4($sp)\n";
+	code_buffer += Utility::string_concat_int("addiu $sp $sp ", final_pop_size)
+		+ "\n";
+	code_buffer += "lw $fp 0($sp)\n";
+	code_buffer += "jr $ra\n";
 	
 	// The return statement is out of any if statements, so the function 
 	// declaration no need to generate codes for retrieving activation record.

@@ -1,4 +1,6 @@
 #include "MccIntLiteral.h"
+#include "MccRobot.h"
+#include "Utility.h"
 
 
 MccIntLiteral::MccIntLiteral(int value)
@@ -21,9 +23,11 @@ int MccIntLiteral::get_value() const
 
 int MccIntLiteral::generate_code() const
 {
-	cout << "MccIntLiteral generation." << endl;
+	// cout << "MccIntLiteral generation." << endl;
 
-	cout << "li $a0 " << this->get_value() << endl;
+	theMccRobot().get_code_buffer()
+		+= Utility::string_concat_int("li $a0 ", this->get_value())
+		+ "\n";
 
 	return 0;
 }

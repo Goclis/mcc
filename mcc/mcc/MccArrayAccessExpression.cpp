@@ -1,5 +1,6 @@
 #include "MccArrayAccessExpression.h"
 #include "MccIdentifier.h"
+#include "MccRobot.h"
 
 
 MccArrayAccessExpression::MccArrayAccessExpression(void)
@@ -31,15 +32,16 @@ MccArrayAccessExpression::~MccArrayAccessExpression(void)
 
 int MccArrayAccessExpression::generate_code() const
 {
-	cout << "MccArrayAccessExpression generation." << endl;
+	string &code_buffer = theMccRobot().get_code_buffer();
+	// cout << "MccArrayAccessExpression generation." << endl;
 	this->m_index->generate_code();
-	cout << "sw $a0 0($sp)" << endl;
-	cout << "addiu $sp $sp -4" << endl;
+	code_buffer += "sw $a0 0($sp)\n";
+	code_buffer += "addiu $sp $sp -4\n";
 	this->m_id->generate_code();
-	cout << "lw $a0 4($sp)" << endl;
-	cout << "addiu $sp $sp 4" << endl;
-	cout << "multiu $s0 $s0 4" << endl;
-	cout << "addiu $a0 $a0 $s0" << endl;
+	code_buffer += "lw $a0 4($sp)\n";
+	code_buffer += "addiu $sp $sp 4\n";
+	code_buffer += "multiu $s0 $s0 4\n";
+	code_buffer += "addiu $a0 $a0 $s0\n";
 
 	return 0;
 }

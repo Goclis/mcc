@@ -21,6 +21,7 @@ MccWhileStatement::~MccWhileStatement(void)
 int MccWhileStatement::generate_code() const
 {
 	MccRobot &robot = theMccRobot();
+	string &code_buffer = robot.get_code_buffer();
 	string while_start_label = robot.generate_while_label();
 	string break_label = while_start_label + "end";
 
@@ -32,12 +33,12 @@ int MccWhileStatement::generate_code() const
 	robot.set_current_break_label(break_label);
 	robot.set_current_continue_label(while_start_label);
 
-	cout << "MccWhileStatement generation." << endl;
-	cout << while_start_label << ":" << endl;
+	// cout << "MccWhileStatement generation." << endl;
+	code_buffer += while_start_label + ":\n";
 	this->m_condition->generate_code();
-	cout << "beq $a0 0 " << break_label << endl;
+	code_buffer += "beq $a0 0 " + break_label + "\n";
 	this->m_statement->generate_code();
-	cout << break_label << ":" << endl;
+	code_buffer += break_label + ":\n";
 
 	// Recovery.
 	robot.set_current_break_label(break_label_bak);

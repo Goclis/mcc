@@ -89,6 +89,8 @@ public:
 	string get_current_continue_label() const;
 	void set_current_func_decl(MccFunctionDeclaration *new_fun);
 	MccFunctionDeclaration* get_current_func_decl() const;
+	string& get_code_buffer();
+	string& get_global_var_code_buffer();
 
 private:
 	MccRobot(void);
@@ -104,6 +106,8 @@ private:
 	int m_while_nums;
 	int m_quick_branch_nums;
 	int m_global_var_size;
+	string m_code_buffer;
+	string m_global_var_code_buffer;
 	
 	/**
 	 * @brief A map to save information for each declaration.

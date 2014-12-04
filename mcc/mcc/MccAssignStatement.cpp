@@ -1,5 +1,6 @@
 #include "MccAssignStatement.h"
 #include "MccExpression.h"
+#include "MccRobot.h"
 
 
 MccAssignStatement::MccAssignStatement(
@@ -28,14 +29,15 @@ MccAssignStatement::~MccAssignStatement(void)
 
 int MccAssignStatement::generate_code() const
 {
-	cout << "MccAssignStatement generation." << endl;
+	string &code_buffer = theMccRobot().get_code_buffer();
+	// cout << "MccAssignStatement generation." << endl;
 	this->m_left_operand->generate_code();
-	cout << "sw $a0 0($sp)" << endl;
-	cout << "addiu $sp $sp -4" << endl;
+	code_buffer += "sw $a0 0($sp)\n";
+	code_buffer += "addiu $sp $sp -4\n";
 	this->m_right_operand->generate_code();
-	cout << "sw $t0 4($sp)" << endl;
-	cout << "addiu $sp $sp 4" << endl;
-	cout << "sw $a0 0($t0)" << endl;
+	code_buffer += "sw $t0 4($sp)\n";
+	code_buffer += "addiu $sp $sp 4\n";
+	code_buffer += "sw $a0 0($t0)\n";
 
 	return 0;
 }

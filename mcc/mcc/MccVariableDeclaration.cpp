@@ -2,6 +2,7 @@
 #include "MccIdentifier.h"
 #include "MccFunctionDeclaration.h"
 #include "MccRobot.h"
+#include "Utility.h"
 
 
 MccVariableDeclaration::MccVariableDeclaration(
@@ -22,8 +23,9 @@ MccVariableDeclaration::~MccVariableDeclaration(void)
 
 int MccVariableDeclaration::generate_code()
 {
-	cout << "MccVariableDeclaration generation." << endl;
-	
+	// cout << "MccVariableDeclaration generation." << endl;
+	MccRobot &robot = theMccRobot();
+	MccFunctionDeclaration *func_decl = robot.get_current_func_decl();
 	int stack_used = 4;
 	bool is_array_variable = (this->m_array_size != -1);
 	if (is_array_variable) {
@@ -31,14 +33,16 @@ int MccVariableDeclaration::generate_code()
 	}
 	
 	string var_name = this->get_decl_name();
-	MccFunctionDeclaration *func_decl = theMccRobot().get_current_func_decl();
+	
 	if (func_decl != nullptr) {
 		func_decl->add_local_var_decl(var_name, stack_used);
-		cout << "subiu $sp $sp " << stack_used << endl;
+		robot.get_code_buffer() 
+			+= Utility::string_concat_int("subiu $sp $sp ", stack_used) + "\n";
 	} else {
 		// Global variable declaration.
-		theMccRobot().add_global_decl(var_name, stack_used);
-		cout << "subiu $sp $sp " << stack_used << endl;
+		robot.add_global_decl(var_name, stack_used);
+		robot.get_global_var_code_buffer() 
+			+= Utility::string_concat_int("subiu $sp $sp ", stack_used) + "\n";
 	}
 
 	return stack_used;

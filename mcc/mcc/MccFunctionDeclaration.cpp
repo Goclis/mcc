@@ -74,16 +74,17 @@ MccFunctionDeclaration::~MccFunctionDeclaration(void)
 
 int MccFunctionDeclaration::generate_code()
 {
-	cout << "MccFunctionDelcaration generation." << endl;
-
+	// cout << "MccFunctionDelcaration generation." << endl;
+	MccRobot &robot = theMccRobot();
+	string &code_buffer = robot.get_code_buffer();
 	string func_label = this->get_decl_name();
-	IdentifierInfo *info = theMccRobot().add_global_decl(func_label, 0);
+	IdentifierInfo *info = robot.add_global_decl(func_label, 0);
 
 	if (!this->m_contain_definition) {
 		return 0;
 	}
-
-	theMccRobot().set_current_func_decl(this);
+	MccFunctionDeclaration *func_decl_bak = robot.get_current_func_decl();
+	robot.set_current_func_decl(this);
 	// Initialization.
 	this->m_ar_size = 0;
 	this->m_local_var_size = 0;
@@ -93,7 +94,7 @@ int MccFunctionDeclaration::generate_code()
 	this->m_ar_size += 4; // The old frame pointer.
 	this->m_ar_size += 4; // $ra, return address.
 
-	cout << func_label << ":" << endl;
+	code_buffer += func_label + ":\n";
 
 	// Iterate local variable declaration.
 	for (size_t i = 0, len = this->m_local_variable_decls.size();
@@ -110,13 +111,19 @@ int MccFunctionDeclaration::generate_code()
 	// activation record.
 	if (!this->m_has_retrieved) {
 		if (this->m_local_var_size > 0) {
-			cout << "addiu $sp $sp " << this->m_local_var_size << endl;
+			code_buffer
+				+= Utility::string_concat_int("addiu $sp $sp ", this->m_local_var_size)
+				+ "\n";
 		}
-		cout << "lw $ra 4($sp)" << endl;
-		cout << "addiu $sp $sp " << this->m_ar_size - this->m_local_var_size << endl;
-		cout << "lw $fp 0($sp)" << endl;
-		cout << "jr $ra" << endl;
+		code_buffer += "lw $ra 4($sp)\n";
+		code_buffer 
+			+= Utility::string_concat_int("addiu $sp $sp ",
+				this->m_ar_size - this->m_local_var_size) + "\n";
+		code_buffer += "lw $fp 0($sp)\n";
+		code_buffer += "jr $ra\n";
 	}
+
+	robot.set_current_func_decl(func_decl_bak);
 
 	return 0;
 }

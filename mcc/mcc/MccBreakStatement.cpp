@@ -14,9 +14,10 @@ MccBreakStatement::~MccBreakStatement()
 
 int MccBreakStatement::generate_code() const
 {
-	cout << "MccBreakStatement generation." << endl;
-
-	cout << "jp " << theMccRobot().get_current_break_label() << endl;
+	// cout << "MccBreakStatement generation." << endl;
+	MccRobot &robot = theMccRobot();
+	string &code_buffer = robot.get_code_buffer();
+	code_buffer += "jp " + robot.get_current_break_label() + "\n";
 
 	return 0;
 }

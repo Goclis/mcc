@@ -23,8 +23,9 @@ MccIdentifier::~MccIdentifier(void)
 
 int MccIdentifier::generate_code() const
 {
-	cout << "MccIdentifier generation." << endl;
+	// cout << "MccIdentifier generation." << endl;
 	MccRobot &robot = theMccRobot();
+	string &code_buffer = robot.get_code_buffer();
 	MccFunctionDeclaration *func_decl = robot.get_current_func_decl();
 	IdentifierInfo *info = nullptr;
 	if (nullptr == func_decl) {
@@ -34,7 +35,7 @@ int MccIdentifier::generate_code() const
 	}
 	
 	if (info->id_type == NOMARL_VAR || info->id_type == ARRAY_VAR) {
-		cout << "lw $a0 " << info->position << endl;
+		code_buffer += "lw $a0 " + info->position + "\n";
 	}
 
 	return 0;

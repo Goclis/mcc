@@ -28,10 +28,8 @@ MccRobot::~MccRobot(void)
 
 void MccRobot::initialize(MccDeclarationList *decl_list)
 {
-	// cout << "Hello" << endl;
 	if (decl_list != nullptr) {
 		// copy to m_decls
-		// cout << "Not empty program" << endl;
 		decl_list->copy_to_list(this->m_decls);
 	}
 
@@ -44,6 +42,8 @@ void MccRobot::generate_code()
 	// Initialization.
 	this->m_current_break_label = "";
 	this->m_current_continue_label = "";
+	this->m_global_var_code_buffer = "";
+	this->m_code_buffer = "";
 	this->m_false_branch_nums = 0;
 	this->m_while_nums = 0;
 	this->m_quick_branch_nums = 0;
@@ -55,42 +55,9 @@ void MccRobot::generate_code()
 	for (size_t i = 0, len = this->m_decls.size(); i < len; ++i) {
 		this->m_decls[i]->generate_code();
 	}
-}
 
-
-void MccRobot::set_current_break_label(const string &new_label)
-{
-	this->m_current_break_label = new_label;
-}
-
-
-string MccRobot::get_current_break_label() const
-{
-	return this->m_current_break_label;
-}
-
-
-void MccRobot::set_current_continue_label(const string &new_label)
-{
-	this->m_current_continue_label = new_label;
-}
-
-
-string MccRobot::get_current_continue_label() const
-{
-	return this->m_current_continue_label;
-}
-
-
-void MccRobot::set_current_func_decl(MccFunctionDeclaration *new_fun)
-{
-	this->m_current_func_decl = new_fun;
-}
-
-
-MccFunctionDeclaration* MccRobot::get_current_func_decl() const
-{
-	return this->m_current_func_decl;
+	cout << this->m_global_var_code_buffer;
+	cout << this->m_code_buffer;
 }
 
 
@@ -152,4 +119,52 @@ string MccRobot::generate_quick_branch_label()
 {
 	static string base_name = "quick_logical_";
 	return Utility::string_concat_int(base_name, this->m_quick_branch_nums++);
+}
+
+
+void MccRobot::set_current_break_label(const string &new_label)
+{
+	this->m_current_break_label = new_label;
+}
+
+
+string MccRobot::get_current_break_label() const
+{
+	return this->m_current_break_label;
+}
+
+
+void MccRobot::set_current_continue_label(const string &new_label)
+{
+	this->m_current_continue_label = new_label;
+}
+
+
+string MccRobot::get_current_continue_label() const
+{
+	return this->m_current_continue_label;
+}
+
+
+void MccRobot::set_current_func_decl(MccFunctionDeclaration *new_fun)
+{
+	this->m_current_func_decl = new_fun;
+}
+
+
+MccFunctionDeclaration* MccRobot::get_current_func_decl() const
+{
+	return this->m_current_func_decl;
+}
+
+
+string& MccRobot::get_code_buffer()
+{
+	return this->m_code_buffer;
+}
+
+
+string& MccRobot::get_global_var_code_buffer()
+{
+	return this->m_global_var_code_buffer;
 }
