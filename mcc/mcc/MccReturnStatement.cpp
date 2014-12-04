@@ -20,9 +20,9 @@ MccReturnStatement::~MccReturnStatement()
 
 int MccReturnStatement::generate_code() const
 {
-	// cout << "MccReturnStatement generation." << endl;
 	MccRobot &robot = theMccRobot();
 	string &code_buffer = robot.get_code_buffer();
+	code_buffer += "MccReturnStatement generation.\n";
 	MccFunctionDeclaration *func_decl = robot.get_current_func_decl();
 
 	// Generate code for expression.

@@ -33,10 +33,10 @@ int MccWhileStatement::generate_code() const
 	robot.set_current_break_label(break_label);
 	robot.set_current_continue_label(while_start_label);
 
-	// cout << "MccWhileStatement generation." << endl;
+	code_buffer += "MccWhileStatement generation.\n";
 	code_buffer += while_start_label + ":\n";
 	this->m_condition->generate_code();
-	code_buffer += "beq $a0 0 " + break_label + "\n";
+	code_buffer += "beq $v0 0 " + break_label + "\n";
 	this->m_statement->generate_code();
 	code_buffer += break_label + ":\n";
 

@@ -28,8 +28,36 @@ addiu $sp $sp 4
 ```
 
 ###代码生成
-- 使用1-register模型，返回值放于$a0。
+- 使用1-register模型，返回值放于某个寄存器中。
 - 局部变量、方法调用的参数等都放于活动记录（栈）中。
+
+####寄存器的使用
+- $v0：返回值。
+- $v1：双操作数的另外一个。
+- $zero：零寄存器。
+
+####指令的使用
+__规定__
+
+- $dst：目标寄存器。
+- $srcX：源寄存器X。
+- im：立即数，16位。
+
+__指令及功能__
+
+- addiu $dst $src im: 立即数无符号加，$dst = $src + im。
+- addi $dst $src im: 立即数有符号加，$dst = $src + im。
+- addu $dst $src1 $src2: 无符号加，$dst = $src1 + $src2。
+- subu $dst $src1 $src2: 减法，$dst = $src1 - $src2。
+- sw $src im($dst): 写内存（32位），Memory[$dst + im] = $src。
+- lw $dst im($src): 加载内存（32位），$dst = Memory[$src + im]。
+- mult $src1 $src2: 有符号乘，(HI, LO) = $src1 * $src2。
+- mflo $dst: 取出乘法结果的低32位或者除法结果的商，$dst = LO。
+- mfhi $dst: 取出乘法结果的高32位或者除法结果的余数，$dst = HI。
+- sltu $dst $src1 $src2: 无符号比较，如果$src1小于$src2，那么$dst = 1，否则$dst = 0。
+- beq $src1 $src2 branch: 相等则跳转。
+- bne $src1 $src2 branch: 不相等则跳转。
+
 
 ####活动记录的设计
 调用者，为被调用者的活动记录设置一些值，下面这些均属于被调用者，需要由被调用者负责释放。
@@ -104,6 +132,257 @@ k					<---- k即$fp-20
 
 ####栈的开始
 按照MIPS设计的CPU未对此做限制，编译器可以自由的决定栈底。
+
+####语法树各结点代码生成分析（具体到目标系统拥有的指令）
+对于每个结点内部的表达式的生成，以`Gen(name)`来代替，执行的结果保存在$v0中，如一个二元操作符表达式的执行如下：
+```
+Gen(m_left_operand)
+...
+Gen(m_right_operand)
+...
+```
+
+__MccArrayAccessExpression__
+
+```
+Gen(m_id)						// 计算出数组基地址
+sw $v0 0($sp)
+addiu $sp $sp -4
+Gen(m_index)					// 下标表达式的生成，值存于$v0，有符号数
+addiu $v1 $zero 4				// li $v1 4
+mult $v0 $v1
+mflo $v0						// 取出乘法结果低32位，认作乘法结果
+lw $v1 4($sp)
+addiu $sp $sp 4
+add $v0 $v0 $v1					// 结果
+```
+
+__MccAssignStatement__
+
+```
+Gen(m_left_operand)				// 应该计算出地址
+sw $v0 0($sp)
+addiu $sp $sp -4
+Gen(m_right_operand)			// 计算出值
+lw $v1 4($sp)
+addiu $sp $sp 4
+sw $v0 0($v1)					// 赋值
+```
+
+__MccIdentifer__
+
+```
+addi $v0 $fp position			// position由编译器生成代码时保存起来，为相对$fp的负偏移
+```
+
+__MccBreakStatement__
+
+```
+j break_label					// break_label由编译器维护
+```
+
+__MccContinueStatment__
+
+```
+j continue_label				// continue_label由编译器维护
+```
+
+__MccIfStatement__
+
+```
+Gen(m_condition)				// 条件
+beq $v0 0 false_branch_label	// false_branch_label由编译器生成维护
+Gen(m_if)
+j false_branch_label_end		// false_branch_label拼接上"_end"
+false_branch_label:
+Gen(m_else)						// 如果有的话
+false_branch_label_end:
+```
+
+__MccWhileStatement__
+
+```
+while_start_label:				// 由编译器生成维护
+Gen(m_condition)				// 条件
+beq $v0 0 break_label			// break_label由编译器生成维护
+Gen(m_statement)				// While body
+break_label:					// 跳出while循环的地方
+```
+
+__MccIntLiteral__
+
+```
+addiu $v0 value					// li $v0 value，value由该结点自己维护
+```
+
+__MccReturnStatement__
+
+```
+Gen(m_expr)						// 执行返回的表达式
+addiu $sp $sp local_var_size	// pop掉局部变量的内存，local_var_size由编译器维护
+lw $ra 4($sp)					// 取出返回地址
+addiu $sp $sp args_fp_size		// pop掉剩余的活动记录的内存，包括参数等，args_fp_size由编译器维护
+lw $fp 0($sp)					// 恢复$fp
+jr $ra
+```
+
+__MccMethodCallExpression__
+
+```
+sw $fp 0($sp)
+addiu $fp $fp -4				// 保存$fp
+Gen(argn)
+sw $v0 0($sp)
+addiu $sp $sp -4				// 计算并保存参数n
+...								// ... 反向计算参数
+Gen(arg1)
+sw $v0 0($sp)
+addiu $sp $sp -4				// 计算并保存参数1
+jal func_name					// func_name为目标的方法名
+```
+
+__MccVariableDeclaration__
+
+```
+addiu $sp $sp -size				// size是该变量的大小，数组变量要考虑所有元素
+```
+
+__MccFunctionDeclaration__
+
+```
+// 如果包含定义（即非方法声明），往下
+fun:							// 方法的名字
+Gen(local_var_1)				// 局部变量1
+...
+Gen(local_var_n)				// 局部变量n
+Gen(statement_1)				// 语句1
+...
+Gen(statement_n)				// 语句n
+
+// 如果语句中在最后无返回语句（包含在条件语句体里的不算），往下
+addiu $sp $sp local_var_size	// pop掉局部变量的内存，local_var_size由编译器维护
+lw $ra 4($sp)					// 取出返回地址
+addiu $sp $sp args_fp_size		// pop掉剩余的活动记录的内存，包括参数等，args_fp_size由编译器维护
+lw $fp 0($sp)					// 恢复$fp
+jr $ra	
+```
+
+__MccUnaryOperatorExpression__
+
+```
+Gen(m_operand)					// 计算值
+// 以下根据操作数不同而不同
+(1) ~
+								// 没发现支持
+
+(2) -
+subu $v0 $zero $v0
+
+(3) +
+								// 不需要
+
+(4) !
+sltu $v0 $zero $v0
+
+(5) $
+								// 需要定好端口映射后才能确定
+```
+
+__MccBinaryOperatorExpression__
+
+```
+Gen(m_left_operand)				// 左操作数
+----
+// 这部分只有逻辑AND和逻辑OR需要，quick_branch_label由编译器生成
+(1) &&
+beq $v0 $zero quick_branch_label
+
+(2) ||
+bne $v0 $zero quick_branch_label
+----
+sw $v0 0($sp)
+addiu $sp $sp -4
+Gen(m_right_operand)			// 右操作数
+lw $v1 4($sp)
+addiu $sp $sp 4
+
+// 以下根据操作数不同做不同操作，$v1（左） OP $v0（右）
+(1) ||
+sltu $v0 $zero $v0
+
+(2) ==
+beq $v0 $v1 branch
+addiu $v0 $zero $zero
+j branch_end
+branch:
+addiu $v0 $zer0 1
+branch_end:
+
+(3) !=
+bne $v0 $v1 branch
+addiu $v0 $zero $zero
+j branch_end
+branch:
+addiu $v0 $zer0 1
+branch_end:
+
+(4) <=
+slt $v0 $v0 $v1
+sltu $v0 $zero $v0
+
+(5) <
+slt $v0 $v1 $v0
+
+(6) >
+slt $v0 $v0 $v1
+
+(7) >=
+slt $v0 $v1 $v0
+sltu $v0 $zero $v0
+
+(8) &&
+and $v0 $v1 $v0
+sltu $v0 $zero $v0
+
+(9) +
+add $v0 $v1 $v0
+
+(10) -
+sub $v0 $v1 $v0
+
+(11) *
+mult $v1 $v0
+mflo $v0
+
+(12) /
+div $v1 $v0
+mflo $v0
+
+(13) %
+div $v1 $v0
+mfhi $v0
+
+(14) &
+and $v0 $v1 $v0
+
+(15) ^
+xor $v0 $v1 $v0
+
+(16) <<
+sllv $v0 $v1 $v0
+
+(17) >>
+srlv $v0 $v1 $v0
+
+(18) |
+or $v0 $v1 $v0
+
+----
+// 这部分只有逻辑AND和逻辑OR需要，quick_branch_label由编译器生成
+quick_branch_label:
+----
+```
+
 
 ###参考资料
 

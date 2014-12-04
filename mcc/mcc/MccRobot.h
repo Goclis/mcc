@@ -51,7 +51,7 @@ public:
 	IdentifierInfo* add_global_decl(const string &name, int decl_size);
 
 	/**
-	 * @brief Generate false branch label for if statement.
+	 * @brief Generate false branch label for code generation.
 	 *
 	 * @return The label of the branch.
 	 */

@@ -1,6 +1,11 @@
 ###Todos
-- MccUnaryOperatorExpression生成代码部分需要按照操作符填充不同的指令。
+- 优化下branch名字的生成，只要一个方法即可，没必要区分。
+- add、sub指令的几个版本需要细致考虑下哪边用哪个。
+- >>是逻辑右移还是算术右移，目前是逻辑右移。
+- MccIntLiteral需要去考虑立即数只有16位的问题，大于16位有个LUI指令。
+- MccUnaryOperatorExpression的按位取反（~）和端口（$）操作需要填充。
 - MccBinaryOperatorExpression生成代码部分需要按照操作符填充不同的指令。
+- 考虑下32位有符号乘法爆掉后的处理方法，目前是直接取低32位做结果。
 - 考虑一下全局变量的内存分配问题。
 - 考虑一下main函数放置的位置，是否需要特别的移至生成的代码的最下端。
 - 结束代码生成后，考虑语义错误检查，可能需要修改.l和.y来加入定位信息。
@@ -28,3 +33,18 @@
 - MccUnaryOperatorExpression生成代码的框架已经完成。
 - 代码的输出改为string缓冲，使用额外的string缓存全局变量内存分配那部分的代码，最后拼接起来。
 - MccUnaryOperatorExpression和MccBinaryOperatorExpression生成代码部分暂时用符号直接代替操作。
+- MccArrayAccessExpression代码生成改进完毕。
+- MccAssignStatement代码生成改进完毕。
+- MccIdentifier代码生成改进完毕。
+- MccBlockStatement代码生成完成。
+- MccBreakStatement代码生成改进完毕。
+- MccContinueStatement代码生成改进完毕。
+- MccIfStatement代码生成改进完毕。
+- MccWhileStatement代码生成改进完毕。
+- MccIntLiteral代码生成改进完毕。
+- MccReturnStatement代码生成改进完毕。
+- MccMethodCallExpression代码生成改进完毕。
+- MccVariableDeclaration代码生成改进完毕。
+- MccFunctionDeclaration代码生成改进完毕。
+- MccUnaryOperatorExpression部分代码生成完毕。
+- MccBinaryOperatorExpression部分代码生成完毕。

@@ -16,7 +16,7 @@ public:
 	virtual ~MccUnaryOperatorExpression(void);
 
 	/**
-	 * @brief Save the result of the unary expression into $a0.
+	 * @brief Save the result of the unary expression into $v0.
 	 */
 	int generate_code() const;
 

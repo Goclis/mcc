@@ -23,8 +23,9 @@ MccVariableDeclaration::~MccVariableDeclaration(void)
 
 int MccVariableDeclaration::generate_code()
 {
-	// cout << "MccVariableDeclaration generation." << endl;
 	MccRobot &robot = theMccRobot();
+	string &code_buffer = robot.get_code_buffer();
+	code_buffer += "MccVariableDeclaration generation.\n";
 	MccFunctionDeclaration *func_decl = robot.get_current_func_decl();
 	int stack_used = 4;
 	bool is_array_variable = (this->m_array_size != -1);
@@ -36,13 +37,13 @@ int MccVariableDeclaration::generate_code()
 	
 	if (func_decl != nullptr) {
 		func_decl->add_local_var_decl(var_name, stack_used);
-		robot.get_code_buffer() 
-			+= Utility::string_concat_int("subiu $sp $sp ", stack_used) + "\n";
+		code_buffer
+			+= Utility::string_concat_int("addiu $sp $sp -", stack_used) + "\n";
 	} else {
 		// Global variable declaration.
 		robot.add_global_decl(var_name, stack_used);
 		robot.get_global_var_code_buffer() 
-			+= Utility::string_concat_int("subiu $sp $sp ", stack_used) + "\n";
+			+= Utility::string_concat_int("addiu $sp $sp -", stack_used) + "\n";
 	}
 
 	return stack_used;

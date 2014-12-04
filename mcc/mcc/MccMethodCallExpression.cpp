@@ -33,14 +33,14 @@ int MccMethodCallExpression::generate_code() const
 	string &code_buffer = robot.get_code_buffer();
 	string func_name = this->m_method_id->m_name;
 
-	// cout << "MccMethodCallExpression generation." << endl;
+	code_buffer += "MccMethodCallExpression generation.\n";
 	code_buffer += "sw $fp 0($sp)\n";
 	code_buffer += "addiu $sp $sp -4\n";
 
 	int i = this->m_args.size() - 1;
 	for (; i >= 0; --i) {
 		this->m_args[i]->generate_code();
-		code_buffer += "sw $a0 0($sp)\n";
+		code_buffer += "sw $v0 0($sp)\n";
 		code_buffer += "addiu $sp $sp -4\n";
 	}
 	

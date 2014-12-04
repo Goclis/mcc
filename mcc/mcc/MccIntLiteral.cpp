@@ -23,11 +23,11 @@ int MccIntLiteral::get_value() const
 
 int MccIntLiteral::generate_code() const
 {
-	// cout << "MccIntLiteral generation." << endl;
+	string &code_buffer = theMccRobot().get_code_buffer();
+	code_buffer += "MccIntLiteral generation.\n";
 
-	theMccRobot().get_code_buffer()
-		+= Utility::string_concat_int("li $a0 ", this->get_value())
-		+ "\n";
+	code_buffer 
+		+= Utility::string_concat_int("addiu $v0 ", this->get_value()) + "\n";
 
 	return 0;
 }

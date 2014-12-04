@@ -33,15 +33,18 @@ MccArrayAccessExpression::~MccArrayAccessExpression(void)
 int MccArrayAccessExpression::generate_code() const
 {
 	string &code_buffer = theMccRobot().get_code_buffer();
-	// cout << "MccArrayAccessExpression generation." << endl;
-	this->m_index->generate_code();
-	code_buffer += "sw $a0 0($sp)\n";
-	code_buffer += "addiu $sp $sp -4\n";
+	code_buffer += "MccArrayAccessExpression generation.\n";
+
 	this->m_id->generate_code();
-	code_buffer += "lw $a0 4($sp)\n";
+	code_buffer += "sw $v0 0($sp)\n";
+	code_buffer += "addiu $sp $sp -4\n";
+	this->m_index->generate_code();
+	code_buffer += "addiu $v1 $zero 4\n";
+	code_buffer += "mult $v0 $v1\n";
+	code_buffer += "mflo $v0\n";
+	code_buffer += "lw $v1 4($sp)\n";
 	code_buffer += "addiu $sp $sp 4\n";
-	code_buffer += "multiu $s0 $s0 4\n";
-	code_buffer += "addiu $a0 $a0 $s0\n";
+	code_buffer += "add $v0 $v0 $v1\n";
 
 	return 0;
 }

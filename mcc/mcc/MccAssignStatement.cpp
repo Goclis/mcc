@@ -30,14 +30,15 @@ MccAssignStatement::~MccAssignStatement(void)
 int MccAssignStatement::generate_code() const
 {
 	string &code_buffer = theMccRobot().get_code_buffer();
-	// cout << "MccAssignStatement generation." << endl;
+	code_buffer += "MccAssignStatement generation.\n";
+
 	this->m_left_operand->generate_code();
-	code_buffer += "sw $a0 0($sp)\n";
+	code_buffer += "sw $v0 0($sp)\n";
 	code_buffer += "addiu $sp $sp -4\n";
 	this->m_right_operand->generate_code();
-	code_buffer += "sw $t0 4($sp)\n";
+	code_buffer += "sw $v1 4($sp)\n";
 	code_buffer += "addiu $sp $sp 4\n";
-	code_buffer += "sw $a0 0($t0)\n";
+	code_buffer += "sw $v0 0($v1)\n";
 
 	return 0;
 }
