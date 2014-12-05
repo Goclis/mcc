@@ -1,6 +1,5 @@
 ###Todos
-- 优化下branch名字的生成，只要一个方法即可，没必要区分。
-- 修改栈的递减使用了addiu -4的bug。
+- 没有无符号立即数减法，怎么破？
 - >>是逻辑右移还是算术右移，目前是逻辑右移。
 - MccIntLiteral需要去考虑立即数只有16位的问题，大于16位有个LUI指令。
 - MccUnaryOperatorExpression的按位取反（~）和端口（$）操作需要填充。
@@ -48,3 +47,4 @@
 - MccFunctionDeclaration代码生成改进完毕。
 - MccUnaryOperatorExpression部分代码生成完毕。
 - MccBinaryOperatorExpression部分代码生成完毕。
+- 去除了无用的branch生成方法。

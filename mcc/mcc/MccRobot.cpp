@@ -23,6 +23,15 @@ MccRobot::~MccRobot(void)
 	for (size_t i = 0, len = this->m_decls.size(); i < len; ++i) {
 		delete this->m_decls[i];
 	}
+
+	// Release information of variable.
+	for (IdentifierMap::iterator iter = m_decl_infos.begin(),
+			the_end = m_decl_infos.end(); iter != the_end; ++iter) {
+		if (iter->second != nullptr) {
+			delete iter->second;
+		}
+	}
+	m_decl_infos.clear();
 }
 
 
@@ -32,8 +41,6 @@ void MccRobot::initialize(MccDeclarationList *decl_list)
 		// copy to m_decls
 		decl_list->copy_to_list(this->m_decls);
 	}
-
-
 }
 
 
@@ -44,7 +51,7 @@ void MccRobot::generate_code()
 	this->m_current_continue_label = "";
 	this->m_global_var_code_buffer = "";
 	this->m_code_buffer = "";
-	this->m_false_branch_nums = 0;
+	this->m_branch_nums = 0;
 	this->m_while_nums = 0;
 	this->m_quick_branch_nums = 0;
 	this->m_global_var_size = 0;
@@ -72,11 +79,11 @@ IdentifierInfo* MccRobot::add_global_decl(const string &name, int decl_size)
 		} else if (decl_size == 4) {
 			info->id_type = NOMARL_VAR;
 			this->m_global_var_size += 4;
-			info->position = Utility::string_concat_int("-", this->m_global_var_size);
+			info->position = Utility::string_concat_int("", this->m_global_var_size);
 		} else {
 			info->id_type = ARRAY_VAR;
 			this->m_global_var_size += decl_size;
-			info->position = Utility::string_concat_int("-", this->m_global_var_size);
+			info->position = Utility::string_concat_int("", this->m_global_var_size);
 		}
 
 		//@todo position field.
@@ -90,17 +97,10 @@ IdentifierInfo* MccRobot::add_global_decl(const string &name, int decl_size)
 }
 
 
-string MccRobot::generate_false_branch_label()
+string MccRobot::generate_branch_label()
 {
-	static string base_name = "false_branch_";
-	return Utility::string_concat_int(base_name, this->m_false_branch_nums++);
-}
-
-
-string MccRobot::generate_while_label()
-{
-	static string base_name = "while_stmt_";
-	return Utility::string_concat_int(base_name, this->m_while_nums++);
+	static string base_name = "branch_";
+	return Utility::string_concat_int(base_name, m_branch_nums++);
 }
 
 

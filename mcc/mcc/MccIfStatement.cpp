@@ -37,17 +37,23 @@ int MccIfStatement::generate_code() const
 	code_buffer += "MccIfStatement generation.\n";
 	MccFunctionDeclaration *func_decl = robot.get_current_func_decl();
 	func_decl->increase_cond_stmt_level();
-	string false_branch_label = robot.generate_false_branch_label();
-	string false_branch_end = false_branch_label + "_end";
+	string if_label = "if_";
+	if_label += robot.generate_branch_label();
+	string false_branch_label = if_label + "_false";
+	string if_end = if_label + "_end";
+
+	// Gen(m_condition).
 	this->m_condition->generate_code();
 	code_buffer += "beq $v0 0 " + false_branch_label + "\n";
+
+	// Gen(m_if).
 	this->m_if->generate_code();
-	code_buffer += "j " + false_branch_end + "\n";
+	code_buffer += "j " + if_end + "\n";
 	code_buffer += false_branch_label + ":\n";
 	if (this->m_else != nullptr) {
 		this->m_else->generate_code();
 	}
-	code_buffer += false_branch_end + ":\n";
+	code_buffer += if_end + ":\n";
 	func_decl->decrease_cond_stmt_level();
 
 	return 0;

@@ -25,7 +25,7 @@ int MccReturnStatement::generate_code() const
 	code_buffer += "MccReturnStatement generation.\n";
 	MccFunctionDeclaration *func_decl = robot.get_current_func_decl();
 
-	// Generate code for expression.
+	// Gen(m_expr).
 	this->m_expr->generate_code();
 
 	// Retrieving activation record.

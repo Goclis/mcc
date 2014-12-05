@@ -35,7 +35,7 @@ int MccIdentifier::generate_code() const
 	}
 	
 	if (info->id_type == NOMARL_VAR || info->id_type == ARRAY_VAR) {
-		code_buffer += "addi $v0 $fp " + info->position + "\n";
+		code_buffer += "addi $v0 $fp -" + info->position + "\n";
 	}
 
 	return 0;

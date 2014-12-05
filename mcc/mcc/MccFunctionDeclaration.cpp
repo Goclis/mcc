@@ -74,17 +74,17 @@ MccFunctionDeclaration::~MccFunctionDeclaration(void)
 
 int MccFunctionDeclaration::generate_code()
 {
+	if (!this->m_contain_definition) {
+		return 0;
+	}
+
 	MccRobot &robot = theMccRobot();
 	string &code_buffer = robot.get_code_buffer();
 	code_buffer += "MccFunctionDelcaration generation.\n";
 	string func_label = this->get_decl_name();
-	IdentifierInfo *info = robot.add_global_decl(func_label, 0);
-
-	if (!this->m_contain_definition) {
-		return 0;
-	}
 	MccFunctionDeclaration *func_decl_bak = robot.get_current_func_decl();
 	robot.set_current_func_decl(this);
+
 	// Initialization.
 	this->m_ar_size = 0;
 	this->m_local_var_size = 0;
@@ -164,7 +164,7 @@ void MccFunctionDeclaration::add_local_var_decl(const string &name, int var_size
 	IdentifierInfo *new_info = new IdentifierInfo;
 	this->m_local_var_size += var_size;
 	new_info->position
-		= Utility::string_concat_int("-", this->m_local_var_size);
+		= Utility::string_concat_int("", this->m_local_var_size);
 	if (var_size > 4) {
 		new_info->id_type = ARRAY_VAR;
 	} else {

@@ -22,7 +22,6 @@ MccBlockStatement::~MccBlockStatement(void)
 
 int MccBlockStatement::generate_code() const
 {
-	// cout << "MccBlockStatement generation." << endl;
 	for (size_t i = 0, len = this->m_statement_list.size(); i < len; ++i) {
 		if (nullptr != this->m_statement_list[i]) {
 			this->m_statement_list[i]->generate_code();

@@ -27,7 +27,7 @@ int MccIntLiteral::generate_code() const
 	code_buffer += "MccIntLiteral generation.\n";
 
 	code_buffer 
-		+= Utility::string_concat_int("addiu $v0 ", this->get_value()) + "\n";
+		+= Utility::string_concat_int("addi $v0 $zero ", this->get_value()) + "\n";
 
 	return 0;
 }

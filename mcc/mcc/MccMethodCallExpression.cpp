@@ -34,14 +34,18 @@ int MccMethodCallExpression::generate_code() const
 	string func_name = this->m_method_id->m_name;
 
 	code_buffer += "MccMethodCallExpression generation.\n";
+
+	// Push $fp.
 	code_buffer += "sw $fp 0($sp)\n";
-	code_buffer += "addiu $sp $sp -4\n";
+	code_buffer += "subiu $sp $sp 4\n";
 
 	int i = this->m_args.size() - 1;
 	for (; i >= 0; --i) {
 		this->m_args[i]->generate_code();
+
+		// Push $v0.
 		code_buffer += "sw $v0 0($sp)\n";
-		code_buffer += "addiu $sp $sp -4\n";
+		code_buffer += "subiu $sp $sp 4\n";
 	}
 	
 	code_buffer += "jal " + func_name + "\n";

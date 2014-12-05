@@ -51,18 +51,11 @@ public:
 	IdentifierInfo* add_global_decl(const string &name, int decl_size);
 
 	/**
-	 * @brief Generate false branch label for code generation.
+	 * @brief Generate branch label for code generation.
 	 *
 	 * @return The label of the branch.
 	 */
-	string generate_false_branch_label();
-	
-	/**
-	 * @brief Generate start label for while statement.
-	 *
-	 * @return The label of the beginning of the while statement.
-	 */
-	string generate_while_label();
+	string generate_branch_label();
 	
 	/**
 	 * @brief Generate a label for binary logical operator.
@@ -102,7 +95,7 @@ private:
 	string m_current_break_label; // Current while statement end.
 	string m_current_continue_label; // Current while statement start.
 	MccFunctionDeclaration *m_current_func_decl; // Current function declaration.
-	int m_false_branch_nums;
+	int m_branch_nums;
 	int m_while_nums;
 	int m_quick_branch_nums;
 	int m_global_var_size;

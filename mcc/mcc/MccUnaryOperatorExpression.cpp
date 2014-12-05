@@ -28,6 +28,8 @@ int MccUnaryOperatorExpression::generate_code() const
 {
 	string &code_buffer = theMccRobot().get_code_buffer();
 	code_buffer += "MccUnaryOperatorExpression generation.\n";
+
+	// Gen(m_operand).
 	this->m_operand->generate_code();
 	switch (this->m_operator)
 	{

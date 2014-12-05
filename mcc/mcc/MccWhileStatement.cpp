@@ -22,8 +22,9 @@ int MccWhileStatement::generate_code() const
 {
 	MccRobot &robot = theMccRobot();
 	string &code_buffer = robot.get_code_buffer();
-	string while_start_label = robot.generate_while_label();
-	string break_label = while_start_label + "end";
+	string while_start_label = "while_";
+	while_start_label += robot.generate_branch_label();
+	string break_label = while_start_label + "_end";
 
 	// Backup for later recovery.
 	string continue_label_bak = robot.get_current_continue_label();

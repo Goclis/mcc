@@ -147,7 +147,7 @@ __MccArrayAccessExpression__
 ```
 Gen(m_id)						// 计算出数组基地址
 sw $v0 0($sp)
-addiu $sp $sp -4
+subiu $sp $sp 4
 Gen(m_index)					// 下标表达式的生成，值存于$v0，有符号数
 addiu $v1 $zero 4				// li $v1 4
 mult $v0 $v1
@@ -162,7 +162,7 @@ __MccAssignStatement__
 ```
 Gen(m_left_operand)				// 应该计算出地址
 sw $v0 0($sp)
-addiu $sp $sp -4
+subiu $sp $sp 4
 Gen(m_right_operand)			// 计算出值
 lw $v1 4($sp)
 addiu $sp $sp 4
@@ -172,7 +172,7 @@ sw $v0 0($v1)					// 赋值
 __MccIdentifer__
 
 ```
-addi $v0 $fp position			// position由编译器生成代码时保存起来，为相对$fp的负偏移
+addi $v0 $fp -position			// position由编译器生成代码时保存起来，为相对$fp的负偏移
 ```
 
 __MccBreakStatement__
@@ -212,7 +212,7 @@ break_label:					// 跳出while循环的地方
 __MccIntLiteral__
 
 ```
-addiu $v0 value					// li $v0 value，value由该结点自己维护
+addi $v0 $zero value			// li $v0 value，value由该结点自己维护
 ```
 
 __MccReturnStatement__
@@ -230,21 +230,21 @@ __MccMethodCallExpression__
 
 ```
 sw $fp 0($sp)
-addiu $fp $fp -4				// 保存$fp
+subiu $fp $fp 4				// 保存$fp
 Gen(argn)
 sw $v0 0($sp)
-addiu $sp $sp -4				// 计算并保存参数n
+subiu $sp $sp 4				// 计算并保存参数n
 ...								// ... 反向计算参数
 Gen(arg1)
 sw $v0 0($sp)
-addiu $sp $sp -4				// 计算并保存参数1
+subiu $sp $sp 4				// 计算并保存参数1
 jal func_name					// func_name为目标的方法名
 ```
 
 __MccVariableDeclaration__
 
 ```
-addiu $sp $sp -size				// size是该变量的大小，数组变量要考虑所有元素
+subiu $sp $sp size				// size是该变量的大小，数组变量要考虑所有元素
 ```
 
 __MccFunctionDeclaration__
@@ -300,8 +300,8 @@ beq $v0 $zero quick_branch_label
 (2) ||
 bne $v0 $zero quick_branch_label
 ----
-sw $v0 0($sp)
-addiu $sp $sp -4
+sw $v0 0($sp)					// Push
+subiu $sp $sp 4
 Gen(m_right_operand)			// 右操作数
 lw $v1 4($sp)
 addiu $sp $sp 4
@@ -312,7 +312,7 @@ sltu $v0 $zero $v0
 
 (2) ==
 beq $v0 $v1 branch
-addiu $v0 $zero $zero
+addiu $v0 $zero 0
 j branch_end
 branch:
 addiu $v0 $zer0 1
@@ -320,7 +320,7 @@ branch_end:
 
 (3) !=
 bne $v0 $v1 branch
-addiu $v0 $zero $zero
+addiu $v0 $zero 0
 j branch_end
 branch:
 addiu $v0 $zer0 1

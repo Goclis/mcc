@@ -27,26 +27,37 @@ MccBinaryOperatorExpression::~MccBinaryOperatorExpression(void)
 
 int MccBinaryOperatorExpression::generate_code() const
 {
-	// cout << "MccBinaryOperatorExpression generation." << endl;
 	MccRobot &robot = theMccRobot();
 	string &code_buffer = robot.get_code_buffer();
-	this->m_left_operand->generate_code();
+	code_buffer += "MccBinaryOperatorExpression generation.\n";
 	string quick_branch_label;
+
+	// Gen(m_left_operand).
+	this->m_left_operand->generate_code();
+
 	// Need to add more operation for binary logical operator, && and ||.
 	if (this->m_operator == AND_BINARY) {
 		// If $v0 is 0, no need to calculate the right operand.
-		quick_branch_label = robot.generate_quick_branch_label();
+		quick_branch_label = robot.generate_branch_label();
 		code_buffer += "beq $v0 $zero " + quick_branch_label + "\n";
 	} else if (this->m_operator == OR_BINARY) {
 		// If $v0 is not 0, no need to calculate the right operand.
-		quick_branch_label = robot.generate_quick_branch_label();
+		quick_branch_label = robot.generate_branch_label();
 		code_buffer += "bne $v0 $zero " + quick_branch_label + "\n";
 	}
+
+	// Push $v0.
 	code_buffer += "sw $v0 0($sp)\n";
-	code_buffer += "addiu $sp $sp -4\n";
+	code_buffer += "subiu $sp $sp 4\n";
+
+	// Gen(m_right_operand).
 	this->m_right_operand->generate_code();
+
+	// Pop $v1.
 	code_buffer += "lw $v1 4($sp)\n";
 	code_buffer += "addiu $sp $sp 4\n";
+
+	// According to operator, use different instructions.
 	switch (this->m_operator)
 	{
 	case OR_BINARY:
@@ -57,10 +68,10 @@ int MccBinaryOperatorExpression::generate_code() const
 
 	case EQ_BINARY:
 		{
-			string branch_label = robot.generate_false_branch_label();
+			string branch_label = robot.generate_branch_label();
 			string branch_end = branch_label + "_end";
 			code_buffer += "beq $v0 $v1 " + branch_label + "\n";
-			code_buffer += "addiu $v0 $zero $zero\n";
+			code_buffer += "addiu $v0 $zero 0\n";
 			code_buffer += "j " + branch_end + "\n";
 			code_buffer += branch_label + ":\n";
 			code_buffer += "addiu $v0 $zero 1\n";
@@ -70,10 +81,10 @@ int MccBinaryOperatorExpression::generate_code() const
 
 	case NE_BINARY:
 		{
-			string branch_label = robot.generate_false_branch_label();
+			string branch_label = robot.generate_branch_label();
 			string branch_end = branch_label + "_end";
 			code_buffer += "bne $v0 $v1 " + branch_label + "\n";
-			code_buffer += "addiu $v0 $zero $zero\n";
+			code_buffer += "addiu $v0 $zero 0\n";
 			code_buffer += "j " + branch_end + "\n";
 			code_buffer += branch_label + ":\n";
 			code_buffer += "addiu $v0 $zero 1\n";
