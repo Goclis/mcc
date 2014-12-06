@@ -6,6 +6,19 @@ Mini C Compiler
 ###开发环境
 - Visual Studio 2010
 
+###使用
+```
+mcc.exe inputfile
+
+mcc.exe test.c
+```
+
+输入文件有后缀时输出代码为去掉后缀的，否则会添加上`.out`，输入输出文件名映射例子如下：
+
+- test: test.out
+- test.c: test
+- another.c.c: another
+
 ###MIPS指令集
 目标的机器代码是基于MIPS指令集的，所以需要考虑一些MIPS指令的规则：
 

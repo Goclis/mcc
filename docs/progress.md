@@ -1,5 +1,4 @@
 ###Todos
-- 代码的输入输出。
 - 没有无符号立即数减法，怎么破？
 - >>是逻辑右移还是算术右移，目前是逻辑右移。
 - MccIdentifier处理不了全局变量的地址计算，因为是基于$fp的。
@@ -49,3 +48,4 @@
 - MccUnaryOperatorExpression部分代码生成完毕。
 - MccBinaryOperatorExpression部分代码生成完毕。
 - 去除了无用的branch生成方法。
+- 代码的输入输出。
