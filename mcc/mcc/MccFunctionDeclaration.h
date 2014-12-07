@@ -36,6 +36,8 @@ public:
 
 	int generate_code();
 
+	void semantic_detect();
+
 	/**
 	 * @brief Add a new variable declaration (locally).
 	 *
@@ -83,6 +85,7 @@ public:
 	void set_has_retrieved();
 	int get_ar_size() const;
 	int get_vars_size() const;
+	vector<MccVariableDeclaration*>& get_local_variable_decls();
 
 private:
 	/**

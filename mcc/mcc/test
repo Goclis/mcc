@@ -1,7 +1,10 @@
+void i;
+
 void fun(int)
 {
 	int i;
 	int j;
+	void k;
 	
 	i = 10 * 100 & 1 | j + 100 / 3 % -~+!1 * fun();
 	
@@ -21,7 +24,7 @@ void fun(int)
 
 	}
 
-	$0xfffffc00 = key;
+	$0xfffffc00 = i;
 
 	while (j) {
 		j = 0;

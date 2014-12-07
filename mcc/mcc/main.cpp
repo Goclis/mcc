@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <cstdio>
 #include <fstream>
+#include <iostream>
 #include "MccRobot.h"
 using namespace std;
 extern int yyparse();
@@ -23,13 +24,18 @@ int main(int args, char** argv)
 
 	yyparse();
 
-	robot.generate_code();
-	
-	if (input_filename == output_filename) {
-		output_filename += ".out";
+	if (robot.check_semantic_error()) {
+		robot.generate_code();
+
+		if (input_filename == output_filename) {
+			output_filename += ".out";
+		}
+		ofstream out_stream(output_filename);
+		out_stream << robot.get_global_var_code_buffer() << robot.get_code_buffer();
+	} else {
+		cout << "Found error.\n";
 	}
-	ofstream out_stream(output_filename);
-	out_stream << robot.get_global_var_code_buffer() << robot.get_code_buffer();
+
 
 	return 0;
 }

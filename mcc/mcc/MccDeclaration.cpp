@@ -30,3 +30,15 @@ string MccDeclaration::get_decl_name() const
 {
 	return this->m_identifier->m_name;
 }
+
+
+void MccDeclaration::semantic_detect()
+{
+
+}
+
+
+TYPE_SPEC MccDeclaration::get_type_spec() const
+{
+	return m_type_spec;
+}

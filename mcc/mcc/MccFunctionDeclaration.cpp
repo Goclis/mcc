@@ -6,6 +6,7 @@
 #include "MccStatement.h"
 #include "MccFuncParameter.h"
 #include "MccRobot.h"
+#include "MccSemanticErrorChecker.h"
 #include "Utility.h"
 
 
@@ -201,4 +202,16 @@ IdentifierInfo* MccFunctionDeclaration::search_identifier_info(const string &nam
 	} else {
 		return info;
 	}
+}
+
+
+void MccFunctionDeclaration::semantic_detect()
+{
+	theMccRobot().get_current_checker()->detect(this);
+}
+
+
+vector<MccVariableDeclaration*>& MccFunctionDeclaration::get_local_variable_decls()
+{
+	return m_local_variable_decls;
 }

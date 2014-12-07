@@ -13,6 +13,7 @@ class MccDeclarationList;
 class MccDeclaration;
 class MccIdentifier;
 class MccFunctionDeclaration;
+class MccSemanticErrorChecker;
 
 using std::vector;
 using std::string;
@@ -37,6 +38,13 @@ public:
 	void generate_code();
 
 	/**
+	 * @brief Check semantic error.
+	 *
+	 * @return true means error, false means ok.
+	 */
+	bool check_semantic_error();
+
+	/**
 	 * @brief Add new declration.
 	 *
 	 * @param name the name of the declaration variable.
@@ -57,12 +65,6 @@ public:
 	 */
 	string generate_branch_label();
 	
-	/**
-	 * @brief Generate a label for binary logical operator.
-	 *
-	 * @return The label needed.
-	 */
-	string generate_quick_branch_label();
 
 	/**
 	 * @brief Get the information of the global identifer.
@@ -84,10 +86,16 @@ public:
 	MccFunctionDeclaration* get_current_func_decl() const;
 	string& get_code_buffer();
 	string& get_global_var_code_buffer();
+	MccSemanticErrorChecker* get_current_checker() const;
 
 private:
 	MccRobot(void);
 	vector<MccDeclaration *> m_decls;
+
+	/**
+	 * @brief Semantic error check states.
+	 */
+	MccSemanticErrorChecker *m_current_checker;
 
 	/**
 	 * @brief Code generation states.

@@ -34,7 +34,11 @@ public:
 	 */
 	virtual int generate_code();
 
+	virtual void semantic_detect();
+
 	string get_decl_name() const;
+
+	TYPE_SPEC get_type_spec() const;
 
 protected:
 	MccIdentifier *m_identifier;

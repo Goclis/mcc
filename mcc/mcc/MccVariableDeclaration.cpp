@@ -3,6 +3,7 @@
 #include "MccFunctionDeclaration.h"
 #include "MccRobot.h"
 #include "Utility.h"
+#include "MccSemanticErrorChecker.h"
 
 
 MccVariableDeclaration::MccVariableDeclaration(
@@ -47,4 +48,10 @@ int MccVariableDeclaration::generate_code()
 	}
 
 	return stack_used;
+}
+
+
+void MccVariableDeclaration::semantic_detect()
+{
+	theMccRobot().get_current_checker()->detect(this);
 }

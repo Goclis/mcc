@@ -21,8 +21,13 @@ public:
 		MccIdentifier *identifier, 
 		int array_size = -1);
 	virtual ~MccVariableDeclaration(void);
-
+	
+	/**
+	 * @brief Generate code to allocate memory for the variable.
+	 */
 	int generate_code();
+
+	void semantic_detect();
 
 private:
 	/**

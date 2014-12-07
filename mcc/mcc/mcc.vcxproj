@@ -98,9 +98,13 @@
     <ClCompile Include="MccMethodCallExpression.cpp" />
     <ClCompile Include="MccReturnStatement.cpp" />
     <ClCompile Include="MccRobot.cpp" />
+    <ClCompile Include="MccSemanticError.cpp" />
+    <ClCompile Include="MccSemanticErrorChecker.cpp" />
     <ClCompile Include="MccStatementList.cpp" />
     <ClCompile Include="MccUnaryOperatorExpression.cpp" />
     <ClCompile Include="MccVariableDeclaration.cpp" />
+    <ClCompile Include="MccVariableTypeChecker.cpp" />
+    <ClCompile Include="MccVariableTypeError.cpp" />
     <ClCompile Include="MccWhileStatement.cpp" />
     <ClCompile Include="parser\parser.cpp" />
     <ClCompile Include="parser\tokens.cpp" />
@@ -128,9 +132,13 @@
     <ClInclude Include="MccPublicType.h" />
     <ClInclude Include="MccReturnStatement.h" />
     <ClInclude Include="MccRobot.h" />
+    <ClInclude Include="MccSemanticError.h" />
+    <ClInclude Include="MccSemanticErrorChecker.h" />
     <ClInclude Include="MccStatementList.h" />
     <ClInclude Include="MccUnaryOperatorExpression.h" />
     <ClInclude Include="MccVariableDeclaration.h" />
+    <ClInclude Include="MccVariableTypeChecker.h" />
+    <ClInclude Include="MccVariableTypeError.h" />
     <ClInclude Include="MccWhileStatement.h" />
     <ClInclude Include="parser\parser.hpp" />
     <ClInclude Include="MccStatement.h" />

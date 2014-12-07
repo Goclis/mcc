@@ -2,6 +2,8 @@
 #include "MccDeclarationList.h"
 #include "MccDeclaration.h"
 #include "Utility.h"
+#include "MccSemanticError.h"
+#include "MccVariableTypeChecker.h"
 #include <iostream>
 using namespace std;
 
@@ -68,6 +70,36 @@ void MccRobot::generate_code()
 }
 
 
+bool MccRobot::check_semantic_error()
+{
+	vector<MccSemanticErrorChecker*> checkers;
+	checkers.push_back(new MccVariableTypeChecker);
+	
+	bool no_error = true;
+	for (size_t i = 0; i < checkers.size(); ++i) {
+		m_current_checker = checkers[i];
+
+		for (size_t j = 0; j < m_decls.size(); ++j) {
+			m_decls[j]->semantic_detect();
+		}
+
+		vector<MccSemanticError*> error_list = m_current_checker->get_error_list();
+		if (no_error && error_list.size() != 0) {
+			no_error = false;
+		}
+		
+		for (size_t ei = 0; ei < error_list.size(); ++ei) {
+			error_list[ei]->report();
+		}
+	}
+
+	for (size_t i = 0; i < checkers.size(); ++i) {
+		delete checkers[i];
+	}
+	return no_error;
+}
+
+
 IdentifierInfo* MccRobot::add_global_decl(const string &name, int decl_size)
 {
 	IdentifierMap::iterator iter = this->m_decl_infos.find(name);
@@ -112,13 +144,6 @@ IdentifierInfo* MccRobot::get_identifier_info(const string &name)
 	} else {
 		return nullptr;
 	}
-}
-
-
-string MccRobot::generate_quick_branch_label()
-{
-	static string base_name = "quick_logical_";
-	return Utility::string_concat_int(base_name, this->m_quick_branch_nums++);
 }
 
 
@@ -168,3 +193,10 @@ string& MccRobot::get_global_var_code_buffer()
 {
 	return this->m_global_var_code_buffer;
 }
+
+
+MccSemanticErrorChecker* MccRobot::get_current_checker() const
+{
+	return m_current_checker;
+}
+
