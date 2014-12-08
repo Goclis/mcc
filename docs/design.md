@@ -399,6 +399,38 @@ quick_branch_label:
 ----
 ```
 
+###语义错误检查
+为了方便每种语义错误检查有独立的空间去保存检查过程中的信息，每种语义错误对应有一个相应的Checker进行检查，发现错误会产生相应的Error，每个Checker有针对各个语法树结点的重载方法。
+
+针对每种语义错误检查，调用语法树结点的`semantic_detect`方法，接着每个结点会获取到当前的Checker，然后将自己的指针作为参数传入到Checker的方法中，各个Checker根据结点以及自身要检查的错误，做不同的处理。
+
+####1、变量类型检查
+__目的__
+
+变量的类型不能为VOID，但语法上允许，要对此进行检查。
+
+__相关Mcc Class__
+
+- MccVariableTypeChecker：检查如下语法树结点。
+	- MccVariableDeclaration：直接检查。
+	- MccFunctionVariableDeclaration：检查其内部的局部变量列表。
+- MccVariableTypeError：相关联的Error类，报告如下信息。
+	- 变量名
+	- 变量所在行
+
+####2、方法定义参数名缺失
+__目的__
+
+语法允许方法声明及方法定义时不指定参数的名字，但是在语义上不允许方法定义的参数名缺失，需要检查。
+
+__相关Mcc Class__
+
+- MccMethodParameterNameExistChecker：检查如下语法树结点。
+	- MccFunctionDeclaration：如果是方法定义，检查参数列表。
+- MccMethodDefinitionLackParameterNameError：相关联的Error类，报告如下信息。
+	- 方法名
+	- 第几个参数
+	- 参数所在行
 
 ###参考资料
 
