@@ -4,6 +4,7 @@
 #include "Utility.h"
 #include "MccSemanticError.h"
 #include "MccVariableTypeChecker.h"
+#include "MccMethodParameterNameExistChecker.h"
 #include <iostream>
 using namespace std;
 
@@ -74,6 +75,7 @@ bool MccRobot::check_semantic_error()
 {
 	vector<MccSemanticErrorChecker*> checkers;
 	checkers.push_back(new MccVariableTypeChecker);
+	checkers.push_back(new MccMethodParameterNameExistChecker);
 	
 	bool no_error = true;
 	for (size_t i = 0; i < checkers.size(); ++i) {

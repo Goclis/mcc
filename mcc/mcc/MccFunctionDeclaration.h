@@ -85,7 +85,9 @@ public:
 	void set_has_retrieved();
 	int get_ar_size() const;
 	int get_vars_size() const;
-	vector<MccVariableDeclaration*>& get_local_variable_decls();
+	const vector<MccVariableDeclaration*>& get_local_variable_decls();
+	bool is_definition() const;
+	const vector<MccFuncParameter*>& get_parameter_list();
 
 private:
 	/**

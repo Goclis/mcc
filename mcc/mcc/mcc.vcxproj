@@ -96,6 +96,8 @@
     <ClCompile Include="MccIfStatement.cpp" />
     <ClCompile Include="MccIntLiteral.cpp" />
     <ClCompile Include="MccMethodCallExpression.cpp" />
+    <ClCompile Include="MccMethodDefinitionLackParameterNameError.cpp" />
+    <ClCompile Include="MccMethodParameterNameExistChecker.cpp" />
     <ClCompile Include="MccReturnStatement.cpp" />
     <ClCompile Include="MccRobot.cpp" />
     <ClCompile Include="MccSemanticError.cpp" />
@@ -129,6 +131,8 @@
     <ClInclude Include="MccIfStatement.h" />
     <ClInclude Include="MccIntLiteral.h" />
     <ClInclude Include="MccMethodCallExpression.h" />
+    <ClInclude Include="MccMethodDefinitionLackParameterNameError.h" />
+    <ClInclude Include="MccMethodParameterNameExistChecker.h" />
     <ClInclude Include="MccPublicType.h" />
     <ClInclude Include="MccReturnStatement.h" />
     <ClInclude Include="MccRobot.h" />

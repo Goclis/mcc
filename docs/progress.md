@@ -50,4 +50,5 @@
 - MccBinaryOperatorExpression部分代码生成完毕。
 - 去除了无用的branch生成方法。
 - 代码的输入输出。
-- 完成了变量类型不能为VOID的语义错误检查。
+- 完成了变量类型不能为VOID的语义错误检查，即MccVariableTypeChecker。
+- 完成了方法定义参数名不能缺失的语义错误检查，即MccMethodParameterNameExistChecker。

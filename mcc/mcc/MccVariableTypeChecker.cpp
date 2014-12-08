@@ -24,7 +24,7 @@ void MccVariableTypeChecker::detect(MccVariableDeclaration *var)
 
 void MccVariableTypeChecker::detect(MccFunctionDeclaration *fun)
 {
-	vector<MccVariableDeclaration*> &decls = fun->get_local_variable_decls();
+	const vector<MccVariableDeclaration*> &decls = fun->get_local_variable_decls();
 	for (size_t i = 0; i < decls.size(); ++i) {
 		decls[i]->semantic_detect();
 	}

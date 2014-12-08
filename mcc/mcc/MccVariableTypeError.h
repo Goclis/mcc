@@ -4,7 +4,7 @@
 using std::string;
 
 /**
- * @brief Need to report following information:
+ * @report
  *	1. line number.
  *	2. identifier name.
  */

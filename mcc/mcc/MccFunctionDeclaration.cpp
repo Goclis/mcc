@@ -211,7 +211,19 @@ void MccFunctionDeclaration::semantic_detect()
 }
 
 
-vector<MccVariableDeclaration*>& MccFunctionDeclaration::get_local_variable_decls()
+const vector<MccVariableDeclaration*>& MccFunctionDeclaration::get_local_variable_decls()
 {
 	return m_local_variable_decls;
+}
+
+
+bool MccFunctionDeclaration::is_definition() const
+{
+	return m_contain_definition;
+}
+
+
+const vector<MccFuncParameter*>& MccFunctionDeclaration::get_parameter_list()
+{
+	return m_parameter_list;
 }
