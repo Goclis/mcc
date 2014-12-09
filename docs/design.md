@@ -463,6 +463,8 @@ __目的__
 
 __相关Mcc Class__
 
+- Must pass
+	- MccMethodParameterNameExistChecker
 - MccIdentifierConflictChecker：检查如下语法树结点。
 	- MccVariableDeclaration：要区分全局和局部变量。
 	- MccFunctionDeclaration：要区分声明和定义。
@@ -479,6 +481,8 @@ __目的__
 
 __相关Mcc Class__
 
+- Must pass
+	- MccMethodParameterNameExistChecker
 - MccVariableReferenceChecker
 	- MccVariableDeclaration：记录变量定义。
 	- MccFunctionDeclaration：记录局部变量定义，并检查内部语句。
