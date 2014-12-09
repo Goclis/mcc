@@ -24,6 +24,8 @@ void fun(int)
 
 	}
 
+	break;
+
 	$0xfffffc00 = i;
 
 	while (j) {

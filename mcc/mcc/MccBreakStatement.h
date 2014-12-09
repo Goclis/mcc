@@ -14,4 +14,5 @@ public:
 	virtual ~MccBreakStatement(void);
 
 	int generate_code() const;
+	void semantic_detect();
 };

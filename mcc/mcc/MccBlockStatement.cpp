@@ -1,4 +1,6 @@
 #include "MccBlockStatement.h"
+#include "MccRobot.h"
+#include "MccSemanticErrorChecker.h"
 
 
 MccBlockStatement::MccBlockStatement(MccStatementList *stmt_list)
@@ -29,4 +31,16 @@ int MccBlockStatement::generate_code() const
 	}
 
 	return 0;
+}
+
+
+void MccBlockStatement::semantic_detect()
+{
+	theMccRobot().get_current_checker()->detect(this);
+}
+
+
+const vector<MccStatement*>& MccBlockStatement::get_statement_list()
+{
+	return m_statement_list;
 }

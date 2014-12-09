@@ -432,6 +432,25 @@ __相关Mcc Class__
 	- 第几个参数
 	- 参数所在行
 
+####3、循环跳转语句必须在while语句中
+__目的__
+
+语法允许`break`以及`continue`语句出现在非while语句的体里，但语义上不允许，需要检查。
+
+__相关Mcc Class__
+
+- MccJumpInWhileChecker：检查如下语法树结点。
+	- MccFunctionDeclaration：检查内部的语句列表。
+	- MccWhileStatement
+	- MccBlockStatement：与MccWhileStatement相关。
+	- MccBreakStatement
+	- MccContinueStatement
+- MccJumpOutOfWhileError：相关联的Error类，报告如下信息。
+	- 语句类型，break或者continue
+	- 语句所在行
+
+
+
 ###参考资料
 
 - [ANSI C grammar (Yacc)](http://www.quut.com/c/ANSI-C-grammar-y.html)

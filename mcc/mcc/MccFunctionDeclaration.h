@@ -88,6 +88,7 @@ public:
 	const vector<MccVariableDeclaration*>& get_local_variable_decls();
 	bool is_definition() const;
 	const vector<MccFuncParameter*>& get_parameter_list();
+	const vector<MccStatement*>& get_statement_list();
 
 private:
 	/**

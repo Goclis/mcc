@@ -227,3 +227,9 @@ const vector<MccFuncParameter*>& MccFunctionDeclaration::get_parameter_list()
 {
 	return m_parameter_list;
 }
+
+
+const vector<MccStatement*>& MccFunctionDeclaration::get_statement_list()
+{
+	return m_statement_list;
+}

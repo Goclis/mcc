@@ -38,7 +38,6 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(IncludePath)</IncludePath>
     <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
@@ -95,6 +94,8 @@
     <ClCompile Include="MccIdentifier.cpp" />
     <ClCompile Include="MccIfStatement.cpp" />
     <ClCompile Include="MccIntLiteral.cpp" />
+    <ClCompile Include="MccJumpInWhileChecker.cpp" />
+    <ClCompile Include="MccJumpOutOfWhileError.cpp" />
     <ClCompile Include="MccMethodCallExpression.cpp" />
     <ClCompile Include="MccMethodDefinitionLackParameterNameError.cpp" />
     <ClCompile Include="MccMethodParameterNameExistChecker.cpp" />
@@ -130,6 +131,8 @@
     <ClInclude Include="MccIdentifier.h" />
     <ClInclude Include="MccIfStatement.h" />
     <ClInclude Include="MccIntLiteral.h" />
+    <ClInclude Include="MccJumpInWhileChecker.h" />
+    <ClInclude Include="MccJumpOutOfWhileError.h" />
     <ClInclude Include="MccMethodCallExpression.h" />
     <ClInclude Include="MccMethodDefinitionLackParameterNameError.h" />
     <ClInclude Include="MccMethodParameterNameExistChecker.h" />

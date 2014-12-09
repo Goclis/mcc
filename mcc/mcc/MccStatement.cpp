@@ -18,3 +18,9 @@ int MccStatement::generate_code() const
 
 	return 0;
 }
+
+//@todo Remove it.
+void MccStatement::semantic_detect()
+{
+
+}

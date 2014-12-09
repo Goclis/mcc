@@ -14,4 +14,5 @@ public:
 	virtual ~MccContinueStatement(void);
 
 	int generate_code() const;
+	void semantic_detect();
 };

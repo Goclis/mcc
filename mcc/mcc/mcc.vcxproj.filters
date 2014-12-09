@@ -123,6 +123,12 @@
     <ClCompile Include="MccMethodDefinitionLackParameterNameError.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MccJumpInWhileChecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MccJumpOutOfWhileError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parser\parser.hpp">
@@ -225,6 +231,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MccMethodDefinitionLackParameterNameError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccJumpInWhileChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccJumpOutOfWhileError.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

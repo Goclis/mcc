@@ -1,6 +1,7 @@
 #include "MccWhileStatement.h"
 #include "MccRobot.h"
 #include "MccExpression.h"
+#include "MccSemanticErrorChecker.h"
 
 
 MccWhileStatement::MccWhileStatement(MccExpression *condition, MccStatement *stmt)
@@ -46,4 +47,16 @@ int MccWhileStatement::generate_code() const
 	robot.set_current_continue_label(continue_label_bak);
 
 	return 0;
+}
+
+
+void MccWhileStatement::semantic_detect()
+{
+	theMccRobot().get_current_checker()->detect(this);
+}
+
+
+MccStatement* MccWhileStatement::get_inner_stmt() const
+{
+	return m_statement;
 }

@@ -18,6 +18,9 @@ public:
 	virtual ~MccBlockStatement(void);
 
 	int generate_code() const;
+	void semantic_detect();
+
+	const vector<MccStatement*>& get_statement_list();
 
 private:
 	vector<MccStatement *> m_statement_list;

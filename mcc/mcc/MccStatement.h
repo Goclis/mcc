@@ -23,5 +23,7 @@ public:
 	 *	return the stack space it used, otherwise return 0.
 	 */
 	virtual int generate_code() const;
+
+	virtual void semantic_detect();
 };
 
