@@ -8,6 +8,7 @@ class MccWhileStatement;
 class MccBlockStatement;
 class MccBreakStatement;
 class MccContinueStatement;
+class MccAssignStatement;
 class MccSemanticError;
 
 using std::vector;
@@ -29,6 +30,8 @@ public:
 	virtual void detect(MccBlockStatement *block_stmt) {}
 	virtual void detect(MccBreakStatement *brk_stmt) {}
 	virtual void detect(MccContinueStatement *ctn_stmt) {}
+	virtual void detect(MccAssignStatement *assign_stmt) {}
+
 	
 protected:
 	vector<MccSemanticError*> m_error_list;

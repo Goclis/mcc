@@ -54,9 +54,3 @@ void MccWhileStatement::semantic_detect()
 {
 	theMccRobot().get_current_checker()->detect(this);
 }
-
-
-MccStatement* MccWhileStatement::get_inner_stmt() const
-{
-	return m_statement;
-}

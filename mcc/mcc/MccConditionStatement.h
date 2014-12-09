@@ -15,7 +15,6 @@ public:
 	MccConditionStatement(MccExpression *condtion);
 	virtual ~MccConditionStatement(void);
 
-protected:
 	MccExpression *m_condition;
 };
 

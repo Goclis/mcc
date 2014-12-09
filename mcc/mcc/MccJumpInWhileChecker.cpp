@@ -30,7 +30,7 @@ void MccJumpInWhileChecker::detect(MccWhileStatement *while_stmt)
 {
 	// Detect the statement inside it.
 	++m_while_level;
-	while_stmt->get_inner_stmt()->semantic_detect();
+	while_stmt->m_statement->semantic_detect();
 	--m_while_level;
 }
 
@@ -38,7 +38,7 @@ void MccJumpInWhileChecker::detect(MccWhileStatement *while_stmt)
 void MccJumpInWhileChecker::detect(MccBlockStatement *block_stmt)
 {
 	// Detect the statament list.
-	const vector<MccStatement*>& stmt_list = block_stmt->get_statement_list();
+	const vector<MccStatement*>& stmt_list = block_stmt->m_statement_list;
 	for (size_t i = 0, len = stmt_list.size(); i < len; ++i) {
 		stmt_list[i]->semantic_detect();
 	}

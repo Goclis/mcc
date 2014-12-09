@@ -38,9 +38,3 @@ void MccBlockStatement::semantic_detect()
 {
 	theMccRobot().get_current_checker()->detect(this);
 }
-
-
-const vector<MccStatement*>& MccBlockStatement::get_statement_list()
-{
-	return m_statement_list;
-}

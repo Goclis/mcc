@@ -19,8 +19,9 @@ public:
 	virtual ~MccAssignStatement(void);
 
 	int generate_code() const;
+	void semantic_detect();
 
-private:
+
 	/**
 	 * @brief Left operand. According to yacc grammar, 
 	 *	it will be one of the following expressions.

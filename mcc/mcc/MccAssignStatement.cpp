@@ -1,6 +1,7 @@
 #include "MccAssignStatement.h"
 #include "MccExpression.h"
 #include "MccRobot.h"
+#include "MccSemanticErrorChecker.h"
 
 
 MccAssignStatement::MccAssignStatement(
@@ -50,4 +51,10 @@ int MccAssignStatement::generate_code() const
 	code_buffer += "sw $v0 0($v1)\n";
 
 	return 0;
+}
+
+
+void MccAssignStatement::semantic_detect()
+{
+	theMccRobot().get_current_checker()->detect(this);
 }

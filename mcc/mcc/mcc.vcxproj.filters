@@ -135,6 +135,12 @@
     <ClCompile Include="MccIdentifierConflictError.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MccVariableReferenceChecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MccUndefinedVariableError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parser\parser.hpp">
@@ -249,6 +255,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MccIdentifierConflictError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccVariableReferenceChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccUndefinedVariableError.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

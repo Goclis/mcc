@@ -467,6 +467,23 @@ __相关Mcc Class__
 	- 与之冲突的ID的行号
 	- 冲突的ID
 
+####5、变量存在性
+__目的__
+
+语法不关心使用的变量是否存在，语义需要检查。
+
+__相关Mcc Class__
+
+- MccVariableReferenceChecker
+	- MccVariableDeclaration：记录变量定义。
+	- MccFunctionDeclaration：记录局部变量定义，并检查内部语句。
+	- MccAssignStatement：左右操作数都可能是变量。
+	- MccWhileStatement：条件和内部语句都可能是变量。
+	- MccBlockStatement：与while相关。
+- MccUndefinedVariableError
+	- 未定义变量名
+	- 行号
+
 ###参考资料
 
 - [ANSI C grammar (Yacc)](http://www.quut.com/c/ANSI-C-grammar-y.html)
