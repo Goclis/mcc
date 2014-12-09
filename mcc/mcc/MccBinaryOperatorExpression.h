@@ -21,8 +21,8 @@ public:
 	 * @brief Save the result of the binary expression into return register.
 	 */
 	int generate_code() const;
+	void semantic_detect();
 
-private:
 	BINARY_OPERATOR m_operator;
 	MccExpression *m_left_operand;
 	MccExpression *m_right_operand;

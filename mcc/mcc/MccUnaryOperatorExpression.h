@@ -19,8 +19,8 @@ public:
 	 * @brief Save the result of the unary expression into $v0.
 	 */
 	int generate_code() const;
+	void semantic_detect();
 
-private:
 	UNARY_OPERATOR m_operator;
 	MccExpression *m_operand;
 };

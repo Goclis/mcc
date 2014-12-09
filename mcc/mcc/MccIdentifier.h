@@ -18,9 +18,11 @@ public:
 	virtual ~MccIdentifier(void);
 	
 	/**
-	 * @brief Save the address of the identifier into the return register.
+	 * @brief Save the address of the identifier into the return register
+	 *	for array variable. For normal variable, save the value.
 	 */
 	int generate_code() const;
+	void semantic_detect();
 
 	string m_name;
 };

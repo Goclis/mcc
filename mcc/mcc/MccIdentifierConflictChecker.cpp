@@ -2,6 +2,8 @@
 #include "MccIdentifierConflictError.h"
 #include "MccVariableDeclaration.h"
 #include "MccFunctionDeclaration.h"
+#include "MccFuncParameter.h"
+#include "MccIdentifier.h"
 
 
 MccIdentifierConflictChecker::MccIdentifierConflictChecker(void)
@@ -51,6 +53,10 @@ void MccIdentifierConflictChecker::detect(MccVariableDeclaration *var)
 
 void MccIdentifierConflictChecker::detect(MccFunctionDeclaration *fun)
 {
+	if (!fun->contain_definition()) {
+		return;
+	}
+
 	// When conflict happened on function id, stop to detect the variable
 	// inside it.
 
@@ -96,8 +102,14 @@ void MccIdentifierConflictChecker::detect(MccFunctionDeclaration *fun)
 	// Set scope to current function.
 	m_current_scope = (void *) fun;
 
+	// Check parameter.
+	const vector<MccFuncParameter*> &param_list = fun->get_parameter_list();
+	for (size_t i = 0, len = param_list.size(); i < len; ++i) {
+		param_list[i]->semantic_detect();
+	}
+
 	// Check local variable in function.
-	const vector<MccVariableDeclaration*>& local_decls 
+	const vector<MccVariableDeclaration*> &local_decls 
 		= fun->get_local_variable_decls();
 	for (size_t i = 0, len = local_decls.size(); i < len; ++i) {
 		local_decls[i]->semantic_detect();
@@ -105,4 +117,39 @@ void MccIdentifierConflictChecker::detect(MccFunctionDeclaration *fun)
 
 	// Exit function, return to global scope
 	m_current_scope = nullptr;
+}
+
+
+void MccIdentifierConflictChecker::detect(MccFuncParameter *func_param)
+{
+	string param_name = func_param->m_name->m_name;
+	IdentifierInfo *info = nullptr;
+	for (size_t i = 0, len = m_ids.size(); i < len; ++i) {
+		info = m_ids[i];
+		if (info->id_name == param_name) {
+			// The existent identifier is function.
+			if (info->is_fun) {
+				m_error_list.push_back(new MccIdentifierConflictError(
+					param_name));
+				return;
+			}
+
+			// Same scope.
+			if (info->scope == m_current_scope) {
+				m_error_list.push_back(new MccIdentifierConflictError(
+					param_name));
+				return;
+			}
+		}
+	}
+
+	// No conflict, add new information.
+	info = new IdentifierInfo;
+	info->id_name = param_name;
+	info->line_no = func_param->get_lineno();
+	info->scope = m_current_scope;
+	info->is_fun = false;
+	info->contain_fun_def = false;
+
+	m_ids.push_back(info);
 }

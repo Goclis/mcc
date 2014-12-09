@@ -1,5 +1,6 @@
 #include "MccBinaryOperatorExpression.h"
 #include "MccRobot.h"
+#include "MccSemanticErrorChecker.h"
 
 
 MccBinaryOperatorExpression::MccBinaryOperatorExpression(
@@ -194,4 +195,10 @@ int MccBinaryOperatorExpression::generate_code() const
 	}
 
 	return 0;
+}
+
+
+void MccBinaryOperatorExpression::semantic_detect()
+{
+	theMccRobot().get_current_checker()->detect(this);
 }

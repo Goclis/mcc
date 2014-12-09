@@ -18,6 +18,11 @@ public:
 		int array_size = -1);
 	virtual ~MccFuncParameter(void);
 
+	void semantic_detect();
+
+	void set_lineno(int lineno);
+	int get_lineno() const;
+
 	/**
 	 * @brief Parameter format:
 	 *	m_type_spec m_name [m_array_size].
@@ -25,5 +30,7 @@ public:
 	TYPE_SPEC m_type_spec;
 	MccIdentifier *m_name;
 	int m_array_size;
+
+	int m_lineno;
 };
 

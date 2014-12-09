@@ -16,8 +16,8 @@ public:
 	virtual ~MccReturnStatement(void);
 
 	int generate_code() const;
+	void semantic_detect();
 
-private:
 	MccExpression *m_expr;
 };
 

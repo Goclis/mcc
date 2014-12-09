@@ -1,5 +1,6 @@
 #include "MccReturnStatement.h"
 #include "MccRobot.h"
+#include "MccSemanticErrorChecker.h"
 #include "MccFunctionDeclaration.h"
 #include "MccExpression.h"
 #include "Utility.h"
@@ -50,4 +51,10 @@ int MccReturnStatement::generate_code() const
 	}
 
 	return 0;
+}
+
+
+void MccReturnStatement::semantic_detect()
+{
+	theMccRobot().get_current_checker()->detect(this);
 }

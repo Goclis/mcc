@@ -2,6 +2,7 @@
 #include "MccExpressionList.h"
 #include "MccIdentifier.h"
 #include "MccRobot.h"
+#include "MccSemanticErrorChecker.h"
 
 
 MccMethodCallExpression::MccMethodCallExpression(MccIdentifier *id, MccExpressionList *expr_list)
@@ -51,4 +52,10 @@ int MccMethodCallExpression::generate_code() const
 	code_buffer += "jal " + func_name + "\n";
 
 	return 0;
+}
+
+
+void MccMethodCallExpression::semantic_detect()
+{
+	theMccRobot().get_current_checker()->detect(this);
 }

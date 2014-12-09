@@ -1,5 +1,7 @@
 #include "MccFuncParameter.h"
 #include "MccIdentifier.h"
+#include "MccRobot.h"
+#include "MccSemanticErrorChecker.h"
 
 
 MccFuncParameter::MccFuncParameter(
@@ -19,4 +21,21 @@ MccFuncParameter::~MccFuncParameter(void)
 	if (this->m_name != nullptr) {
 		delete this->m_name;
 	}
+}
+
+
+void MccFuncParameter::semantic_detect()
+{
+	theMccRobot().get_current_checker()->detect(this);
+}
+
+
+void MccFuncParameter::set_lineno(int lineno)
+{
+	m_lineno = lineno;
+}
+
+int MccFuncParameter::get_lineno() const
+{
+	return m_lineno;
 }

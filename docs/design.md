@@ -188,7 +188,11 @@ sw $v0 0($v1)					// 赋值
 __MccIdentifer__
 
 ```
+(1) 数组变量
 addi $v0 $fp -position			// position由编译器生成代码时保存起来，为相对$fp的负偏移
+
+(2) 普通变量
+sw $v0 (-position)$fp
 ```
 
 __MccBreakStatement__
@@ -460,8 +464,9 @@ __目的__
 __相关Mcc Class__
 
 - MccIdentifierConflictChecker：检查如下语法树结点。
-	- MccVariableDeclaration：要区分全局和局部变量
+	- MccVariableDeclaration：要区分全局和局部变量。
 	- MccFunctionDeclaration：要区分声明和定义。
+	- MccFunctionParameter：等同于局部变量。
 - MccIdentifierConflictError：相关联的Error类，报告如下信息。
 	- 冲突的ID的行号
 	- 与之冲突的ID的行号
@@ -480,6 +485,11 @@ __相关Mcc Class__
 	- MccAssignStatement：左右操作数都可能是变量。
 	- MccWhileStatement：条件和内部语句都可能是变量。
 	- MccBlockStatement：与while相关。
+	- MccIfStatement：条件及两个体的语句。
+	- MccReturnStatement
+	- MccBinaryOperatorExpression
+	- MccUnaryOperatorExpression
+	- MccIdentifier
 - MccUndefinedVariableError
 	- 未定义变量名
 	- 行号

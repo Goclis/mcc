@@ -10,6 +10,8 @@ class MccFunctionDeclaration;
 
 /**
  * @brief Check whether there is a conflict among identifiers.
+ *
+ * @need Must pass MccMethodParameterNameExistChecker.
  */
 class MccIdentifierConflictChecker :
 	public MccSemanticErrorChecker
@@ -28,6 +30,7 @@ public:
 
 	void detect(MccVariableDeclaration *var);
 	void detect(MccFunctionDeclaration *fun);
+	void detect(MccFuncParameter *func_param);
 
 
 private:

@@ -9,7 +9,13 @@ class MccVariableDeclaration;
 class MccFunctionDeclaration;
 class MccAssignStatement;
 class MccWhileStatement;
+class MccIfStatement;
 class MccBlockStatement;
+class MccReturnStatement;
+class MccBinaryOperatorExpression;
+class MccUnaryOperatorExpression;
+class MccMethodCallExpression;
+class MccIdentifier;
 
 /**
  * @brief Check whether varaiables referenced exist.
@@ -28,6 +34,12 @@ public:
 	void detect(MccAssignStatement *assign_stmt);
 	void detect(MccWhileStatement *while_stmt);
 	void detect(MccBlockStatement *block_stmt);
+	void detect(MccIfStatement *if_stmt);
+	void detect(MccReturnStatement *rtn_stmt);
+	void detect(MccBinaryOperatorExpression *binary_expr);
+	void detect(MccUnaryOperatorExpression *unary_expr);
+	void detect(MccMethodCallExpression *mc_expr);
+	void detect(MccIdentifier *ident);
 
 	
 	vector<string> m_global_var_name;

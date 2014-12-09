@@ -6,6 +6,7 @@ using std::cout;
 MccUndefinedVariableError::MccUndefinedVariableError(const string &name)
 {
 	m_var_name = name;
+	m_line_no = 0;
 }
 
 

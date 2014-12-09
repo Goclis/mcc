@@ -1,6 +1,7 @@
 #include "MccIfStatement.h"
 #include "MccExpression.h"
 #include "MccRobot.h"
+#include "MccSemanticErrorChecker.h"
 #include "MccFunctionDeclaration.h"
 #include <string>
 
@@ -57,4 +58,10 @@ int MccIfStatement::generate_code() const
 	func_decl->decrease_cond_stmt_level();
 
 	return 0;
+}
+
+
+void MccIfStatement::semantic_detect()
+{
+	theMccRobot().get_current_checker()->detect(this);
 }

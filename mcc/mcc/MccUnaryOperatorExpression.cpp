@@ -1,5 +1,6 @@
 #include "MccUnaryOperatorExpression.h"
 #include "MccRobot.h"
+#include "MccSemanticErrorChecker.h"
 
 
 MccUnaryOperatorExpression::MccUnaryOperatorExpression(void)
@@ -54,4 +55,10 @@ int MccUnaryOperatorExpression::generate_code() const
 		break;
 	}
 	return 0;
+}
+
+
+void MccUnaryOperatorExpression::semantic_detect()
+{
+	theMccRobot().get_current_checker()->detect(this);
 }

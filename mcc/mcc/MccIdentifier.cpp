@@ -1,5 +1,6 @@
 #include "MccIdentifier.h"
 #include "MccRobot.h"
+#include "MccSemanticErrorChecker.h"
 #include "MccFunctionDeclaration.h"
 
 
@@ -34,9 +35,17 @@ int MccIdentifier::generate_code() const
 		info = func_decl->search_identifier_info(this->m_name);
 	}
 	
-	if (info->id_type == NOMARL_VAR || info->id_type == ARRAY_VAR) {
+	if (ARRAY_VAR == info->id_type) {
 		code_buffer += "addi $v0 $fp -" + info->position + "\n";
+	} else if (NOMARL_VAR == info->id_type) {
+		code_buffer += "sw $v0 (-" + info->position + ")$fp\n";
 	}
 
 	return 0;
+}
+
+
+void MccIdentifier::semantic_detect()
+{
+	theMccRobot().get_current_checker()->detect(this);
 }

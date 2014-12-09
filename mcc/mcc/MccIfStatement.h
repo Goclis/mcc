@@ -17,8 +17,8 @@ public:
 	virtual ~MccIfStatement(void);
 
 	int generate_code() const;
+	void semantic_detect();
 
-private:
 	MccStatement *m_if;
 	MccStatement *m_else;
 };
