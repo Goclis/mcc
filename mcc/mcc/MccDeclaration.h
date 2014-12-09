@@ -33,15 +33,16 @@ public:
 	 *	return the stack space it used, otherwise return 0.
 	 */
 	virtual int generate_code();
-
 	virtual void semantic_detect();
 
 	string get_decl_name() const;
-
 	TYPE_SPEC get_type_spec() const;
+	void set_lineno(int lineno);
+	int get_lineno() const;
 
 protected:
 	MccIdentifier *m_identifier;
 	TYPE_SPEC m_type_spec;
+	int m_lineno;
 };
 

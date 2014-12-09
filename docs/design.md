@@ -449,7 +449,23 @@ __相关Mcc Class__
 	- 语句类型，break或者continue
 	- 语句所在行
 
+####4、变量及方法的ID的冲突
+__目的__
 
+语法不对变量及方法定义时的名字做任何约束，但是语义上对变量及方法的ID有如下约定：
+
+- 方法的ID全局唯一，即一旦被使用后将全局占用，不支持重载，不支持重复声明。
+- 变量的ID在域中唯一，MiniC只有两种域，全局域及各个方法实现的域，所以全局变量是可以在方法域内被覆盖的。
+
+__相关Mcc Class__
+
+- MccIdentifierConflictChecker：检查如下语法树结点。
+	- MccVariableDeclaration：要区分全局和局部变量
+	- MccFunctionDeclaration：要区分声明和定义。
+- MccIdentifierConflictError：相关联的Error类，报告如下信息。
+	- 冲突的ID的行号
+	- 与之冲突的ID的行号
+	- 冲突的ID
 
 ###参考资料
 

@@ -233,3 +233,9 @@ const vector<MccStatement*>& MccFunctionDeclaration::get_statement_list()
 {
 	return m_statement_list;
 }
+
+
+bool MccFunctionDeclaration::contain_definition() const
+{
+	return m_contain_definition;
+}

@@ -129,6 +129,12 @@
     <ClCompile Include="MccJumpOutOfWhileError.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MccIdentifierConflictChecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MccIdentifierConflictError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parser\parser.hpp">
@@ -237,6 +243,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MccJumpOutOfWhileError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccIdentifierConflictChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccIdentifierConflictError.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

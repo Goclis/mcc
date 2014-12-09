@@ -89,6 +89,7 @@ public:
 	bool is_definition() const;
 	const vector<MccFuncParameter*>& get_parameter_list();
 	const vector<MccStatement*>& get_statement_list();
+	bool contain_definition() const;
 
 private:
 	/**

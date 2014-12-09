@@ -92,6 +92,8 @@
     <ClCompile Include="MccFuncParameterList.cpp" />
     <ClCompile Include="MccFunctionDeclaration.cpp" />
     <ClCompile Include="MccIdentifier.cpp" />
+    <ClCompile Include="MccIdentifierConflictChecker.cpp" />
+    <ClCompile Include="MccIdentifierConflictError.cpp" />
     <ClCompile Include="MccIfStatement.cpp" />
     <ClCompile Include="MccIntLiteral.cpp" />
     <ClCompile Include="MccJumpInWhileChecker.cpp" />
@@ -129,6 +131,8 @@
     <ClInclude Include="MccFuncParameterList.h" />
     <ClInclude Include="MccFunctionDeclaration.h" />
     <ClInclude Include="MccIdentifier.h" />
+    <ClInclude Include="MccIdentifierConflictChecker.h" />
+    <ClInclude Include="MccIdentifierConflictError.h" />
     <ClInclude Include="MccIfStatement.h" />
     <ClInclude Include="MccIntLiteral.h" />
     <ClInclude Include="MccJumpInWhileChecker.h" />

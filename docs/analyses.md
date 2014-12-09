@@ -417,7 +417,11 @@ MIPS指令的后缀有`i`和`u`，两者可以同时出现。
     - MccVariableTypeChecker：变量的类型不能是VOID。
     - MccMethodParameterNameExistChecker：检查方法定义的时候是否有参数名。
     - MccJumpInWhileChecker：检查continue和break语句外部是否有while。
-    - MccReturnTypeChecker：方法返回类型于方法内部定义是否符合。
+	- MccIdentifierConflictChecker：对于某一个作用域下ID定义是不能冲突的。
+	- MccIdentifierReferenceChecker：使用的变量ID以及方法ID必须是存在的。
+	- MccMethodDefinitionChecker：检查方法是否有实现（可能只有声明）。
+	- MccMethodNameChecker：检查方法名是否符合要求（不能为label+数字）。
+    - MccReturnTypeChecker：方法返回类型于方法内部定义是否符合【非紧急】。
     - MccPortAssignChecker：端口为赋值语句左部时需要检查【非紧急】。
     - (To Update...)
 

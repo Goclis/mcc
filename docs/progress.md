@@ -53,3 +53,4 @@
 - 完成了变量类型不能为VOID的语义错误检查，即MccVariableTypeChecker。
 - 完成了方法定义参数名不能缺失的语义错误检查，即MccMethodParameterNameExistChecker。
 - 完成了break及continue语句不能在while体外出现的语义错误检查，即MccJumpInWhileChecker。
+- 完成了ID冲突的语义错误检查，即MccIdentifierConflictChecker。

@@ -1,10 +1,13 @@
-void i;
+int i;
+void fun(int);
 
 void fun(int)
 {
 	int i;
 	int j;
 	void k;
+	int main;
+	int j[10];
 	
 	i = 10 * 100 & 1 | j + 100 / 3 % -~+!1 * fun();
 	
@@ -53,4 +56,9 @@ void fun(int)
 	j = -i + 1;
 
 	return 0;
+}
+
+int main(void)
+{
+
 }

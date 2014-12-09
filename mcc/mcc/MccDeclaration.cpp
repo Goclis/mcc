@@ -42,3 +42,14 @@ TYPE_SPEC MccDeclaration::get_type_spec() const
 {
 	return m_type_spec;
 }
+
+
+void MccDeclaration::set_lineno(int lineno)
+{
+	m_lineno = lineno;
+}
+
+int MccDeclaration::get_lineno() const
+{
+	return m_lineno;
+}
