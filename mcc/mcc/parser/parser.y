@@ -546,7 +546,6 @@ arg_list
 	}
 	| expr {
 		$$ = new MccExpressionList($1);
-		($$)->set_lineno(yylineno);
 	}
 	;
 

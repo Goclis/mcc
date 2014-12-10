@@ -2288,7 +2288,6 @@ yyreduce:
 #line 547 "parser.y"
     {
 		(yyval.pExprList) = new MccExpressionList((yyvsp[(1) - (1)].pExpr));
-		((yyval.pExprList))->set_lineno(yylineno);
 	;}
     break;
 
