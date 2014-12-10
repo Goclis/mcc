@@ -1,5 +1,4 @@
 ###Todos
-- 修改parser.y支持记录结点的行号以方便错误检查报告。
 - 没有无符号立即数减法，怎么破？
 - >>是逻辑右移还是算术右移，目前是逻辑右移。
 - MccIdentifier处理不了全局变量的地址计算，因为是基于$fp的。
@@ -55,3 +54,4 @@
 - 完成了break及continue语句不能在while体外出现的语义错误检查，即MccJumpInWhileChecker。
 - 完成了ID冲突的语义错误检查，即MccIdentifierConflictChecker。
 - 完成了引用不存在的变量名的语义错误检查，即MccVariableReferenceChecker。
+- 给语法树结点增加了行号信息。

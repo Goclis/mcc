@@ -5,6 +5,13 @@ Mini C Compiler
 
 ###开发环境
 - Visual Studio 2010
+- Flex & Bison
+
+####Flex & Bison
+```
+bison -d -o parser.cpp parser.y
+flex -o tokens.cpp tokens.l
+```
 
 ###使用
 ```
