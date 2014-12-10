@@ -157,19 +157,28 @@ decl
 
 var_decl
 	: type_spec IDENT ';' {
-		$$ = new MccVariableDeclaration($1, new MccIdentifier($2));
+		MccIdentifier *ident = new MccIdentifier($2);
+		ident->set_lineno(yylineno);
 		delete $2;
+		$$ = new MccVariableDeclaration($1, ident);
+		($$)->set_lineno(yylineno);
 	}
 	| type_spec IDENT '[' int_literal ']' ';' {
-		$$ = new MccVariableDeclaration($1, new MccIdentifier($2), ($4)->get_value());
+		MccIdentifier *ident = new MccIdentifier($2);
+		ident->set_lineno(yylineno);
 		delete $2;
+		$$ = new MccVariableDeclaration($1, ident, ($4)->get_value());
+		($$)->set_lineno(yylineno);
 	}
 	;
 
 fun_decl
 	: type_spec IDENT '(' params ')' '{' local_decls stmt_list '}' {
-		$$ = new MccFunctionDeclaration($1, new MccIdentifier($2), $4, $7, $8);
+		MccIdentifier *ident = new MccIdentifier($2);
+		ident->set_lineno(yylineno);
 		delete $2;
+		$$ = new MccFunctionDeclaration($1, ident, $4, $7, $8);
+		($$)->set_lineno(yylineno);
 		if ($4 != nullptr) {
 			delete $4;
 		}
@@ -184,8 +193,11 @@ fun_decl
 		
 	}
 	| type_spec IDENT '(' params ')' ';' {
-		$$ = new MccFunctionDeclaration($1, new MccIdentifier($2), $4);
+		MccIdentifier *ident = new MccIdentifier($2);
+		ident->set_lineno(yylineno);
 		delete $2;
+		$$ = new MccFunctionDeclaration($1, ident, $4);
+		($$)->set_lineno(yylineno);
 
 		if ($4 != nullptr) {
 			delete $4;
@@ -224,18 +236,26 @@ param_list
 
 param
 	: INT IDENT {
-		$$ = new MccFuncParameter(INT_TYPE_SPEC, new MccIdentifier($2));
+		MccIdentifier *ident = new MccIdentifier($2);
+		ident->set_lineno(yylineno);
 		delete $2;
+		$$ = new MccFuncParameter(INT_TYPE_SPEC, ident);
+		($$)->set_lineno(yylineno);
 	}
 	| INT IDENT '[' int_literal ']' {
-		$$ = new MccFuncParameter(INT_TYPE_SPEC, new MccIdentifier($2), ($4)->get_value());
+		MccIdentifier *ident = new MccIdentifier($2);
+		ident->set_lineno(yylineno);
 		delete $2;
+		$$ = new MccFuncParameter(INT_TYPE_SPEC, ident, ($4)->get_value());
+		($$)->set_lineno(yylineno);
 	}
 	| INT {
 		$$ = new MccFuncParameter(INT_TYPE_SPEC, nullptr);
+		($$)->set_lineno(yylineno);
 	}
 	| INT '[' int_literal ']' {
 		$$ = new MccFuncParameter(INT_TYPE_SPEC, nullptr, ($3)->get_value());
+		($$)->set_lineno(yylineno);
 	}
 	;
 
@@ -252,12 +272,18 @@ local_decls
 
 local_decl
 	: type_spec IDENT ';' {
-		$$ = new MccVariableDeclaration($1, new MccIdentifier($2));
+		MccIdentifier *ident = new MccIdentifier($2);
+		ident->set_lineno(yylineno);
 		delete $2;
+		$$ = new MccVariableDeclaration($1, ident);
+		($$)->set_lineno(yylineno);
 	}
 	| type_spec IDENT '[' int_literal ']' ';' {
-		$$ = new MccVariableDeclaration($1, new MccIdentifier($2), ($4)->get_value());
+		MccIdentifier *ident = new MccIdentifier($2);
+		ident->set_lineno(yylineno);
 		delete $2;
+		$$ = new MccVariableDeclaration($1, ident, ($4)->get_value());
+		($$)->set_lineno(yylineno);
 	}
 	;
 
@@ -302,6 +328,7 @@ stmt
 block_stmt
 	: '{' stmt_list '}' {
 		$$ = new MccBlockStatement($2);
+		($$)->set_lineno(yylineno);
 
 		if ($2 != nullptr) {
 			delete $2;
@@ -312,50 +339,62 @@ block_stmt
 while_stmt
 	: WHILE '(' expr ')' stmt {
 		$$ = new MccWhileStatement($3, $5);
+		($$)->set_lineno(yylineno);
 	}
 	;
 
 if_stmt
 	: IF '(' expr ')' stmt %prec LOWER_THAN_ELSE {
 		$$ = new MccIfStatement($3, $5);
+		($$)->set_lineno(yylineno);
 	}
 	| IF '(' expr ')' stmt ELSE stmt {
 		$$ = new MccIfStatement($3, $5, $7);
+		($$)->set_lineno(yylineno);
 	}
 	;
 
 return_stmt
 	: RETURN ';' {
 		$$ = new MccReturnStatement(nullptr);
+		($$)->set_lineno(yylineno);
 	}
 	| RETURN expr ';' {
 		$$ = new MccReturnStatement($2);
+		($$)->set_lineno(yylineno);
 	}
 	;
 
 continue_stmt
 	: CONTINUE ';' {
 		$$ = new MccContinueStatement();
+		($$)->set_lineno(yylineno);
 	}
 	;
 
 break_stmt
 	: BREAK ';' {
 		$$ = new MccBreakStatement();
+		($$)->set_lineno(yylineno);
 	}
 	;
 
 assign_stmt
 	: IDENT '=' expr ';' {
-		$$ = new MccAssignStatement(new MccIdentifier($1), $3);
+		MccIdentifier *ident = new MccIdentifier($1);
+		ident->set_lineno(yylineno);
 		delete $1;
+		$$ = new MccAssignStatement(ident, $3);
 	}
 	| IDENT '[' expr ']' '=' expr ';' {
-		$$ = new MccAssignStatement(new MccArrayAccessExpression(new MccIdentifier($1), $3), $6);
+		MccIdentifier *ident = new MccIdentifier($1);
+		ident->set_lineno(yylineno);
 		delete $1;
+		$$ = new MccAssignStatement(new MccArrayAccessExpression(ident, $3), $6);
 	}
 	| '$' expr '=' expr ';' {
 		$$ = new MccAssignStatement(new MccUnaryOperatorExpression(PORT_UNARY, $2), $4, true);
+		($$)->set_lineno(yylineno);
 	}
 	;
 
@@ -368,69 +407,94 @@ expr_stmt
 expr
 	: expr OR expr {
 		$$ = new MccBinaryOperatorExpression(OR_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr EQ expr {
 		$$ = new MccBinaryOperatorExpression(EQ_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr NE expr {
 		$$ = new MccBinaryOperatorExpression(NE_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr LE expr {
 		$$ = new MccBinaryOperatorExpression(LE_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr '<' expr {
 		$$ = new MccBinaryOperatorExpression(LT_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr GE expr {
 		$$ = new MccBinaryOperatorExpression(GE_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr '>' expr {
 		$$ = new MccBinaryOperatorExpression(GT_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr AND expr {
 		$$ = new MccBinaryOperatorExpression(AND_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr '+' expr {
 		$$ = new MccBinaryOperatorExpression(PLUS_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr '-' expr {
 		$$ = new MccBinaryOperatorExpression(MINUS_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr '*' expr {
 		$$ = new MccBinaryOperatorExpression(MULT_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr '/' expr {
 		$$ = new MccBinaryOperatorExpression(DIV_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr '%' expr {
 		$$ = new MccBinaryOperatorExpression(MD_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| '!' expr %prec UNARY {
 		$$ = new MccUnaryOperatorExpression(NOT_UNARY, $2);
+		($$)->set_lineno(yylineno);
 	}
 	| '$' expr %prec UNARY {
 		$$ = new MccUnaryOperatorExpression(PORT_UNARY, $2);
+		($$)->set_lineno(yylineno);
 	}
 	| '-' expr %prec UNARY {
 		$$ = new MccUnaryOperatorExpression(NEGATIVE_UNARY, $2);
+		($$)->set_lineno(yylineno);
 	}
 	| '+' expr %prec UNARY {
 		$$ = new MccUnaryOperatorExpression(POSITIVE_UNARY, $2);
+		($$)->set_lineno(yylineno);
 	}
 	| '(' expr ')' {
 		$$ = $2;
 	}
 	| IDENT {
 		$$ = new MccIdentifier($1);
+		($$)->set_lineno(yylineno);
 		delete $1;
 	}
 	| IDENT '[' expr ']' {
-		$$ = new MccArrayAccessExpression(new MccIdentifier($1), $3);
+		MccIdentifier *ident = new MccIdentifier($1);
+		delete $1;
+		ident->set_lineno(yylineno);
+		$$ = new MccArrayAccessExpression(ident, $3);
+		($$)->set_lineno(yylineno);
 		delete $1;
 	}
 	| IDENT '(' args ')' {
-		$$ = new MccMethodCallExpression(new MccIdentifier($1), $3);
+		MccIdentifier *ident = new MccIdentifier($1);
 		delete $1;
+		ident->set_lineno(yylineno);
+		$$ = new MccMethodCallExpression(ident, $3);
+		($$)->set_lineno(yylineno);
 
 		if ($3 != nullptr) {
 			delete $3;
@@ -441,21 +505,27 @@ expr
 	}
 	| expr '&' expr {
 		$$ = new MccBinaryOperatorExpression(BIT_AND_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr '^' expr {
 		$$ = new MccBinaryOperatorExpression(EXCLUSIVE_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| '~' expr {
 		$$ = new MccUnaryOperatorExpression(NEG_UNARY, $2);
+		($$)->set_lineno(yylineno);
 	}
 	| expr LSHIFT expr {
 		$$ = new MccBinaryOperatorExpression(LSHIFT_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr RSHIFT expr {
 		$$ = new MccBinaryOperatorExpression(RSHIFT_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| expr '|' expr {
 		$$ = new MccBinaryOperatorExpression(BIT_OR_BINARY, $1, $3);
+		($$)->set_lineno(yylineno);
 	}
 	;
 
@@ -476,6 +546,7 @@ arg_list
 	}
 	| expr {
 		$$ = new MccExpressionList($1);
+		($$)->set_lineno(yylineno);
 	}
 	;
 
@@ -483,9 +554,11 @@ arg_list
 int_literal
 	: DECNUM {
 		$$ = new MccIntLiteral($1);
+		($$)->set_lineno(yylineno);
 	}
 	| HEXNUM {
 		$$ = new MccIntLiteral($1);
+		($$)->set_lineno(yylineno);
 	}
 	;
 
