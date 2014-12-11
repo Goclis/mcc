@@ -55,3 +55,4 @@
 - 完成了ID冲突的语义错误检查，即MccIdentifierConflictChecker。
 - 完成了引用不存在的变量名的语义错误检查，即MccVariableReferenceChecker。
 - 给语法树结点增加了行号信息。
+- 语义错误的报告增加了行号报错。

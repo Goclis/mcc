@@ -44,7 +44,8 @@ addiu $sp $sp -4
 Pop
 ```
 lw reg 4($sp)
-addiu $sp $sp 4
+addiu $v1 $zero 4
+subu $sp $sp $v1
 ```
 
 ###代码生成
