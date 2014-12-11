@@ -21,5 +21,6 @@ public:
 
 	string m_func_name;
 	int m_param_index;
+	int m_lineno;
 };
 

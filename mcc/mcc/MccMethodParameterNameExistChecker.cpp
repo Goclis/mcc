@@ -21,8 +21,10 @@ void MccMethodParameterNameExistChecker::detect(MccFunctionDeclaration *fun)
 		string fun_name = fun->get_decl_name();
 		for (size_t i = 0, len = parameter_list.size(); i < len; ++i) {
 			if (nullptr == parameter_list[i]->m_name) {
-				m_error_list.push_back(new MccMethodDefinitionLackParameterNameError(
-					fun_name, i + 1));
+				MccMethodDefinitionLackParameterNameError *error 
+					= new MccMethodDefinitionLackParameterNameError(fun_name, i + 1);
+				error->m_lineno = parameter_list[i]->get_lineno();
+				m_error_list.push_back(error);
 			}
 		}
 	}

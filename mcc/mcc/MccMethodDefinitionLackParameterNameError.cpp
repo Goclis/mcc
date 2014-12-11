@@ -19,6 +19,7 @@ MccMethodDefinitionLackParameterNameError::~MccMethodDefinitionLackParameterName
 
 void MccMethodDefinitionLackParameterNameError::report() const
 {
-	cout << "The " << m_param_index << "th parameter of the function \""
+	cout << "Line " << m_lineno << ": The " << m_param_index 
+		<< "th parameter of the function \""
 		<< m_func_name << "\" lack name.\n";
 }

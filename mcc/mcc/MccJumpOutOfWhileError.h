@@ -21,5 +21,6 @@ public:
 	void report() const;
 
 	StatementType m_stmt_type;
+	int m_lineno;
 };
 

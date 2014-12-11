@@ -16,6 +16,6 @@ MccVariableTypeError::~MccVariableTypeError(void)
 
 void MccVariableTypeError::report() const
 {
-	cout << "The type of the identifier \"" << m_id_name
+	cout << "Line " << m_lineno << ": The type of the identifier \"" << m_id_name
 		<< "\" cannot be void.\n";
 }

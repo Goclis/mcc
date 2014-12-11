@@ -17,6 +17,7 @@ public:
 
 	void report() const;
 
+	int m_lineno;
 	string m_id_name;
 };
 

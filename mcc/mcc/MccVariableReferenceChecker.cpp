@@ -152,8 +152,9 @@ void MccVariableReferenceChecker::detect(MccIdentifier *ident)
 	}
 
 	if (!found) {
-		m_error_list.push_back(new MccUndefinedVariableError(
-			ident->m_name));
+		MccUndefinedVariableError *error = new MccUndefinedVariableError(ident->m_name);
+		error->m_line_no = ident->get_lineno();
+		m_error_list.push_back(error);
 	}
 }
 

@@ -26,15 +26,19 @@ void MccIdentifierConflictChecker::detect(MccVariableDeclaration *var)
 		if (info->id_name == var_name) {
 			// The existent identifier is function.
 			if (info->is_fun) {
-				m_error_list.push_back(new MccIdentifierConflictError(
-					var_name));
+				MccIdentifierConflictError *error = new MccIdentifierConflictError(var_name);
+				error->m_line_no_cause_conflict = var->get_lineno();
+				error->m_line_no_having_conflict = info->line_no;
+				m_error_list.push_back(error);
 				return;
 			}
 			
 			// Same scope.
 			if (info->scope == m_current_scope) {
-				m_error_list.push_back(new MccIdentifierConflictError(
-					var_name));
+				MccIdentifierConflictError *error = new MccIdentifierConflictError(var_name);
+				error->m_line_no_cause_conflict = var->get_lineno();
+				error->m_line_no_having_conflict = info->line_no;
+				m_error_list.push_back(error);
 				return;
 			}
 		}
@@ -70,8 +74,10 @@ void MccIdentifierConflictChecker::detect(MccFunctionDeclaration *fun)
 				// The function already had definition or current declaration
 				// don't contain definition.
 				if (info->contain_fun_def || !contain_def) {
-					m_error_list.push_back(new MccIdentifierConflictError(
-						fun_name));
+					MccIdentifierConflictError *error = new MccIdentifierConflictError(fun_name);
+					error->m_line_no_cause_conflict = fun->get_lineno();
+					error->m_line_no_having_conflict = info->line_no;
+					m_error_list.push_back(error);
 					return;
 				} else {
 					info->contain_fun_def = true;
@@ -79,8 +85,10 @@ void MccIdentifierConflictChecker::detect(MccFunctionDeclaration *fun)
 				}
 			} else {
 				// Already had a variable use the id.
-				m_error_list.push_back(new MccIdentifierConflictError(
-					fun_name));
+				MccIdentifierConflictError *error = new MccIdentifierConflictError(fun_name);
+				error->m_line_no_cause_conflict = fun->get_lineno();
+				error->m_line_no_having_conflict = info->line_no;
+				m_error_list.push_back(error);
 				return;
 			}
 
@@ -129,15 +137,19 @@ void MccIdentifierConflictChecker::detect(MccFuncParameter *func_param)
 		if (info->id_name == param_name) {
 			// The existent identifier is function.
 			if (info->is_fun) {
-				m_error_list.push_back(new MccIdentifierConflictError(
-					param_name));
+				MccIdentifierConflictError *error = new MccIdentifierConflictError(param_name);
+				error->m_line_no_cause_conflict = func_param->get_lineno();
+				error->m_line_no_having_conflict = info->line_no;
+				m_error_list.push_back(error);
 				return;
 			}
 
 			// Same scope.
 			if (info->scope == m_current_scope) {
-				m_error_list.push_back(new MccIdentifierConflictError(
-					param_name));
+				MccIdentifierConflictError *error = new MccIdentifierConflictError(param_name);
+				error->m_line_no_cause_conflict = func_param->get_lineno();
+				error->m_line_no_having_conflict = info->line_no;
+				m_error_list.push_back(error);
 				return;
 			}
 		}

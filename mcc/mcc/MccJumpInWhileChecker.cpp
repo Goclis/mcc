@@ -2,6 +2,8 @@
 #include "MccJumpOutOfWhileError.h"
 #include "MccFunctionDeclaration.h"
 #include "MccWhileStatement.h"
+#include "MccBreakStatement.h"
+#include "MccContinueStatement.h"
 #include "MccBlockStatement.h"
 
 
@@ -48,8 +50,10 @@ void MccJumpInWhileChecker::detect(MccBlockStatement *block_stmt)
 void MccJumpInWhileChecker::detect(MccBreakStatement *brk_stmt)
 {
 	if (0 == m_while_level) {
-		m_error_list.push_back(new MccJumpOutOfWhileError(
-			MccJumpOutOfWhileError::BREAK_STMT));
+		MccJumpOutOfWhileError *error = new MccJumpOutOfWhileError(
+			MccJumpOutOfWhileError::BREAK_STMT);
+		error->m_lineno = brk_stmt->get_lineno();
+		m_error_list.push_back(error);
 	}
 }
 
@@ -57,8 +61,10 @@ void MccJumpInWhileChecker::detect(MccBreakStatement *brk_stmt)
 void MccJumpInWhileChecker::detect(MccContinueStatement *ctn_stmt)
 {
 	if (0 == m_while_level) {
-		m_error_list.push_back(new MccJumpOutOfWhileError(
-			MccJumpOutOfWhileError::CONTINUE_STMT));
+		MccJumpOutOfWhileError *error = new MccJumpOutOfWhileError(
+			MccJumpOutOfWhileError::CONTINUE_STMT);
+		error->m_lineno = ctn_stmt->get_lineno();
+		m_error_list.push_back(error);
 	}
 }
 
