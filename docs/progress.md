@@ -1,4 +1,5 @@
 ###Todos
+- MccFunctionDeclaration需要特殊处理main。
 - 全局变量的$fp暂时确定为4000，需要进一步确定。
 - >>是逻辑右移还是算术右移，目前是逻辑右移。
 - MccIntLiteral需要去考虑立即数只有16位的问题，大于16位有个LUI指令。
