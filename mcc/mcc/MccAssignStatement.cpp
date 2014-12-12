@@ -37,15 +37,18 @@ int MccAssignStatement::generate_code() const
 	this->m_left_operand->generate_code();
 
 	// Push $v0.
-	code_buffer += "sw $v0 0($sp)\n";
-	code_buffer += "subiu $sp $sp 4\n";
+	code_buffer += 
+		"sw $v0 0($sp)\n"
+		"addiu $v1 $zero 4\n"
+		"subu $sp $sp $v1\n";
 
 	// Gen(m_right_operand).
 	this->m_right_operand->generate_code();
 
 	// Pop $v1.
-	code_buffer += "lw $v1 4($sp)\n";
-	code_buffer += "addiu $sp $sp 4\n";
+	code_buffer += 
+		"lw $v1 4($sp)\n"
+		"addiu $sp $sp 4\n";
 
 	// Memory[$v1] = $v0.
 	code_buffer += "sw $v0 0($v1)\n";

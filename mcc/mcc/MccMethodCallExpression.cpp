@@ -37,16 +37,20 @@ int MccMethodCallExpression::generate_code() const
 	code_buffer += "MccMethodCallExpression generation.\n";
 
 	// Push $fp.
-	code_buffer += "sw $fp 0($sp)\n";
-	code_buffer += "subiu $sp $sp 4\n";
+	code_buffer += 
+		"sw $fp 0($sp)\n"
+		"addiu $v1 $zero 4\n"
+		"subu $sp $sp $v1\n";
 
 	int i = this->m_args.size() - 1;
 	for (; i >= 0; --i) {
 		this->m_args[i]->generate_code();
 
 		// Push $v0.
-		code_buffer += "sw $v0 0($sp)\n";
-		code_buffer += "subiu $sp $sp 4\n";
+		code_buffer += 
+			"sw $v0 0($sp)\n"
+			"addiu $v1 $zero 4\n"
+			"subu $sp $sp $v1\n";
 	}
 	
 	code_buffer += "jal " + func_name + "\n";

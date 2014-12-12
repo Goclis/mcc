@@ -56,6 +56,7 @@ class IdentifierInfo
 public:
 	string position;
 	IdentifierType id_type;
+	void *scope;
 };
 
 typedef map<string, IdentifierInfo*> IdentifierMap;

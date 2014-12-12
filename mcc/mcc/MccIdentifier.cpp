@@ -35,11 +35,35 @@ int MccIdentifier::generate_code() const
 		info = func_decl->search_identifier_info(this->m_name);
 	}
 	
-	if (ARRAY_VAR == info->id_type) {
-		code_buffer += "addi $v0 $fp -" + info->position + "\n";
-	} else if (NOMARL_VAR == info->id_type) {
-		code_buffer += "sw $v0 (-" + info->position + ")$fp\n";
+	// The 'info' should not be nullptr if passed semantic error check.
+	if (nullptr == info) {
+		exit(1);
 	}
+
+	if (nullptr == info->scope) {
+		// Global variable.
+		// The base $fp of global variables.
+		string global_fp = "4000"; //@todo
+		if (ARRAY_VAR == info->id_type) {
+			code_buffer +=
+				"addiu $v0 $zero " + global_fp + "\n"
+				"addiu $v1 $zero " + info->position + "\n"
+				"subu $v0 $v0 $v1\n";
+		} else if (NOMARL_VAR == info->id_type) {
+			code_buffer +=
+				"addiu $v0 $zero " + global_fp + "\n"
+				"sw $v0 (-" + info->position + ")$v0\n";
+		}
+	} else {
+		// Local variable.
+		if (ARRAY_VAR == info->id_type) {
+			code_buffer += 
+				"addiu $v1 $zero " + info->position + "\n"
+				"subu $v0 $fp $v1\n";
+		} else if (NOMARL_VAR == info->id_type) {
+			code_buffer += "sw $v0 (-" + info->position + ")$fp\n";
+		}
+	}	
 
 	return 0;
 }

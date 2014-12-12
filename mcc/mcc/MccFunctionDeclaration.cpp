@@ -92,8 +92,10 @@ int MccFunctionDeclaration::generate_code()
 
 	// Each parameter is an address in function activation record.
 	this->m_ar_size = 4 * this->m_parameter_list.size();
-	this->m_ar_size += 4; // The old frame pointer.
-	this->m_ar_size += 4; // $ra, return address.
+	// The old frame pointer.
+	this->m_ar_size += 4;
+	// $ra, return address.
+	this->m_ar_size += 4;
 
 	code_buffer += func_label + ":\n";
 
@@ -163,6 +165,7 @@ int MccFunctionDeclaration::get_ar_size() const
 void MccFunctionDeclaration::add_local_var_decl(const string &name, int var_size)
 {
 	IdentifierInfo *new_info = new IdentifierInfo;
+	new_info->scope = (void*) this;
 	this->m_local_var_size += var_size;
 	new_info->position
 		= Utility::string_concat_int("", this->m_local_var_size);

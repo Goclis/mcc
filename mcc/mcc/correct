@@ -1,0 +1,59 @@
+int i;
+void fun(int);
+
+void fun(int i)
+{
+	int k;
+	int j[10];
+	
+	i = 10 * 100 & 1 | j + 100 / 3 % -~+!1 * fun();
+	
+	if (i) {
+
+	} else {
+		if (j) {
+
+		}
+	}
+
+	if (i) {
+
+	} else if (j) {
+
+	} else {
+
+	}
+
+	$0x0ffffc00 = i;
+
+	while (j) {
+		j = 0;
+		continue;
+		break;
+	}
+
+
+
+
+	i = 0;
+	j = i;
+	$i = i;
+	j = $i;
+
+	i[$i] = i;
+	i[1+1-2&3] = i;
+
+	i = ~i;
+
+	fun();
+
+	i = -1;
+	j = -i + 1;
+
+	return 0;
+}
+
+int main(void)
+{
+
+}

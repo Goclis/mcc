@@ -10,8 +10,24 @@ extern FILE *yyin;
 int main(int args, char** argv)
 {
 	MccRobot &robot = theMccRobot();
-	string output_filename = "test";
-	string input_filename = "test";
+
+	// Test selection.
+	int select_input;
+	cout << "Input 1 or 2 to select input file, 1 select 'test', 2 select 'correct'\n"
+		"Your select: ";
+	cin >> select_input;
+	string output_filename;
+	string input_filename;
+	if (1 == select_input) {
+		output_filename = input_filename = "test";
+	} else if (2 == select_input) {
+		output_filename = input_filename = "correct";
+	} else {
+		cout << "Wrong selection.\n";
+		exit(0);
+	}
+
+	// Deal with main arguments.
 	if (args > 1) {
 		input_filename = string(argv[1]);
 		int pos = input_filename.find('.');
@@ -21,6 +37,10 @@ int main(int args, char** argv)
 	}
 
 	yyin = fopen(input_filename.c_str(), "r");
+	if (nullptr == yyin) {
+		cout << "Open file failed.\n";
+		exit(1);
+	}
 
 	yyparse();
 
@@ -35,7 +55,6 @@ int main(int args, char** argv)
 	} else {
 		cout << "Found error.\n";
 	}
-
 
 	return 0;
 }

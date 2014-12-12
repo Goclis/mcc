@@ -38,13 +38,15 @@ int MccVariableDeclaration::generate_code()
 	
 	if (func_decl != nullptr) {
 		func_decl->add_local_var_decl(var_name, stack_used);
-		code_buffer
-			+= Utility::string_concat_int("subiu $sp $sp ", stack_used) + "\n";
+		code_buffer += Utility::string_concat_int(
+			"addiu $v1 $zero ", stack_used) + "\n"
+			"subu $sp $sp $v1\n";
 	} else {
 		// Global variable declaration.
 		robot.add_global_decl(var_name, stack_used);
-		robot.get_global_var_code_buffer() 
-			+= Utility::string_concat_int("subiu $sp $sp ", stack_used) + "\n";
+		robot.get_global_var_code_buffer() += Utility::string_concat_int(
+			"addiu $v1 $zero ", stack_used) + "\n"
+			"subu $sp $sp $v1\n";
 	}
 
 	return stack_used;

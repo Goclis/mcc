@@ -38,14 +38,14 @@ MIPS指令集中没有原生的支持`push`和`pop`操作的指令，需要手�
 Push
 ```
 sw reg 0($sp)
-addiu $sp $sp -4
+addiu $v1 $zero 4
+subu $sp $sp $v1
 ```
 
 Pop
 ```
 lw reg 4($sp)
-addiu $v1 $zero 4
-subu $sp $sp $v1
+addiu $sp $sp 4
 ```
 
 ###代码生成
@@ -170,14 +170,12 @@ __MccArrayAccessExpression__
 
 ```
 Gen(m_id)						// 计算出数组基地址
-sw $v0 0($sp)
-subiu $sp $sp 4
+Push $v0
 Gen(m_index)					// 下标表达式的生成，值存于$v0，有符号数
 addiu $v1 $zero 4				// li $v1 4
 mult $v0 $v1
 mflo $v0						// 取出乘法结果低32位，认作乘法结果
-lw $v1 4($sp)
-addiu $sp $sp 4
+Pop $v1
 add $v0 $v0 $v1					// 结果
 ```
 
@@ -185,21 +183,33 @@ __MccAssignStatement__
 
 ```
 Gen(m_left_operand)				// 应该计算出地址
-sw $v0 0($sp)
-subiu $sp $sp 4
+Push $v0
 Gen(m_right_operand)			// 计算出值
-lw $v1 4($sp)
-addiu $sp $sp 4
+Pop $v1
 sw $v0 0($v1)					// 赋值
 ```
 
 __MccIdentifer__
 
 ```
-(1) 数组变量
-addi $v0 $fp -position			// position由编译器生成代码时保存起来，为相对$fp的负偏移
+// position由编译器生成代码时保存起来，为相对$fp的偏移
+1. 全局变量
+1.1. 数组变量
+addiu $v0 $zero 4000	// 4000为全局环境的的$fp，暂不定
+addiu $v1 $zero position
+subu $v0 $v0 $v1
 
-(2) 普通变量
+1.2. 普通变量
+addiu $v0 $zero 4000
+sw $v0 (-position)$v0
+
+
+2. 局部变量
+2.1. 数组变量
+addiu $v1 $zero position
+subu $v0 $fp $v1
+
+2.2. 普通变量
 sw $v0 (-position)$fp
 ```
 
@@ -257,22 +267,20 @@ jr $ra
 __MccMethodCallExpression__
 
 ```
-sw $fp 0($sp)
-subiu $fp $fp 4				// 保存$fp
+Push($fp)					// 保存$fp
 Gen(argn)
-sw $v0 0($sp)
-subiu $sp $sp 4				// 计算并保存参数n
-...								// ... 反向计算参数
+Push($v0)					// 计算并保存参数n
+...							// ... 反向计算参数
 Gen(arg1)
-sw $v0 0($sp)
-subiu $sp $sp 4				// 计算并保存参数1
-jal func_name					// func_name为目标的方法名
+Push($v0)					// 计算并保存参数1
+jal func_name				// func_name为目标的方法名
 ```
 
 __MccVariableDeclaration__
 
 ```
-subiu $sp $sp size				// size是该变量的大小，数组变量要考虑所有元素
+addiu $v1 $zero size
+subu $sp $sp $v1				// size是该变量的大小，数组变量要考虑所有元素
 ```
 
 __MccFunctionDeclaration__
@@ -328,11 +336,9 @@ beq $v0 $zero quick_branch_label
 (2) ||
 bne $v0 $zero quick_branch_label
 ----
-sw $v0 0($sp)					// Push
-subiu $sp $sp 4
+Push($v0)						// 保存左操作数
 Gen(m_right_operand)			// 右操作数
-lw $v1 4($sp)
-addiu $sp $sp 4
+Pop($v1)
 
 // 以下根据操作数不同做不同操作，$v1（左） OP $v0（右）
 (1) ||

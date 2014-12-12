@@ -114,6 +114,7 @@ IdentifierInfo* MccRobot::add_global_decl(const string &name, int decl_size)
 	IdentifierInfo *info = nullptr;
 	if (iter == this->m_decl_infos.end()) {
 		IdentifierInfo *info = new IdentifierInfo;
+		info->scope = nullptr;
 		if (decl_size == 0) {
 			info->id_type = FUNC;
 		} else if (decl_size == 4) {
@@ -125,8 +126,6 @@ IdentifierInfo* MccRobot::add_global_decl(const string &name, int decl_size)
 			this->m_global_var_size += decl_size;
 			info->position = Utility::string_concat_int("", this->m_global_var_size);
 		}
-
-		//@todo position field.
 
 		this->m_decl_infos.insert(IdentifierMap::value_type(name, info));
 	} else {
