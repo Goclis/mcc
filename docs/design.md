@@ -256,7 +256,16 @@ break_label:					// 跳出while循环的地方
 __MccIntLiteral__
 
 ```
-addi $v0 $zero value			// li $v0 value，value由该结点自己维护
+(1)
+// 立即数在指令中只能是16位，但是整型值可以是32位有符号数，因此需要切割
+// 将该整型值转换成32位有符号数，假设为[8000, FFF1]（-2147418127）
+ori $v0 $zero 32752				// $v0 = 0000FFF1
+lui $v1 32768					// $v1 = 80000000
+addu $v0 $v0 $v1				// $v0 = 8000FFF1
+
+(2)
+// 如果立即数在[-2^15, 2^15-1]区间内，直接使用
+addi $v0 $zero value
 ```
 
 __MccReturnStatement__
