@@ -319,6 +319,8 @@ __MccFunctionDeclaration__
 ```
 // 如果包含定义（即非方法声明），往下
 fun:							// 方法的名字
+addu $fp $zero $sp				// 设置$fp
+Push($ra)						// 保存$ra
 Gen(local_var_1)				// 局部变量1
 ...
 Gen(local_var_n)				// 局部变量n

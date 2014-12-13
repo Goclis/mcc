@@ -99,6 +99,15 @@ int MccFunctionDeclaration::generate_code()
 
 	code_buffer += func_label + ":\n";
 
+	// Set $fp.
+	code_buffer += "addu $fp $zero $sp\n";
+
+	// Push $ra.
+	code_buffer +=
+		"sw $ra 0($sp)\n"
+		"addiu $v1 $zero 4\n"
+		"subu $sp $sp $v1\n";
+
 	// Iterate local variable declaration.
 	for (size_t i = 0, len = this->m_local_variable_decls.size();
 			i < len; ++i) {

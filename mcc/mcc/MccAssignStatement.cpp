@@ -56,7 +56,7 @@ int MccAssignStatement::generate_code() const
 	if (nullptr == m_port_expr) {
 		MccFunctionDeclaration *func_decl = robot.get_current_func_decl();
 		IdentifierInfo *info = nullptr;
-		if (nullptr != func_decl) {
+		if (nullptr == func_decl) {
 			info = robot.get_identifier_info(m_identifier->m_name);
 		} else {
 			info = func_decl->search_identifier_info(m_identifier->m_name);
@@ -110,7 +110,7 @@ int MccAssignStatement::generate_code() const
 	// Memory[$v0] = $v1 and save the result to $v0.
 	code_buffer += 
 		"sw $v1 0($v0)\n"
-		"addu $v0 $zero $v1";
+		"addu $v0 $zero $v1\n";
 
 	return 0;
 }

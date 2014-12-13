@@ -37,9 +37,19 @@ int MccWhileStatement::generate_code() const
 
 	code_buffer += "MccWhileStatement generation.\n";
 	code_buffer += while_start_label + ":\n";
+
+	// While condition.
 	this->m_condition->generate_code();
 	code_buffer += "beq $v0 0 " + break_label + "\n";
+
+	// While body.
 	this->m_statement->generate_code();
+
+	// Jump back to the beginning of the while.
+	code_buffer += 
+		"j " + while_start_label + "\n";
+
+	// While end.
 	code_buffer += break_label + ":\n";
 
 	// Recovery.

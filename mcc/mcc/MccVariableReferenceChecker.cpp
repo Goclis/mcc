@@ -76,7 +76,6 @@ void MccVariableReferenceChecker::detect(MccAssignStatement *assign_stmt)
 	} else {
 		assign_stmt->m_identifier->semantic_detect();
 	}
-	assign_stmt->m_identifier->semantic_detect();
 	assign_stmt->m_right_operand->semantic_detect();
 }
 
