@@ -58,8 +58,11 @@ int MccArrayAccessExpression::generate_code() const
 		"lw $v1 4($sp)\n"
 		"addiu $sp $sp 4\n";
 
-	// $v0 = $v0 + $v1.
-	code_buffer += "add $v0 $v0 $v1\n";
+	// $v0 = Memory[$v0 + $v1].
+	code_buffer += 
+		"add $v0 $v0 $v1\n"
+		"lw $v0 0($v0)\n";
+		
 
 	return 0;
 }

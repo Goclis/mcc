@@ -35,7 +35,7 @@ int MccUnaryOperatorExpression::generate_code() const
 	switch (this->m_operator)
 	{
 	case NEG_UNARY:
-		code_buffer += "\t\t\t\t// 没指令啊。。。mov $a0 ~$a0\n";
+		code_buffer += "nor $v0 $v0 $zero\n";
 		break;
 
 	case NEGATIVE_UNARY:
@@ -51,7 +51,7 @@ int MccUnaryOperatorExpression::generate_code() const
 		break;
 
 	case PORT_UNARY:
-		code_buffer += "\t\t\t\t// 需要定好端口映射后才能确定mov $a0 PORT($a0)\n";
+		code_buffer += "lw $v0 0($v0)\n";
 		break;
 	}
 	return 0;

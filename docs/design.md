@@ -50,9 +50,11 @@ addiu $sp $sp 4
 
 ####自定的约定
 - 乘法爆掉的情况为undefined。
+- 立即数超过[-2^31,2^31-1]会被截尾，这个由VS类型强制转换处理。
 - 栈顶为4000。
 - $fp初始化为4004。
 - main方法作为全局入口，即其$fp为初始化的4004。
+- 存储器地址为16位，端口地址为FFF0-FFFF。
 
 ###代码生成
 - 使用1-register模型，返回值放于某个寄存器中。
@@ -182,17 +184,31 @@ addiu $v1 $zero 4				// li $v1 4
 mult $v0 $v1
 mflo $v0						// 取出乘法结果低32位，认作乘法结果
 Pop $v1
-add $v0 $v0 $v1					// 结果
+add $v0 $v0 $v1					// 结果的地址
+lw $v0 0($v0)					// 取出值作为返回值
 ```
 
 __MccAssignStatement__
 
 ```
-Gen(m_left_operand)				// 应该计算出地址
-Push $v0
 Gen(m_right_operand)			// 计算出值
+Push $v0
+------
+// 根据左边的不同做不同的操作
+(1) 普通变量
+addiu $v0 $zero address			// 查找出该变量的地址存至$v0中
+(2) 数组变量
+addiu $v0 $zero address			// 查找出数组的基地址存至$v0中
+Push $v0
+Gen(m_array_index_expr)			// 计算数组下标值
 Pop $v1
-sw $v0 0($v1)					// 赋值
+add $v0 $v0 $v1					// 目标地址
+(3) 端口访问
+Gen(m_port_expr)				// 端口地址值，即目标地址
+------
+Pop $v1
+sw $v1 0($v0)					// 赋值
+addiu $v0 $zero $v1				// 赋值语句的返回值
 ```
 
 __MccIdentifer__
@@ -324,7 +340,7 @@ __MccUnaryOperatorExpression__
 Gen(m_operand)					// 计算值
 // 以下根据操作数不同而不同
 (1) ~
-								// 没发现支持
+nor $v0 $v0 $zero
 
 (2) -
 subu $v0 $zero $v0
@@ -336,7 +352,7 @@ subu $v0 $zero $v0
 sltu $v0 $zero $v0
 
 (5) $
-								// 需要定好端口映射后才能确定
+lw $v0 0($v0)
 ```
 
 __MccBinaryOperatorExpression__

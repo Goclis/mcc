@@ -1998,7 +1998,8 @@ yyreduce:
 		MccIdentifier *ident = new MccIdentifier((yyvsp[(1) - (4)].pStr));
 		ident->set_lineno(yylineno);
 		delete (yyvsp[(1) - (4)].pStr);
-		(yyval.pAssignStmt) = new MccAssignStatement(ident, (yyvsp[(3) - (4)].pExpr));
+		(yyval.pAssignStmt) = new MccAssignStatement((yyvsp[(3) - (4)].pExpr), ident);
+		((yyval.pAssignStmt))->set_lineno(yylineno);
 	;}
     break;
 
@@ -2008,14 +2009,15 @@ yyreduce:
 		MccIdentifier *ident = new MccIdentifier((yyvsp[(1) - (7)].pStr));
 		ident->set_lineno(yylineno);
 		delete (yyvsp[(1) - (7)].pStr);
-		(yyval.pAssignStmt) = new MccAssignStatement(new MccArrayAccessExpression(ident, (yyvsp[(3) - (7)].pExpr)), (yyvsp[(6) - (7)].pExpr));
+		(yyval.pAssignStmt) = new MccAssignStatement((yyvsp[(6) - (7)].pExpr), ident, (yyvsp[(3) - (7)].pExpr));
+		((yyval.pAssignStmt))->set_lineno(yylineno);
 	;}
     break;
 
   case 46:
 #line 395 "parser.y"
     {
-		(yyval.pAssignStmt) = new MccAssignStatement(new MccUnaryOperatorExpression(PORT_UNARY, (yyvsp[(2) - (5)].pExpr)), (yyvsp[(4) - (5)].pExpr), true);
+		(yyval.pAssignStmt) = new MccAssignStatement((yyvsp[(4) - (5)].pExpr), nullptr, nullptr, (yyvsp[(2) - (5)].pExpr));
 		((yyval.pAssignStmt))->set_lineno(yylineno);
 	;}
     break;

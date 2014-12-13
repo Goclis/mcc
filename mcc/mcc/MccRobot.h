@@ -87,6 +87,7 @@ public:
 	string& get_code_buffer();
 	string& get_global_var_code_buffer();
 	MccSemanticErrorChecker* get_current_checker() const;
+	string get_global_fp() const;
 
 private:
 	MccRobot(void);
@@ -114,5 +115,10 @@ private:
 	 * @brief A map to save information for each declaration.
 	 */
 	IdentifierMap m_decl_infos;
+
+	/**
+	 * @brief Global $fp.
+	 */
+	string m_global_fp;
 };
 

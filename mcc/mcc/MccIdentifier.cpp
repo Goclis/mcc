@@ -43,7 +43,7 @@ int MccIdentifier::generate_code() const
 	if (nullptr == info->scope) {
 		// Global variable.
 		// The base $fp of global variables.
-		string global_fp = "4000"; //@todo
+		string global_fp = robot.get_global_fp();
 		if (ARRAY_VAR == info->id_type) {
 			code_buffer +=
 				"addiu $v0 $zero " + global_fp + "\n"
@@ -63,7 +63,7 @@ int MccIdentifier::generate_code() const
 		} else if (NOMARL_VAR == info->id_type) {
 			code_buffer += "sw $v0 (-" + info->position + ")$fp\n";
 		}
-	}	
+	}
 
 	return 0;
 }

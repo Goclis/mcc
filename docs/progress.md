@@ -1,8 +1,8 @@
 ###Todos
+- 目标机器地址改为32位编址，需要修改所有的地址分配代码，+4变为+1。
 - MccFunctionDeclaration需要特殊处理main。
 - 全局变量的$fp暂时确定为4000，需要进一步确定。
 - >>是逻辑右移还是算术右移，目前是逻辑右移。
-- MccUnaryOperatorExpression的按位取反（~）和端口（$）操作需要填充。
 - 考虑下32位有符号乘法爆掉后的处理方法，目前是直接取低32位做结果。
 - 考虑一下全局变量的内存分配问题。
 - 考虑一下main函数放置的位置，是否需要特别的移至生成的代码的最下端。
@@ -58,3 +58,6 @@
 - 无符号立即数减法使用`addiu $v1 $zero 4`和`subu $sp $sp $v1`组合。
 - 解决了全局变量的内存分配问题。
 - MccIntLiteral增加了对超过[-2^15,2^15-1]范围的支持。
+- MccUnaryOperatorExpression已经增加了按位取反和端口操作。
+- 修改MccArrayAccessExpression的生成代码为产生值。
+- 修改MccAssignStatement的结构及代码生成，同时修改了parser。

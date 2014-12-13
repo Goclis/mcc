@@ -384,16 +384,18 @@ assign_stmt
 		MccIdentifier *ident = new MccIdentifier($1);
 		ident->set_lineno(yylineno);
 		delete $1;
-		$$ = new MccAssignStatement(ident, $3);
+		$$ = new MccAssignStatement($3, ident);
+		($$)->set_lineno(yylineno);
 	}
 	| IDENT '[' expr ']' '=' expr ';' {
 		MccIdentifier *ident = new MccIdentifier($1);
 		ident->set_lineno(yylineno);
 		delete $1;
-		$$ = new MccAssignStatement(new MccArrayAccessExpression(ident, $3), $6);
+		$$ = new MccAssignStatement($6, ident, $3);
+		($$)->set_lineno(yylineno);
 	}
 	| '$' expr '=' expr ';' {
-		$$ = new MccAssignStatement(new MccUnaryOperatorExpression(PORT_UNARY, $2), $4, true);
+		$$ = new MccAssignStatement($4, nullptr, nullptr, $2);
 		($$)->set_lineno(yylineno);
 	}
 	;

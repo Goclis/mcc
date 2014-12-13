@@ -7,29 +7,21 @@
 #include "MccStatement.h"
 
 class MccExpression;
+class MccIdentifier;
 
 class MccAssignStatement :
 	public MccStatement
 {
 public:
 	MccAssignStatement(
-		MccExpression *left, 
-		MccExpression *right, 
-		bool is_port = false);
+		MccExpression *right,
+		MccIdentifier *identifier,
+		MccExpression *array_index_expr = nullptr,
+		MccExpression *port_expr = nullptr);
 	virtual ~MccAssignStatement(void);
 
 	int generate_code() const;
 	void semantic_detect();
-
-
-	/**
-	 * @brief Left operand. According to yacc grammar, 
-	 *	it will be one of the following expressions.
-	 *	a) Identifier
-	 *	b) ArrayAccessExpression
-	 *	c) UnaryOperatorExpression
-	 */
-	MccExpression *m_left_operand;
 
 	/**
 	 * @brief Right operand.
@@ -37,8 +29,21 @@ public:
 	MccExpression *m_right_operand;
 
 	/**
-	 * @brief Indicate that whether the statement is port assignment.
+	 * @brief For id based assignment.
+	 *	a) a = 1;
+	 *	b) a[1] = 1;
 	 */
-	bool m_is_port;
+	MccIdentifier *m_identifier;
+
+	/**
+	 * @brief Port address expression.
+	 *	a) $expr = 1;
+	 */
+	MccExpression *m_port_expr;
+
+	/**
+	 * @brief The index of the array assignment.
+	 */
+	MccExpression *m_array_index_expr;
 };
 

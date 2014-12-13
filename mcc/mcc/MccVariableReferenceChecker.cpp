@@ -68,7 +68,15 @@ void MccVariableReferenceChecker::detect(MccFunctionDeclaration *fun)
 void MccVariableReferenceChecker::detect(MccAssignStatement *assign_stmt)
 {
 	// Check left expression and right expression.
-	assign_stmt->m_left_operand->semantic_detect();
+	if (nullptr != assign_stmt->m_port_expr) {
+		assign_stmt->m_port_expr->semantic_detect();
+	} else if (nullptr != assign_stmt->m_array_index_expr) {
+		assign_stmt->m_array_index_expr->semantic_detect();
+		assign_stmt->m_identifier->semantic_detect();
+	} else {
+		assign_stmt->m_identifier->semantic_detect();
+	}
+	assign_stmt->m_identifier->semantic_detect();
 	assign_stmt->m_right_operand->semantic_detect();
 }
 
