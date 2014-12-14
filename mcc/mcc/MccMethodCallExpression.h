@@ -12,6 +12,12 @@ class MccExpressionList;
 
 using std::vector;
 
+/**
+ * @brief Support method call expression.
+ *
+ * @example
+ *	fun(1,2,3)
+ */
 class MccMethodCallExpression :
 	public MccExpression
 {

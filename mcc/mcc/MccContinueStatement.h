@@ -6,6 +6,9 @@
 #pragma once
 #include "mccstatement.h"
 
+/**
+ * @brief Support continue statement.
+ */
 class MccContinueStatement :
 	public MccStatement
 {

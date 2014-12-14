@@ -9,6 +9,9 @@
 
 class MccIdentifier;
 
+/**
+ * @brief Support function parameter in definition and declaration.
+ */
 class MccFuncParameter
 {
 public:

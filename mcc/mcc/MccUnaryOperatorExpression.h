@@ -7,6 +7,13 @@
 #include "mccexpression.h"
 #include "MccPublicType.h"
 
+/**
+ * @brief Support unary operator expression.
+ *
+ * @example
+ *	$i
+ *	-i
+ */
 class MccUnaryOperatorExpression :
 	public MccExpression
 {

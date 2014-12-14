@@ -11,6 +11,10 @@ class MccIdentifier;
 
 /**
  * @brief Variable declaration class.
+ *
+ * @example
+ *	int a
+ *	int a[10]
  */
 class MccVariableDeclaration :
 	public MccDeclaration

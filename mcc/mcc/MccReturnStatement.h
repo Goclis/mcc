@@ -8,6 +8,13 @@
 
 class MccExpression;
 
+/**
+ * @brief Support return statement.
+ *
+ * @example
+ *	return
+ *	return 1 + 1
+ */
 class MccReturnStatement :
 	public MccStatement
 {

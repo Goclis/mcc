@@ -9,6 +9,14 @@
 class MccExpression;
 class MccIdentifier;
 
+/**
+ * @brief Support assignment statement.
+ *
+ * @example
+ *	a = 1
+ *	a[1] = 1
+ *	$a = 1
+ */
 class MccAssignStatement :
 	public MccStatement
 {

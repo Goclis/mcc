@@ -8,6 +8,13 @@
 
 class MccIdentifier;
 
+/**
+ * @brief Support array access expression.
+ *
+ * @example
+ *	a[1]
+ *	a[1+1]
+ */
 class MccArrayAccessExpression :
 	public MccExpression
 {

@@ -7,6 +7,15 @@
 #include "mccexpression.h"
 #include "MccPublicType.h"
 
+/**
+ * @brief Support binary operator expression.
+ *
+ * @example
+ *	1 + 1
+ *	1 * 1
+ *	1 / 1
+ *	...
+ */
 class MccBinaryOperatorExpression :
 	public MccExpression
 {

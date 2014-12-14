@@ -10,6 +10,14 @@
 
 using std::vector;
 
+/**
+ * @brief Represent block.
+ *
+ * @example
+ *	{
+ *		...
+ *	}
+ */
 class MccBlockStatement :
 	public MccStatement
 {

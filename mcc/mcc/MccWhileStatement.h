@@ -6,6 +6,13 @@
 #pragma once
 #include "mccconditionstatement.h"
 
+/**
+ * @brief Support while statement.
+ *
+ * @example
+ *	while () ...
+ *	while () {}
+ */
 class MccWhileStatement :
 	public MccConditionStatement
 {

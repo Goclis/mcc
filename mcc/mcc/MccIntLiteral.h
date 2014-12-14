@@ -6,6 +6,9 @@
 #pragma once
 #include "mccexpression.h"
 
+/**
+ * @brief Support integer literal.
+ */
 class MccIntLiteral :
 	public MccExpression
 {

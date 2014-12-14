@@ -6,6 +6,9 @@
 #pragma once
 #include "mccstatement.h"
 
+/**
+ * @brief Support break statement.
+ */
 class MccBreakStatement :
 	public MccStatement
 {

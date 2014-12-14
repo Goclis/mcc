@@ -6,6 +6,15 @@
 #pragma once
 #include "mccconditionstatement.h"
 
+/**
+ * @brief Support if statement.
+ *
+ * @example
+ *	if () {}
+ *	if () {} else {}
+ *	if () ..
+ *	if () .. else ..
+ */
 class MccIfStatement :
 	public MccConditionStatement
 {

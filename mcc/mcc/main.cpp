@@ -8,7 +8,6 @@ extern int yyparse();
 extern FILE *yyin;
 
 
-
 int main(int args, char** argv)
 {
 	MccRobot &robot = theMccRobot();

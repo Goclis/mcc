@@ -9,6 +9,12 @@
 
 using std::string;
 
+/**
+ * @brief Support variable reference.
+ *
+ * @example
+ *	a
+ */
 class MccIdentifier :
 	public MccExpression
 {
