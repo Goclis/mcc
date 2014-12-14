@@ -23,7 +23,9 @@ int MccReturnStatement::generate_code() const
 {
 	MccRobot &robot = theMccRobot();
 	string &code_buffer = robot.get_code_buffer();
+#ifdef DEBUG_MODE
 	code_buffer += "MccReturnStatement generation.\n";
+#endif
 	MccFunctionDeclaration *func_decl = robot.get_current_func_decl();
 
 	// Gen(m_expr).
@@ -38,7 +40,7 @@ int MccReturnStatement::generate_code() const
 		code_buffer += Utility::string_concat_int("addiu $sp $sp ", vars_size)
 			+ "\n";
 	}
-	code_buffer += "lw $ra 4($sp)\n";
+	code_buffer += "lw $ra 1($sp)\n";
 	code_buffer += Utility::string_concat_int("addiu $sp $sp ", final_pop_size)
 		+ "\n";
 	code_buffer += "lw $fp 0($sp)\n";

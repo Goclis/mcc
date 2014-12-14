@@ -17,11 +17,9 @@ MccDeclaration::~MccDeclaration(void)
 	}
 }
 
-//@todo Remove it.
+
 int MccDeclaration::generate_code()
 {
-	// cout << "MccDeclaration generation." << endl;
-
 	return 0;
 }
 
@@ -34,7 +32,6 @@ string MccDeclaration::get_decl_name() const
 
 void MccDeclaration::semantic_detect()
 {
-
 }
 
 

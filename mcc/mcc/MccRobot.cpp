@@ -64,7 +64,9 @@ void MccRobot::generate_code()
 	this->m_global_fp = "4000";
 	this->m_current_func_decl = nullptr; // Indicates global scope.
 
+#ifdef DEBUG_MODE
 	cout << "MccRobot generation." << endl;
+#endif
 
 	for (size_t i = 0, len = this->m_decls.size(); i < len; ++i) {
 		this->m_decls[i]->generate_code();
@@ -118,9 +120,9 @@ IdentifierInfo* MccRobot::add_global_decl(const string &name, int decl_size)
 		info->scope = nullptr;
 		if (decl_size == 0) {
 			info->id_type = FUNC;
-		} else if (decl_size == 4) {
+		} else if (decl_size == 1) {
 			info->id_type = NOMARL_VAR;
-			this->m_global_var_size += 4;
+			this->m_global_var_size += 1;
 			info->position = Utility::string_concat_int("", this->m_global_var_size);
 		} else {
 			info->id_type = ARRAY_VAR;

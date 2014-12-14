@@ -24,7 +24,9 @@ int MccIntLiteral::get_value() const
 int MccIntLiteral::generate_code() const
 {
 	string &code_buffer = theMccRobot().get_code_buffer();
+#ifdef DEBUG_MODE
 	code_buffer += "MccIntLiteral generation.\n";	
+#endif
 	if (m_value >= -32768 && m_value <= 32767) {
 		// [-2^15, 2^15-1]
 		code_buffer += Utility::string_concat_int(

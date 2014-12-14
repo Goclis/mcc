@@ -38,14 +38,14 @@ MIPS指令集中没有原生的支持`push`和`pop`操作的指令，需要手�
 Push
 ```
 sw reg 0($sp)
-addiu $v1 $zero 4
+addiu $v1 $zero 1
 subu $sp $sp $v1
 ```
 
 Pop
 ```
-lw reg 4($sp)
-addiu $sp $sp 4
+lw reg 1($sp)
+addiu $sp $sp 1
 ```
 
 ####自定的约定
@@ -55,6 +55,7 @@ addiu $sp $sp 4
 - $fp初始化为4004。
 - main方法作为全局入口，即其$fp为初始化的4004。
 - 存储器地址为16位，端口地址为FFF0-FFFF。
+- 存储器为32bits编址，即一个地址对应32位，所以整型只占一个地址，Push和Pop也相应修改。
 
 ###代码生成
 - 使用1-register模型，返回值放于某个寄存器中。
@@ -141,17 +142,19 @@ int k;
 AR（下面是栈顶）
 ```
 -----
+0-31					<---- 存储器32bits编址
+-----
 $ra					<---- $fp
 -----
-i					<---- i即$fp-4
+i					<---- i即$fp-1
 -----
 j[2]
 -----
 j[1]
 -----
-j[0]				<---- j即$fp-16，由此推出j[i] = $fp-16+4*i
+j[0]				<---- j即$fp-4，由此推出j[i] = $fp-4+i
 -----
-k					<---- k即$fp-20
+k					<---- k即$fp-5
 -----
 					<---- $sp
 -----
@@ -178,12 +181,9 @@ __MccArrayAccessExpression__
 
 ```
 Gen(m_id)						// 计算出数组基地址
-Push $v0
+Push($v0)
 Gen(m_index)					// 下标表达式的生成，值存于$v0，有符号数
-addiu $v1 $zero 4				// li $v1 4
-mult $v0 $v1
-mflo $v0						// 取出乘法结果低32位，认作乘法结果
-Pop $v1
+Pop($v1)
 add $v0 $v0 $v1					// 结果的地址
 lw $v0 0($v0)					// 取出值作为返回值
 ```
@@ -192,21 +192,21 @@ __MccAssignStatement__
 
 ```
 Gen(m_right_operand)			// 计算出值
-Push $v0
+Push($v0)
 ------
 // 根据左边的不同做不同的操作
 (1) 普通变量
 addiu $v0 $zero address			// 查找出该变量的地址存至$v0中
 (2) 数组变量
 addiu $v0 $zero address			// 查找出数组的基地址存至$v0中
-Push $v0
+Push($v0)
 Gen(m_array_index_expr)			// 计算数组下标值
-Pop $v1
+Pop($v1)
 add $v0 $v0 $v1					// 目标地址
 (3) 端口访问
 Gen(m_port_expr)				// 端口地址值，即目标地址
 ------
-Pop $v1
+Pop($v1)
 sw $v1 0($v0)					// 赋值
 addiu $v0 $zero $v1				// 赋值语句的返回值
 ```
@@ -289,7 +289,7 @@ __MccReturnStatement__
 ```
 Gen(m_expr)						// 执行返回的表达式
 addiu $sp $sp local_var_size	// pop掉局部变量的内存，local_var_size由编译器维护
-lw $ra 4($sp)					// 取出返回地址
+lw $ra 1($sp)					// 取出返回地址
 addiu $sp $sp args_fp_size		// pop掉剩余的活动记录的内存，包括参数等，args_fp_size由编译器维护
 lw $fp 0($sp)					// 恢复$fp
 jr $ra
@@ -330,7 +330,7 @@ Gen(statement_n)				// 语句n
 
 // 如果语句中在最后无返回语句（包含在条件语句体里的不算），往下
 addiu $sp $sp local_var_size	// pop掉局部变量的内存，local_var_size由编译器维护
-lw $ra 4($sp)					// 取出返回地址
+lw $ra 1($sp)					// 取出返回地址
 addiu $sp $sp args_fp_size		// pop掉剩余的活动记录的内存，包括参数等，args_fp_size由编译器维护
 lw $fp 0($sp)					// 恢复$fp
 jr $ra	

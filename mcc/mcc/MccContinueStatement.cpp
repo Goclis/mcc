@@ -17,7 +17,9 @@ int MccContinueStatement::generate_code() const
 {
 	MccRobot &robot = theMccRobot();
 	string &code_buffer = robot.get_code_buffer();
+#ifdef DEBUG_MODE
 	code_buffer += "MccContinueStatement generation.\n";
+#endif
 
 	code_buffer += "j " + robot.get_current_continue_label() + "\n";
 

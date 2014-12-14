@@ -35,7 +35,9 @@ int MccWhileStatement::generate_code() const
 	robot.set_current_break_label(break_label);
 	robot.set_current_continue_label(while_start_label);
 
+#ifdef DEBUG_MODE
 	code_buffer += "MccWhileStatement generation.\n";
+#endif
 	code_buffer += while_start_label + ":\n";
 
 	// While condition.

@@ -26,7 +26,9 @@ int MccIdentifier::generate_code() const
 {
 	MccRobot &robot = theMccRobot();
 	string &code_buffer = robot.get_code_buffer();
+#ifdef DEBUG_MODE
 	code_buffer += "MccIdentifier generation.\n";
+#endif
 	MccFunctionDeclaration *func_decl = robot.get_current_func_decl();
 	IdentifierInfo *info = nullptr;
 	if (nullptr == func_decl) {

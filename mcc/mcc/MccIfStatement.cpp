@@ -35,7 +35,9 @@ int MccIfStatement::generate_code() const
 {
 	MccRobot &robot = theMccRobot();
 	string &code_buffer = robot.get_code_buffer();
+#ifdef DEBUG_MODE
 	code_buffer += "MccIfStatement generation.\n";
+#endif
 	MccFunctionDeclaration *func_decl = robot.get_current_func_decl();
 	func_decl->increase_cond_stmt_level();
 	string if_label = "if_";

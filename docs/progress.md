@@ -1,5 +1,4 @@
 ###Todos
-- 目标机器地址改为32位编址，需要修改所有的地址分配代码，+4变为+1。
 - MccFunctionDeclaration需要特殊处理main。
 - 全局变量的$fp暂时确定为4000，需要进一步确定。
 - >>是逻辑右移还是算术右移，目前是逻辑右移。
@@ -61,3 +60,5 @@
 - MccUnaryOperatorExpression已经增加了按位取反和端口操作。
 - 修改MccArrayAccessExpression的生成代码为产生值。
 - 修改MccAssignStatement的结构及代码生成，同时修改了parser。
+- 目标机器地址改为32位编址，修改了所有的地址分配代码，+4变为+1。
+- 增加了DEBUG_MODE，在MccRobot.h中修改，能取消输出一些DEBUG信息。

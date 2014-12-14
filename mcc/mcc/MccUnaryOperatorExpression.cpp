@@ -28,7 +28,9 @@ MccUnaryOperatorExpression::~MccUnaryOperatorExpression(void)
 int MccUnaryOperatorExpression::generate_code() const
 {
 	string &code_buffer = theMccRobot().get_code_buffer();
+#ifdef DEBUG_MODE
 	code_buffer += "MccUnaryOperatorExpression generation.\n";
+#endif
 
 	// Gen(m_operand).
 	this->m_operand->generate_code();
@@ -43,7 +45,9 @@ int MccUnaryOperatorExpression::generate_code() const
 		break;
 
 	case POSITIVE_UNARY:
+#ifdef DEBUG_MODE
 		code_buffer += "\t\t\t\t// Do nothing for +$v0";
+#endif
 		break;
 
 	case NOT_UNARY:

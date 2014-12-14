@@ -81,7 +81,9 @@ int MccFunctionDeclaration::generate_code()
 
 	MccRobot &robot = theMccRobot();
 	string &code_buffer = robot.get_code_buffer();
+#ifdef DEBUG_MODE
 	code_buffer += "MccFunctionDelcaration generation.\n";
+#endif
 	string func_label = this->get_decl_name();
 	MccFunctionDeclaration *func_decl_bak = robot.get_current_func_decl();
 	robot.set_current_func_decl(this);
@@ -91,11 +93,11 @@ int MccFunctionDeclaration::generate_code()
 	this->m_local_var_size = 0;
 
 	// Each parameter is an address in function activation record.
-	this->m_ar_size = 4 * this->m_parameter_list.size();
+	this->m_ar_size = this->m_parameter_list.size();
 	// The old frame pointer.
-	this->m_ar_size += 4;
+	this->m_ar_size += 1;
 	// $ra, return address.
-	this->m_ar_size += 4;
+	this->m_ar_size += 1;
 
 	code_buffer += func_label + ":\n";
 
@@ -105,7 +107,7 @@ int MccFunctionDeclaration::generate_code()
 	// Push $ra.
 	code_buffer +=
 		"sw $ra 0($sp)\n"
-		"addiu $v1 $zero 4\n"
+		"addiu $v1 $zero 1\n"
 		"subu $sp $sp $v1\n";
 
 	// Iterate local variable declaration.
@@ -127,7 +129,7 @@ int MccFunctionDeclaration::generate_code()
 				+= Utility::string_concat_int("addiu $sp $sp ", this->m_local_var_size)
 				+ "\n";
 		}
-		code_buffer += "lw $ra 4($sp)\n";
+		code_buffer += "lw $ra 1($sp)\n";
 		code_buffer 
 			+= Utility::string_concat_int("addiu $sp $sp ",
 				this->m_ar_size - this->m_local_var_size) + "\n";
@@ -178,7 +180,7 @@ void MccFunctionDeclaration::add_local_var_decl(const string &name, int var_size
 	this->m_local_var_size += var_size;
 	new_info->position
 		= Utility::string_concat_int("", this->m_local_var_size);
-	if (var_size > 4) {
+	if (var_size > 1) {
 		new_info->id_type = ARRAY_VAR;
 	} else {
 		new_info->id_type = NOMARL_VAR;

@@ -33,13 +33,14 @@ int MccMethodCallExpression::generate_code() const
 	MccRobot &robot = theMccRobot();
 	string &code_buffer = robot.get_code_buffer();
 	string func_name = this->m_method_id->m_name;
-
+#ifdef DEBUG_MODE
 	code_buffer += "MccMethodCallExpression generation.\n";
+#endif
 
 	// Push $fp.
 	code_buffer += 
 		"sw $fp 0($sp)\n"
-		"addiu $v1 $zero 4\n"
+		"addiu $v1 $zero 1\n"
 		"subu $sp $sp $v1\n";
 
 	int i = this->m_args.size() - 1;
@@ -49,7 +50,7 @@ int MccMethodCallExpression::generate_code() const
 		// Push $v0.
 		code_buffer += 
 			"sw $v0 0($sp)\n"
-			"addiu $v1 $zero 4\n"
+			"addiu $v1 $zero 1\n"
 			"subu $sp $sp $v1\n";
 	}
 	

@@ -42,7 +42,7 @@ public:
 	 * @brief Add a new variable declaration (locally).
 	 *
 	 *	This method doesn't do any check for conflict. Before call this
-	 *	method, do check for exsitent conflict.
+	 *	method, do check for existent conflict.
 	 *
 	 * @param name the name of the variable.
 	 *

@@ -30,7 +30,9 @@ int MccBinaryOperatorExpression::generate_code() const
 {
 	MccRobot &robot = theMccRobot();
 	string &code_buffer = robot.get_code_buffer();
+#ifdef DEBUG_MODE
 	code_buffer += "MccBinaryOperatorExpression generation.\n";
+#endif
 	string quick_branch_label;
 
 	// Gen(m_left_operand).
@@ -50,7 +52,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	// Push $v0.
 	code_buffer += 
 		"sw $v0 0($sp)\n"
-		"addiu $v1 $zero 4\n"
+		"addiu $v1 $zero 1\n"
 		"subu $sp $sp $v1\n";
 
 	// Gen(m_right_operand).
@@ -58,8 +60,8 @@ int MccBinaryOperatorExpression::generate_code() const
 
 	// Pop $v1.
 	code_buffer += 
-		"lw $v1 4($sp)\n"
-		"addiu $sp $sp 4\n";
+		"lw $v1 1($sp)\n"
+		"addiu $sp $sp 1\n";
 
 	// According to operator, use different instructions.
 	switch (this->m_operator)

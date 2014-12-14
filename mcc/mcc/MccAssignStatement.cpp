@@ -41,7 +41,9 @@ int MccAssignStatement::generate_code() const
 {
 	MccRobot &robot = theMccRobot();
 	string &code_buffer = robot.get_code_buffer();
+#ifdef DEBUG_MODE
 	code_buffer += "MccAssignStatement generation.\n";
+#endif
 	
 	// Gen(m_right_operand).
 	m_right_operand->generate_code();
@@ -49,7 +51,7 @@ int MccAssignStatement::generate_code() const
 	// Push $v0.
 	code_buffer +=
 		"sw $v0 0($sp)\n"
-		"addiu $v1 $zero 4\n"
+		"addiu $v1 $zero 1\n"
 		"subu $sp $sp $v1\n";
 
 	// Gen(`m_left`).
@@ -83,7 +85,7 @@ int MccAssignStatement::generate_code() const
 			// Push $v0.
 			code_buffer +=
 				"sw $v0 0($sp)\n"
-				"addiu $v1 $zero 4\n"
+				"addiu $v1 $zero 1\n"
 				"subu $sp $sp $v1\n";
 
 			// Array index.
@@ -91,8 +93,8 @@ int MccAssignStatement::generate_code() const
 
 			// Pop $v1
 			code_buffer +=
-				"lw $v1 4($sp)\n"
-				"addiu $sp $sp 4\n";
+				"lw $v1 1($sp)\n"
+				"addiu $sp $sp 1\n";
 
 			// Add together.
 			code_buffer +=
@@ -104,8 +106,8 @@ int MccAssignStatement::generate_code() const
 
 	// Pop $v1.
 	code_buffer += 
-		"lw $v1 4($sp)\n"
-		"addiu $sp $sp 4\n";
+		"lw $v1 1($sp)\n"
+		"addiu $sp $sp 1\n";
 
 	// Memory[$v0] = $v1 and save the result to $v0.
 	code_buffer += 

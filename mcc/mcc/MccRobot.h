@@ -18,6 +18,8 @@ class MccSemanticErrorChecker;
 using std::vector;
 using std::string;
 
+#define DEBUG_MODE 1
+
 /**
  * @brief Global robot, singleton.
  */
