@@ -421,6 +421,7 @@ MIPS指令的后缀有`i`和`u`，两者可以同时出现。
 	- MccVariableReferenceChecker：使用的变量必须是存在的。
 	- MccMethodNameChecker：检查方法名是否符合要求（不能为label+数字）。
 	- MccMethodCallChecker：调用的方法必须存在且被实现，且参数个数及类型得匹配。
+	- MccMethodCallArgumentMatchChecker：检查方法调用的参数是否匹配（个数）。
     - MccReturnTypeChecker：方法返回类型于方法内部定义是否符合【非紧急】。
     - MccPortAssignChecker：端口为赋值语句左部时需要检查【非紧急】。
     - (To Update...)
