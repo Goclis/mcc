@@ -96,10 +96,12 @@
     <ClCompile Include="MccIdentifierConflictError.cpp" />
     <ClCompile Include="MccIfStatement.cpp" />
     <ClCompile Include="MccIntLiteral.cpp" />
+    <ClCompile Include="MccInvalidMethodNameError.cpp" />
     <ClCompile Include="MccJumpInWhileChecker.cpp" />
     <ClCompile Include="MccJumpOutOfWhileError.cpp" />
     <ClCompile Include="MccMethodCallExpression.cpp" />
     <ClCompile Include="MccMethodDefinitionLackParameterNameError.cpp" />
+    <ClCompile Include="MccMethodNameChecker.cpp" />
     <ClCompile Include="MccMethodParameterNameExistChecker.cpp" />
     <ClCompile Include="MccReturnStatement.cpp" />
     <ClCompile Include="MccRobot.cpp" />
@@ -137,10 +139,12 @@
     <ClInclude Include="MccIdentifierConflictError.h" />
     <ClInclude Include="MccIfStatement.h" />
     <ClInclude Include="MccIntLiteral.h" />
+    <ClInclude Include="MccInvalidMethodNameError.h" />
     <ClInclude Include="MccJumpInWhileChecker.h" />
     <ClInclude Include="MccJumpOutOfWhileError.h" />
     <ClInclude Include="MccMethodCallExpression.h" />
     <ClInclude Include="MccMethodDefinitionLackParameterNameError.h" />
+    <ClInclude Include="MccMethodNameChecker.h" />
     <ClInclude Include="MccMethodParameterNameExistChecker.h" />
     <ClInclude Include="MccPublicType.h" />
     <ClInclude Include="MccReturnStatement.h" />

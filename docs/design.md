@@ -545,6 +545,21 @@ __相关Mcc Class__
 	- 未定义变量名
 	- 行号
 
+####6、方法名不能为label+数字
+__目的__
+
+语法不关心方法名，但是语义不允许方法名为label+数字。
+
+__相关Mcc Class__
+
+- MccMethodNameChecker
+	- MccFunctionDeclaration：检查名字。
+- MccInvalidMethodNameError
+	- 行号
+	- 方法名
+
+
+
 ###参考资料
 
 - [ANSI C grammar (Yacc)](http://www.quut.com/c/ANSI-C-grammar-y.html)

@@ -1,4 +1,5 @@
 ###Todos
+- MccMethodNameChecker的行号定位并不准，因为方法的行号为`{`和`}`出现后才设置的，会偏差。
 - MccFunctionDeclaration需要特殊处理main。
 - 全局变量的$fp暂时确定为4000，需要进一步确定。
 - >>是逻辑右移还是算术右移，目前是逻辑右移。
@@ -62,3 +63,4 @@
 - 修改MccAssignStatement的结构及代码生成，同时修改了parser。
 - 目标机器地址改为32位编址，修改了所有的地址分配代码，+4变为+1。
 - 增加了DEBUG_MODE，在MccRobot.h中修改，能取消输出一些DEBUG信息。
+- 完成了方法名不能为label+数字的检查，即MccMethodNameChecker。

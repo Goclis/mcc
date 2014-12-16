@@ -141,6 +141,12 @@
     <ClCompile Include="MccUndefinedVariableError.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MccInvalidMethodNameError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MccMethodNameChecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parser\parser.hpp">
@@ -261,6 +267,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MccUndefinedVariableError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccInvalidMethodNameError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccMethodNameChecker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

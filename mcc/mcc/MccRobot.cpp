@@ -8,6 +8,7 @@
 #include "MccJumpInWhileChecker.h"
 #include "MccIdentifierConflictChecker.h"
 #include "MccVariableReferenceChecker.h"
+#include "MccMethodNameChecker.h"
 #include <iostream>
 using namespace std;
 
@@ -83,6 +84,7 @@ bool MccRobot::check_semantic_error()
 	checkers.push_back(new MccJumpInWhileChecker);
 	checkers.push_back(new MccIdentifierConflictChecker);
 	checkers.push_back(new MccVariableReferenceChecker);
+	checkers.push_back(new MccMethodNameChecker);
 	
 	bool no_error = true;
 	for (size_t i = 0; i < checkers.size(); ++i) {

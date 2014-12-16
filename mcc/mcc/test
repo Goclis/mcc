@@ -64,3 +64,11 @@ int main(void)
 {
 
 }
+
+void label1(void)
+{
+}
+
+void label211a(void)
+{
+}
