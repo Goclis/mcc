@@ -42,7 +42,7 @@ public:
 	/**
 	 * @brief Check semantic error.
 	 *
-	 * @return true means error, false means ok.
+	 * @return true means no error, false means error.
 	 */
 	bool check_semantic_error();
 
