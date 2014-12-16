@@ -58,8 +58,6 @@ void MccRobot::generate_code()
 	this->m_global_var_code_buffer = "";
 	this->m_code_buffer = "";
 	this->m_branch_nums = 0;
-	this->m_while_nums = 0;
-	this->m_quick_branch_nums = 0;
 	this->m_global_var_size = 0;
 	this->m_global_fp = "4000";
 	this->m_current_func_decl = nullptr; // Indicates global scope.

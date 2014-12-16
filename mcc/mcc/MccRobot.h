@@ -27,6 +27,10 @@ class MccRobot
 {
 public:
 	virtual ~MccRobot(void);
+
+	/**
+	 * @brief Singleton pattern, get the global robot.
+	 */
 	friend MccRobot& theMccRobot();
 	
 	/**
@@ -49,12 +53,12 @@ public:
 	/**
 	 * @brief Add new declration.
 	 *
-	 * @param name the name of the declaration variable.
+	 * @param name The name of the declaration variable.
 	 *
-	 * @param decl_size the size of the declaration variable.
+	 * @param decl_size The size of the declaration variable.
 	 *		0 indicates function declaration,
-	 *		4 indicates global normal variable,
-	 *	    4+ indicates global array variable.
+	 *		1 indicates global normal variable,
+	 *	    1+ indicates global array variable.
 	 *
 	 * @return The info struct of the declaration.
 	 */
@@ -71,9 +75,9 @@ public:
 	/**
 	 * @brief Get the information of the global identifer.
 	 *
-	 * @param name the name of the identifer.
+	 * @param name The name of the identifer.
 	 *
-	 * @return if find return the information, otherwise, return null.
+	 * @return If find return the information, otherwise, return null.
 	 */
 	IdentifierInfo* get_identifier_info(const string &name);
 
@@ -93,6 +97,10 @@ public:
 
 private:
 	MccRobot(void);
+
+	/**
+	 * @brief All declarations.
+	 */
 	vector<MccDeclaration *> m_decls;
 
 	/**
@@ -106,21 +114,15 @@ private:
 	string m_current_break_label; // Current while statement end.
 	string m_current_continue_label; // Current while statement start.
 	MccFunctionDeclaration *m_current_func_decl; // Current function declaration.
-	int m_branch_nums;
-	int m_while_nums;
-	int m_quick_branch_nums;
-	int m_global_var_size;
-	string m_code_buffer;
-	string m_global_var_code_buffer;
-	
-	/**
-	 * @brief A map to save information for each declaration.
-	 */
-	IdentifierMap m_decl_infos;
+	int m_branch_nums; // Salt for generating branch name.
+	string m_global_fp; // Global $fp.
+	int m_global_var_size; // The total size of all global variables.
+	IdentifierMap m_decl_infos; // A map to save information for each declaration.
 
 	/**
-	 * @brief Global $fp.
+	 * @brief Buffers.
 	 */
-	string m_global_fp;
+	string m_code_buffer; // Buffer for generated code.
+	string m_global_var_code_buffer; // Buffer for global variable declaration.
 };
 

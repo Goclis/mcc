@@ -4,6 +4,7 @@
 #include <iostream>
 #include "MccRobot.h"
 using namespace std;
+
 extern int yyparse();
 extern FILE *yyin;
 
@@ -29,6 +30,7 @@ int main(int args, char** argv)
 	}
 
 	// Deal with main arguments.
+	// args[1] - input file name.
 	if (args > 1) {
 		input_filename = string(argv[1]);
 		int pos = input_filename.find('.');
@@ -37,20 +39,26 @@ int main(int args, char** argv)
 		}
 	}
 
+	// Open input file as yyin, the input of flex.
 	yyin = fopen(input_filename.c_str(), "r");
 	if (nullptr == yyin) {
 		cout << "Open file failed.\n";
 		exit(1);
 	}
 
+	// Parse.
 	yyparse();
-
+	
+	// After parsing, do more thing.
 	if (robot.check_semantic_error()) {
 		robot.generate_code();
 
+		// Deal with conflict between input filename and output filename.
 		if (input_filename == output_filename) {
 			output_filename += ".out";
 		}
+		
+		// Output generated code.
 		ofstream out_stream(output_filename);
 		out_stream << robot.get_global_var_code_buffer() << robot.get_code_buffer();
 	} else {
