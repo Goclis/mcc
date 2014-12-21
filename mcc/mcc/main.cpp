@@ -30,7 +30,7 @@ int main(int args, char** argv)
 	}
 
 	// Deal with main arguments.
-	// args[1] - input file name.
+	// args[1]: input file name.
 	if (args > 1) {
 		input_filename = string(argv[1]);
 		int pos = input_filename.find('.');

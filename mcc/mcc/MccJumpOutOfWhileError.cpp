@@ -19,5 +19,5 @@ void MccJumpOutOfWhileError::report() const
 {
 	cout << "Line " << m_lineno << ": " 
 		<< ((m_stmt_type == BREAK_STMT) ? "break" : "continue")
-		<< " statement should inside while statment\n";
+		<< " statement should inside while statement\n";
 }
