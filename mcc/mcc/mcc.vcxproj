@@ -104,6 +104,8 @@
     <ClCompile Include="MccMethodNameChecker.cpp" />
     <ClCompile Include="MccMethodParameterNameExistChecker.cpp" />
     <ClCompile Include="MccReturnStatement.cpp" />
+    <ClCompile Include="MccReturnTypeChecker.cpp" />
+    <ClCompile Include="MccReturnTypeError.cpp" />
     <ClCompile Include="MccRobot.cpp" />
     <ClCompile Include="MccSemanticError.cpp" />
     <ClCompile Include="MccSemanticErrorChecker.cpp" />
@@ -148,6 +150,8 @@
     <ClInclude Include="MccMethodParameterNameExistChecker.h" />
     <ClInclude Include="MccPublicType.h" />
     <ClInclude Include="MccReturnStatement.h" />
+    <ClInclude Include="MccReturnTypeChecker.h" />
+    <ClInclude Include="MccReturnTypeError.h" />
     <ClInclude Include="MccRobot.h" />
     <ClInclude Include="MccSemanticError.h" />
     <ClInclude Include="MccSemanticErrorChecker.h" />
@@ -164,6 +168,7 @@
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="ClassDiagram1.cd" />
     <None Include="ClassDiagram2.cd" />
   </ItemGroup>
