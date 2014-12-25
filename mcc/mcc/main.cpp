@@ -33,6 +33,7 @@ int main(int args, char** argv)
 	// args[1]: input file name.
 	if (args > 1) {
 		input_filename = string(argv[1]);
+		output_filename = input_filename;
 		int pos = input_filename.find('.');
 		if (pos != -1) {
 			output_filename = input_filename.substr(0, pos);

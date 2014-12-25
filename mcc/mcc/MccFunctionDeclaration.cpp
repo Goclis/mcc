@@ -5,6 +5,7 @@
 #include "MccDeclarationList.h"
 #include "MccStatement.h"
 #include "MccFuncParameter.h"
+#include "MccIdentifier.h"
 #include "MccRobot.h"
 #include "MccSemanticErrorChecker.h"
 #include "Utility.h"
@@ -93,7 +94,9 @@ int MccFunctionDeclaration::generate_code()
 	this->m_local_var_size = 0;
 
 	// Each parameter is an address in function activation record.
-	this->m_ar_size = this->m_parameter_list.size();
+	for (size_t i = 0, size = m_parameter_list.size(); i < size; ++i) {
+		add_local_var_decl(m_parameter_list[i]->m_name->m_name, 1);
+	}
 	// The old frame pointer.
 	this->m_ar_size += 1;
 	// $ra, return address.
