@@ -52,10 +52,13 @@ int MccIfStatement::generate_code() const
 	// Gen(m_if).
 	this->m_if->generate_code();
 	code_buffer += "j " + if_end + "\n";
+
+	// Gen(m_else), if have.
 	code_buffer += false_branch_label + ":\n";
 	if (this->m_else != nullptr) {
 		this->m_else->generate_code();
 	}
+
 	code_buffer += if_end + ":\n";
 	func_decl->decrease_cond_stmt_level();
 

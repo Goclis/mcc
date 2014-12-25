@@ -54,7 +54,7 @@ int MccIdentifier::generate_code() const
 		} else if (NOMARL_VAR == info->id_type) {
 			code_buffer +=
 				"addiu $v0 $zero " + global_fp + "\n"
-				"sw $v0 (-" + info->position + ")$v0\n";
+				"lw $v0 (-" + info->position + ")$v0\n";
 		}
 	} else {
 		// Local variable.
@@ -63,7 +63,7 @@ int MccIdentifier::generate_code() const
 				"addiu $v1 $zero " + info->position + "\n"
 				"subu $v0 $fp $v1\n";
 		} else if (NOMARL_VAR == info->id_type) {
-			code_buffer += "sw $v0 (-" + info->position + ")$fp\n";
+			code_buffer += "lw $v0 (-" + info->position + ")$fp\n";
 		}
 	}
 
