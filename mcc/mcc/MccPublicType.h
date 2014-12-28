@@ -47,6 +47,7 @@ enum UNARY_OPERATOR {
 
 enum IdentifierType {
 	NOMARL_VAR,
+	PARAMETER_VAR,
 	ARRAY_VAR,
 	FUNC
 };
@@ -54,7 +55,7 @@ enum IdentifierType {
 class IdentifierInfo
 {
 public:
-	string position;
+	int position;
 	IdentifierType id_type;
 	void *scope;
 };

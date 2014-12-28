@@ -125,11 +125,11 @@ IdentifierInfo* MccRobot::add_global_decl(const string &name, int decl_size)
 		} else if (decl_size == 1) {
 			info->id_type = NOMARL_VAR;
 			this->m_global_var_size += 1;
-			info->position = Utility::string_concat_int("", this->m_global_var_size);
+			info->position = m_global_var_size;
 		} else {
 			info->id_type = ARRAY_VAR;
 			this->m_global_var_size += decl_size;
-			info->position = Utility::string_concat_int("", this->m_global_var_size);
+			info->position = m_global_var_size;
 		}
 
 		this->m_decl_infos.insert(IdentifierMap::value_type(name, info));

@@ -4,6 +4,7 @@
 #include "MccIdentifier.h"
 #include "MccRobot.h"
 #include "MccSemanticErrorChecker.h"
+#include "Utility.h"
 
 
 MccAssignStatement::MccAssignStatement( 
@@ -48,7 +49,7 @@ int MccAssignStatement::generate_code() const
 	// Gen(m_right_operand).
 	m_right_operand->generate_code();
 
-	// Push $v0.
+	// Push($v0), save the result of right operand.
 	code_buffer +=
 		"sw $v0 0($sp)\n"
 		"addiu $v1 $zero 1\n"
@@ -56,6 +57,7 @@ int MccAssignStatement::generate_code() const
 
 	// Gen(`m_left`).
 	if (nullptr == m_port_expr) {
+		// Left operand is not port expression.
 		MccFunctionDeclaration *func_decl = robot.get_current_func_decl();
 		IdentifierInfo *info = nullptr;
 		if (nullptr == func_decl) {
@@ -69,19 +71,26 @@ int MccAssignStatement::generate_code() const
 		}
 
 		if (nullptr == info->scope) {
+			// Global variable.
 			string global_fp = robot.get_global_fp();
 			code_buffer +=
-				"addiu $v0 $zero " + global_fp + "\n"
-				"addiu $v1 $zero " + info->position + "\n"
+				"addiu $v0 $zero " + global_fp + "\n" +
+				Utility::string_concat_int("addiu $v1 $zero ", info->position) + "\n"
 				"subu $v0 $v0 $v1\n";
 		} else {
-			code_buffer += 
-				"addiu $v1 $zero " + info->position + "\n"
-				"subu $v0 $fp $v1\n";
+			// Local variable.
+			if (PARAMETER_VAR == info->id_type) {
+				code_buffer +=
+					Utility::string_concat_int("addiu $v0 $fp ", info->position) + "\n";
+			} else {
+				code_buffer +=
+					Utility::string_concat_int("addiu $v1 $zero", info->position) + "\n"
+					"subu $v0 $fp $v1\n";
+			}
 		}
 
 		if (nullptr != m_array_index_expr) {
-			// Array needs more instructions.
+			// Array vairbale needs more instructions.
 			// Push $v0.
 			code_buffer +=
 				"sw $v0 0($sp)\n"
@@ -101,6 +110,7 @@ int MccAssignStatement::generate_code() const
 				"add $v0 $v0 $v1\n";
 		}
 	} else {
+		// Left operand is port expression.
 		m_port_expr->generate_code();
 	}
 

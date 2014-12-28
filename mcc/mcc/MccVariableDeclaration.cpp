@@ -40,8 +40,8 @@ int MccVariableDeclaration::generate_code()
 		code_buffer += "MccVariableDeclaration generation.\n";
 #endif
 		func_decl->add_local_var_decl(var_name, stack_used);
-		code_buffer += Utility::string_concat_int(
-			"addiu $v1 $zero ", stack_used) + "\n"
+		code_buffer += 
+			Utility::string_concat_int("addiu $v1 $zero ", stack_used) + "\n"
 			"subu $sp $sp $v1\n";
 	} else {
 		// Global variable declaration.
@@ -49,8 +49,8 @@ int MccVariableDeclaration::generate_code()
 #ifdef DEBUG_MODE
 		robot.get_global_var_code_buffer() += "MccVariableDeclaration generation.\n";
 #endif
-		robot.get_global_var_code_buffer() += Utility::string_concat_int(
-			"addiu $v1 $zero ", stack_used) + "\n"
+		robot.get_global_var_code_buffer() += 
+			Utility::string_concat_int("addiu $v1 $zero ", stack_used) + "\n"
 			"subu $sp $sp $v1\n";
 	}
 

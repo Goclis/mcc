@@ -2,6 +2,7 @@
 #include "MccRobot.h"
 #include "MccSemanticErrorChecker.h"
 #include "MccFunctionDeclaration.h"
+#include "Utility.h"
 
 
 MccIdentifier::MccIdentifier(void)
@@ -48,22 +49,26 @@ int MccIdentifier::generate_code() const
 		string global_fp = robot.get_global_fp();
 		if (ARRAY_VAR == info->id_type) {
 			code_buffer +=
-				"addiu $v0 $zero " + global_fp + "\n"
-				"addiu $v1 $zero " + info->position + "\n"
+				"addiu $v0 $zero " + global_fp + "\n" +
+				Utility::string_concat_int("addiu $v1 $zero ", info->position) + "\n"
 				"subu $v0 $v0 $v1\n";
 		} else if (NOMARL_VAR == info->id_type) {
 			code_buffer +=
-				"addiu $v0 $zero " + global_fp + "\n"
-				"lw $v0 (-" + info->position + ")$v0\n";
+				"addiu $v0 $zero " + global_fp + "\n" +
+				Utility::string_concat_int("lw $v0 (-", info->position) + ")$v0\n";
 		}
 	} else {
 		// Local variable.
 		if (ARRAY_VAR == info->id_type) {
 			code_buffer += 
-				"addiu $v1 $zero " + info->position + "\n"
+				Utility::string_concat_int("addiu $v1 $zero ", info->position) + "\n"
 				"subu $v0 $fp $v1\n";
 		} else if (NOMARL_VAR == info->id_type) {
-			code_buffer += "lw $v0 (-" + info->position + ")$fp\n";
+			code_buffer += 
+				Utility::string_concat_int("lw $v0 (-", info->position) + ")$fp\n";
+		} else if (PARAMETER_VAR == info->id_type) {
+			code_buffer +=
+				Utility::string_concat_int("lw $v0 (", info->position) + ")$fp\n";
 		}
 	}
 

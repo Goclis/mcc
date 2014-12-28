@@ -1,0 +1,36 @@
+int fib(int n)
+{
+	int i;
+
+	if (n <= 2) {
+		i = 1;
+	} else {
+		i = fib(n-1) + fib(n-2);
+	}
+
+	return i;
+}
+
+
+int main(void)
+{
+	int i;
+	i = fib(128);
+
+	
+	
+	return i;
+}
+
+
+int input(void)
+{
+	int j;
+	j = $0xFFFE;
+	return j;
+}
+
+void display(int i)
+{
+	$0xFFFF = i;
+}

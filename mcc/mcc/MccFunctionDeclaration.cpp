@@ -76,7 +76,7 @@ MccFunctionDeclaration::~MccFunctionDeclaration(void)
 
 int MccFunctionDeclaration::generate_code()
 {
-	if (!this->m_contain_definition) {
+	if (!m_contain_definition) {
 		return 0;
 	}
 
@@ -85,59 +85,103 @@ int MccFunctionDeclaration::generate_code()
 #ifdef DEBUG_MODE
 	code_buffer += "MccFunctionDelcaration generation.\n";
 #endif
-	string func_label = this->get_decl_name();
+	string func_label = get_decl_name();
 	MccFunctionDeclaration *func_decl_bak = robot.get_current_func_decl();
 	robot.set_current_func_decl(this);
 
 	// Initialization.
-	this->m_ar_size = 0;
-	this->m_local_var_size = 0;
-
-	// Each parameter is an address in function activation record.
-	for (size_t i = 0, size = m_parameter_list.size(); i < size; ++i) {
-		add_local_var_decl(m_parameter_list[i]->m_name->m_name, 1);
-	}
-	// The old frame pointer.
-	this->m_ar_size += 1;
-	// $ra, return address.
-	this->m_ar_size += 1;
+	m_local_var_size = 0;
+	m_parameter_size = 0;
 
 	code_buffer += func_label + ":\n";
 
-	// Set $fp.
-	code_buffer += "addu $fp $zero $sp\n";
+	if ("CALLBACK" == func_label) {
+		// Callback function, no parameter.
+		// Push($v0).
+		code_buffer +=
+			"sw $v0 0($sp)\n"
+			"addiu $v0 $zero 1\n"
+			"subu $sp $sp $v0\n";
+		// Push($v1).
+		code_buffer +=
+			"sw $v1 0($sp)\n"
+			"addiu $v1 $zero 1\n"
+			"subu $sp $sp $v1\n";
+		// Push($fp) and set $fp.
+		code_buffer +=
+			"sw $fp 0($sp)\n"
+			"addu $fp $zero $sp\n"
+			"addiu $v1 $zero 1\n"
+			"subu $sp $sp $v1\n";
 
-	// Push $ra.
-	code_buffer +=
-		"sw $ra 0($sp)\n"
-		"addiu $v1 $zero 1\n"
-		"subu $sp $sp $v1\n";
-
-	// Iterate local variable declaration.
-	for (size_t i = 0, len = this->m_local_variable_decls.size();
-			i < len; ++i) {
-		this->m_local_variable_decls[i]->generate_code();
-	}
-	
-	// Iterate statement list.
-	for (size_t i = 0, len = this->m_statement_list.size(); i < len; ++i) {
-		this->m_statement_list[i]->generate_code();
-	}
-
-	// If no return statement at last, need to generate code to retrieving 
-	// activation record.
-	if (!this->m_has_retrieved) {
-		if (this->m_local_var_size > 0) {
-			code_buffer
-				+= Utility::string_concat_int("addiu $sp $sp ", this->m_local_var_size)
-				+ "\n";
+		// Iterate local variable declaration.
+		for (size_t i = 0, len = this->m_local_variable_decls.size();
+				i < len; ++i) {
+			this->m_local_variable_decls[i]->generate_code();
 		}
-		code_buffer += "lw $ra 1($sp)\n";
-		code_buffer 
-			+= Utility::string_concat_int("addiu $sp $sp ",
-				this->m_ar_size - this->m_local_var_size) + "\n";
-		code_buffer += "lw $fp 0($sp)\n";
-		code_buffer += "jr $ra\n";
+
+		// Iterate statement list.
+		for (size_t i = 0, len = this->m_statement_list.size(); i < len; ++i) {
+			this->m_statement_list[i]->generate_code();
+		}
+
+		// Retrieve local variables.
+		code_buffer +=
+			Utility::string_concat_int("addiu $sp $sp ", m_local_var_size) + "\n";
+
+		// Restore $fp $v0 $v1.
+		code_buffer +=
+			"lw $fp 1($sp)\n"
+			"lw $v1 2($sp)\n"
+			"lw $v0 3($sp)\n"
+			"addiu $sp $sp 3\n";
+	} else {
+		// Iterate parameters, record position (positive offset of $fp).
+		for (size_t i = 0, size = m_parameter_list.size(); i < size; ++i) {
+			add_local_var_decl(
+				m_parameter_list[i]->m_name->m_name,
+				1,
+				PARAMETER_VAR);
+		}
+
+		// Set $fp.
+		code_buffer += "addu $fp $zero $sp\n";
+
+		// Push $ra.
+		code_buffer +=
+			"sw $ra 0($sp)\n"
+			"addiu $v1 $zero 1\n"
+			"subu $sp $sp $v1\n";
+
+		// Iterate local variable declaration.
+		for (size_t i = 0, len = m_local_variable_decls.size();
+				i < len; ++i) {
+			m_local_variable_decls[i]->generate_code();
+		}
+
+		// Iterate statement list.
+		for (size_t i = 0, len = m_statement_list.size(); i < len; ++i) {
+			m_statement_list[i]->generate_code();
+		}
+
+		// Retrieve activation record.
+		if (!m_has_retrieved) {
+			// Retrieve local variables.
+			if (m_local_var_size > 0) {
+				code_buffer +=
+					Utility::string_concat_int("addiu $sp $sp ", m_local_var_size) + "\n";
+			}
+
+			// Restore $ra.
+			code_buffer +=
+				"lw $ra 1($sp)\n";
+
+			// Pop parameters, $ra and $fp.
+			code_buffer +=
+				Utility::string_concat_int("addiu $sp $sp ", m_parameter_size + 2) + "\n"
+				"lw $fp 0($sp)\n"
+				"jr $ra\n";
+		}
 	}
 
 	robot.set_current_func_decl(func_decl_bak);
@@ -170,25 +214,27 @@ void MccFunctionDeclaration::set_has_retrieved()
 }
 
 
-int MccFunctionDeclaration::get_ar_size() const
-{
-	return this->m_ar_size;
-}
-
-
-void MccFunctionDeclaration::add_local_var_decl(const string &name, int var_size)
+void MccFunctionDeclaration::add_local_var_decl(
+	const string &name, 
+	int var_size,
+	IdentifierType type)
 {
 	IdentifierInfo *new_info = new IdentifierInfo;
 	new_info->scope = (void*) this;
-	this->m_local_var_size += var_size;
-	new_info->position
-		= Utility::string_concat_int("", this->m_local_var_size);
-	if (var_size > 1) {
-		new_info->id_type = ARRAY_VAR;
+
+	if (PARAMETER_VAR == type) {
+		m_parameter_size += var_size;
+		new_info->position = m_parameter_size;
+		new_info->id_type = PARAMETER_VAR;
 	} else {
-		new_info->id_type = NOMARL_VAR;
+		m_local_var_size += var_size;
+		new_info->position = m_local_var_size;
+		if (var_size > 1) {
+			new_info->id_type = ARRAY_VAR;
+		} else {
+			new_info->id_type = NOMARL_VAR;
+		}
 	}
-	this->m_ar_size += var_size;
 
 	this->m_local_identifiers.insert(IdentifierMap::value_type(name, new_info));
 }

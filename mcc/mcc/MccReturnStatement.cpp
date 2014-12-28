@@ -32,19 +32,24 @@ int MccReturnStatement::generate_code() const
 	this->m_expr->generate_code();
 
 	// Retrieving activation record.
-	int ar_size = func_decl->get_ar_size();
-	int vars_size = func_decl->get_vars_size();
-	int final_pop_size = ar_size - vars_size;
-
-	if (vars_size > 0) {
-		code_buffer += Utility::string_concat_int("addiu $sp $sp ", vars_size)
-			+ "\n";
+	int parameter_size = func_decl->m_parameter_size;
+	int local_var_size = func_decl->m_local_var_size;
+	
+	// Retrieve local variables.
+	if (local_var_size > 0) {
+		code_buffer += 
+			Utility::string_concat_int("addiu $sp $sp ", local_var_size) + "\n";
 	}
-	code_buffer += "lw $ra 1($sp)\n";
-	code_buffer += Utility::string_concat_int("addiu $sp $sp ", final_pop_size)
-		+ "\n";
-	code_buffer += "lw $fp 0($sp)\n";
-	code_buffer += "jr $ra\n";
+
+	// Restore $ra.
+	code_buffer += 
+		"lw $ra 1($sp)\n";
+
+	// Pop parameters, $ra and $fp.
+	code_buffer += 
+		Utility::string_concat_int("addiu $sp $sp ", parameter_size + 2) + "\n"
+		"lw $fp 0($sp)\n"
+		"jr $ra\n";
 	
 	// The return statement is out of any if statements, so the function 
 	// declaration no need to generate codes for retrieving activation record.

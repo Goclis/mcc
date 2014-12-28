@@ -215,6 +215,8 @@ __MccIdentifer__
 
 ```
 // position由编译器生成代码时保存起来，为相对$fp的偏移
+// 这里需要注意，当该变量是局部变量或全局变量时，是向下的偏移
+// 当该变量为参数时，是向上的偏移
 1. 全局变量
 1.1. 数组变量
 addiu $v0 $zero 4000	// 4000为全局环境的的$fp，暂不定
@@ -223,7 +225,7 @@ subu $v0 $v0 $v1
 
 1.2. 普通变量
 addiu $v0 $zero 4000
-sw $v0 (-position)$v0
+lw $v0 (-position)$v0
 
 
 2. 局部变量
@@ -232,7 +234,7 @@ addiu $v1 $zero position
 subu $v0 $fp $v1
 
 2.2. 普通变量
-sw $v0 (-position)$fp
+lw $v0 (-position)$fp
 ```
 
 __MccBreakStatement__
@@ -316,7 +318,10 @@ subu $sp $sp $v1				// size是该变量的大小，数组变量要考虑所有�
 
 __MccFunctionDeclaration__
 
+需要根据方法名来区分方法的类型，有两种类型，普通方法和回调方法。
+
 ```
+// 普通方法
 // 如果包含定义（即非方法声明），往下
 fun:							// 方法的名字
 addu $fp $zero $sp				// 设置$fp
@@ -334,6 +339,31 @@ lw $ra 1($sp)					// 取出返回地址
 addiu $sp $sp args_fp_size		// pop掉剩余的活动记录的内存，包括参数等，args_fp_size由编译器维护
 lw $fp 0($sp)					// 恢复$fp
 jr $ra	
+
+
+// 回调方法（无参数）
+fun:
+sw $v0 0($sp)					// Push($v0)
+addiu $v0 $zero 1
+subu $sp $sp $v0
+sw $v1 0($sp)					// Push($v1)
+addiu $v1 $zero 1
+subu $sp $sp $v1
+sw $fp 0($sp)					// Push($fp) and set $fp
+addu $fp $zero $sp
+addiu $v1 $zero 1
+subu $sp $sp $v1
+Gen(local_var_1)				// 局部变量1
+...
+Gen(local_var_n)				// 局部变量n
+Gen(statement_1)				// 语句1
+...
+Gen(statement_n)				// 语句n
+addiu $sp $sp size				// 回收局部变量的空间
+lw $fp 1($sp)					// 恢复寄存器
+lw $v1 2($sp)
+lw $v0 3($sp)
+addiu $sp $sp 3
 ```
 
 __MccUnaryOperatorExpression__

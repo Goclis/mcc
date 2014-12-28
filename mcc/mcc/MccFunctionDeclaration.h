@@ -47,8 +47,13 @@ public:
 	 * @param name the name of the variable.
 	 *
 	 * @param var_size the size of the variable.
+	 *
+	 * @param type the type of identifier.
 	 */
-	void add_local_var_decl(const string &name, int var_size);
+	void add_local_var_decl(
+		const string &name, 
+		int var_size, 
+		IdentifierType type = NOMARL_VAR);
 
 	/**
 	 * @brief Get the information of the local identifer in function.
@@ -83,7 +88,6 @@ public:
 	void increase_cond_stmt_level();
 	void decrease_cond_stmt_level();
 	void set_has_retrieved();
-	int get_ar_size() const;
 	int get_vars_size() const;
 	const vector<MccVariableDeclaration*>& get_local_variable_decls();
 	bool is_definition() const;
@@ -91,7 +95,6 @@ public:
 	const vector<MccStatement*>& get_statement_list();
 	bool contain_definition() const;
 
-private:
 	/**
 	 * @brief Local variable declarations.
 	 */
@@ -128,17 +131,11 @@ private:
 	 */
 	bool m_has_retrieved;
 	
-	/**
-	 * @brief The value is the size of local variables.
-	 */
+	// The size of local variables.
 	int m_local_var_size;
 
-	/**
-	 * @brief The value is the size of activation record.
-	 *	
-	 *	Include $fp, arguments and local variables.
-	 */
-	int m_ar_size;
+	// The size of parameters.
+	int m_parameter_size;
 
 	/**
 	 * @brief A map to save the information of local variable definitions.
