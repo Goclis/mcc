@@ -38,11 +38,17 @@ int MccWhileStatement::generate_code() const
 #ifdef DEBUG_MODE
 	code_buffer += "MccWhileStatement generation.\n";
 #endif
-	code_buffer += while_start_label + ":\n";
+	code_buffer += 
+		while_start_label + ":\n";
+	robot
+		.add_code(while_start_label + ":");
 
 	// While condition.
 	this->m_condition->generate_code();
-	code_buffer += "beq $v0 0 " + break_label + "\n";
+	code_buffer += 
+		"beq $v0 0 " + break_label + "\n";
+	robot
+		.add_code("beq $v0, 0, " + break_label);
 
 	// While body.
 	this->m_statement->generate_code();
@@ -50,9 +56,14 @@ int MccWhileStatement::generate_code() const
 	// Jump back to the beginning of the while.
 	code_buffer += 
 		"j " + while_start_label + "\n";
+	robot
+		.add_code("j " + while_start_label);
 
 	// While end.
-	code_buffer += break_label + ":\n";
+	code_buffer += 
+		break_label + ":\n";
+	robot
+		.add_code(break_label + ":");
 
 	// Recovery.
 	robot.set_current_break_label(break_label_bak);

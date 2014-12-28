@@ -23,14 +23,17 @@ int MccIntLiteral::get_value() const
 
 int MccIntLiteral::generate_code() const
 {
-	string &code_buffer = theMccRobot().get_code_buffer();
+	MccRobot &robot = theMccRobot();
+	string &code_buffer = robot.get_code_buffer();
 #ifdef DEBUG_MODE
-	code_buffer += "MccIntLiteral generation.\n";	
+	code_buffer += "MccIntLiteral generation.\n";
 #endif
 	if (m_value >= -32768 && m_value <= 32767) {
 		// [-2^15, 2^15-1]
 		code_buffer += Utility::string_concat_int(
 			"addu $v0 $v0 ", m_value) + "\n";
+		robot
+			.add_code(Utility::string_concat_int("addu $v0, $zero, ", m_value));
 	} else {
 		// Calculate two parts.
 		// Convert value to hexadecimal number.
@@ -47,9 +50,15 @@ int MccIntLiteral::generate_code() const
 		lower_bits += hex_value[6];
 		lower_bits += hex_value[7];
 
-		code_buffer += "ori $v0 $zero 0x" + lower_bits + "\n";
-		code_buffer += "lui $v1 " + higher_bits + "\n";
-		code_buffer += "addu $v0 $v0 $v1\n";
+		code_buffer += 
+			"ori $v0 $zero 0x" + lower_bits + "\n"
+			"lui $v1 " + higher_bits + "\n"
+			"addu $v0 $v0 $v1\n";
+
+		robot
+			.add_code("ori $v0, $zero, 0x" + lower_bits)
+			.add_code("lui $v1, " + higher_bits)
+			.add_code("addu $v0, $v0, $v1");
 	}
 
 	return 0;

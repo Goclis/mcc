@@ -42,6 +42,10 @@ int MccMethodCallExpression::generate_code() const
 		"sw $fp 0($sp)\n"
 		"addiu $v1 $zero 1\n"
 		"subu $sp $sp $v1\n";
+	robot
+		.add_code("sw $t0, 0H($sp)")
+		.add_code("addiu $v0, $zero, 1")
+		.add_code("subu $sp, $sp, $v0");
 
 	int i = this->m_args.size() - 1;
 	for (; i >= 0; --i) {
@@ -52,9 +56,16 @@ int MccMethodCallExpression::generate_code() const
 			"sw $v0 0($sp)\n"
 			"addiu $v1 $zero 1\n"
 			"subu $sp $sp $v1\n";
+		robot
+			.add_code("sw $v0, 0H($sp)")
+			.add_code("addiu $v0, $zero, 1")
+			.add_code("subu $sp, $sp, $v0");
 	}
 	
-	code_buffer += "jal " + func_name + "\n";
+	code_buffer += 
+		"jal " + func_name + "\n";
+	robot
+		.add_code("jal " + func_name);
 
 	return 0;
 }

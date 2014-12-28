@@ -23,6 +23,9 @@ int MccBreakStatement::generate_code() const
 
 	code_buffer += "j " + robot.get_current_break_label() + "\n";
 
+	robot
+		.add_code("j " + robot.get_current_break_label());
+
 	return 0;
 }
 

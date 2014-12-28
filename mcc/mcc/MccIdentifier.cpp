@@ -52,10 +52,19 @@ int MccIdentifier::generate_code() const
 				"addiu $v0 $zero " + global_fp + "\n" +
 				Utility::string_concat_int("addiu $v1 $zero ", info->position) + "\n"
 				"subu $v0 $v0 $v1\n";
+			robot
+				.add_code("addiu $v0, $zero, " + global_fp)
+				.add_code(Utility::string_concat_int("addiu $v1, $zero, ", info->position))
+				.add_code("subu $v0, $v0, $v1");
 		} else if (NOMARL_VAR == info->id_type) {
 			code_buffer +=
 				"addiu $v0 $zero " + global_fp + "\n" +
-				Utility::string_concat_int("lw $v0 (-", info->position) + ")$v0\n";
+				Utility::string_concat_int("lw $v0 -", info->position) + "($v0)\n";
+			robot
+				.add_code("addiu $v0, $zero, " + global_fp)
+				.add_code(Utility::string_concat_int("addiu $v1, $zero, ", info->position))
+				.add_code("subu $v0, $v0, $v1")
+				.add_code("lw $v0, 0H($v0)");
 		}
 	} else {
 		// Local variable.
@@ -63,12 +72,23 @@ int MccIdentifier::generate_code() const
 			code_buffer += 
 				Utility::string_concat_int("addiu $v1 $zero ", info->position) + "\n"
 				"subu $v0 $fp $v1\n";
+			robot
+				.add_code(Utility::string_concat_int("addiu $v0, $zero, ", info->position))
+				.add_code("subu $v0, $t0, $v0");
 		} else if (NOMARL_VAR == info->id_type) {
 			code_buffer += 
 				Utility::string_concat_int("lw $v0 (-", info->position) + ")$fp\n";
+			robot
+				.add_code(Utility::string_concat_int("addiu $v0, $zero, ", info->position))
+				.add_code("subu $v0, $t0, $v0")
+				.add_code("lw $v0, 0H($v0)");
 		} else if (PARAMETER_VAR == info->id_type) {
 			code_buffer +=
 				Utility::string_concat_int("lw $v0 (", info->position) + ")$fp\n";
+			robot
+				.add_code(Utility::string_concat_int("addiu $v0, $zero, ", info->position))
+				.add_code("addu $v0, $t0, $v0")
+				.add_code("lw $v0, 0H($v0)");
 		}
 	}
 

@@ -52,8 +52,12 @@ int MccAssignStatement::generate_code() const
 	// Push($v0), save the result of right operand.
 	code_buffer +=
 		"sw $v0 0($sp)\n"
-		"addiu $v1 $zero 1\n"
-		"subu $sp $sp $v1\n";
+		"addiu $v0 $zero 1\n"
+		"subu $sp $sp $v0\n";
+	robot
+		.add_code("sw $v0, 0H($sp)")
+		.add_code("addiu $v0, $zero, 1")
+		.add_code("subu $sp, $sp, $v0");
 
 	// Gen(`m_left`).
 	if (nullptr == m_port_expr) {
@@ -77,15 +81,24 @@ int MccAssignStatement::generate_code() const
 				"addiu $v0 $zero " + global_fp + "\n" +
 				Utility::string_concat_int("addiu $v1 $zero ", info->position) + "\n"
 				"subu $v0 $v0 $v1\n";
+			robot
+				.add_code("addiu $v0, $zero, " + global_fp)
+				.add_code(Utility::string_concat_int("addiu $v1, $zero, ", info->position))
+				.add_code("subu $v0, $v0, $v1");
 		} else {
 			// Local variable.
 			if (PARAMETER_VAR == info->id_type) {
 				code_buffer +=
 					Utility::string_concat_int("addiu $v0 $fp ", info->position) + "\n";
+				robot
+					.add_code(Utility::string_concat_int("addiu $v0, $t0, ", info->position));
 			} else {
 				code_buffer +=
 					Utility::string_concat_int("addiu $v1 $zero", info->position) + "\n"
 					"subu $v0 $fp $v1\n";
+				robot
+					.add_code(Utility::string_concat_int("addiu $v0, $zero, ", info->position))
+					.add_code("subu $v0, $t0, $v0");
 			}
 		}
 
@@ -96,6 +109,10 @@ int MccAssignStatement::generate_code() const
 				"sw $v0 0($sp)\n"
 				"addiu $v1 $zero 1\n"
 				"subu $sp $sp $v1\n";
+			robot
+				.add_code("sw $v0, 0H($sp)")
+				.add_code("addiu $v0, $zero, 1")
+				.add_code("subu $sp, $sp, $v1");
 
 			// Array index.
 			m_array_index_expr->generate_code();
@@ -104,10 +121,15 @@ int MccAssignStatement::generate_code() const
 			code_buffer +=
 				"lw $v1 1($sp)\n"
 				"addiu $sp $sp 1\n";
+			robot
+				.add_code("lw $v1, 1H($sp)")
+				.add_code("addiu $sp, $sp, 1");
 
 			// Add together.
 			code_buffer +=
 				"add $v0 $v0 $v1\n";
+			robot
+				.add_code("add $v0, $v0, $v1");
 		}
 	} else {
 		// Left operand is port expression.
@@ -118,11 +140,17 @@ int MccAssignStatement::generate_code() const
 	code_buffer += 
 		"lw $v1 1($sp)\n"
 		"addiu $sp $sp 1\n";
+	robot
+		.add_code("lw $v1, 1H($sp)")
+		.add_code("addiu $sp, $sp, 1");
 
 	// Memory[$v0] = $v1 and save the result to $v0.
 	code_buffer += 
 		"sw $v1 0($v0)\n"
 		"addu $v0 $zero $v1\n";
+	robot
+		.add_code("sw $v1, 0H($v0)")
+		.add_code("addu $v0, $zero, $v1");
 
 	return 0;
 }

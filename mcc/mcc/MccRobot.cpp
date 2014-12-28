@@ -218,3 +218,23 @@ string MccRobot::get_global_fp() const
 	return m_global_fp;
 }
 
+
+vector<string>& MccRobot::get_codes()
+{
+	return m_codes;
+}
+
+
+MccRobot& MccRobot::add_code(const string &code, bool front)
+{
+	if (front) {
+		static int i = 0; // The line of the codes inserted at front.
+		m_codes.insert(m_codes.begin() + i, code);
+		++i;
+	} else {
+		m_codes.push_back(code);
+	}
+
+	return *this;
+}
+

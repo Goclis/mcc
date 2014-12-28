@@ -48,18 +48,29 @@ int MccIfStatement::generate_code() const
 	// Gen(m_condition).
 	this->m_condition->generate_code();
 	code_buffer += "beq $v0 0 " + false_branch_label + "\n";
+	robot
+		.add_code("beq $v0, 0, " + false_branch_label);
 
 	// Gen(m_if).
 	this->m_if->generate_code();
-	code_buffer += "j " + if_end + "\n";
+	code_buffer += 
+		"j " + if_end + "\n";
+	robot
+		.add_code("j " + if_end);
 
 	// Gen(m_else), if have.
-	code_buffer += false_branch_label + ":\n";
+	code_buffer += 
+		false_branch_label + ":\n";
+	robot
+		.add_code(false_branch_label + ":");
 	if (this->m_else != nullptr) {
 		this->m_else->generate_code();
 	}
 
-	code_buffer += if_end + ":\n";
+	code_buffer += 
+		if_end + ":\n";
+	robot
+		.add_code(if_end + ":");
 	func_decl->decrease_cond_stmt_level();
 
 	return 0;

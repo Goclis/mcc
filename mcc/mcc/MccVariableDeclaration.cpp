@@ -43,6 +43,9 @@ int MccVariableDeclaration::generate_code()
 		code_buffer += 
 			Utility::string_concat_int("addiu $v1 $zero ", stack_used) + "\n"
 			"subu $sp $sp $v1\n";
+		robot
+			.add_code(Utility::string_concat_int("addiu $v0, $zero, ", stack_used))
+			.add_code("subu $sp, $sp, $v0");
 	} else {
 		// Global variable declaration.
 		robot.add_global_decl(var_name, stack_used);
@@ -52,6 +55,9 @@ int MccVariableDeclaration::generate_code()
 		robot.get_global_var_code_buffer() += 
 			Utility::string_concat_int("addiu $v1 $zero ", stack_used) + "\n"
 			"subu $sp $sp $v1\n";
+		robot
+			.add_code(Utility::string_concat_int("addiu $v0, $zero, ", stack_used), true)
+			.add_code("subu $sp, $sp, $v0", true);
 	}
 
 	return stack_used;

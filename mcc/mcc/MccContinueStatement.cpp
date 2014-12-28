@@ -23,6 +23,9 @@ int MccContinueStatement::generate_code() const
 
 	code_buffer += "j " + robot.get_current_continue_label() + "\n";
 
+	robot
+		.add_code("j " + robot.get_current_continue_label());
+
 	return 0;
 }
 

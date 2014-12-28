@@ -27,7 +27,8 @@ MccUnaryOperatorExpression::~MccUnaryOperatorExpression(void)
 
 int MccUnaryOperatorExpression::generate_code() const
 {
-	string &code_buffer = theMccRobot().get_code_buffer();
+	MccRobot &robot = theMccRobot();
+	string &code_buffer = robot.get_code_buffer();
 #ifdef DEBUG_MODE
 	code_buffer += "MccUnaryOperatorExpression generation.\n";
 #endif
@@ -37,11 +38,17 @@ int MccUnaryOperatorExpression::generate_code() const
 	switch (this->m_operator)
 	{
 	case NEG_UNARY:
-		code_buffer += "nor $v0 $v0 $zero\n";
+		code_buffer += 
+			"nor $v0 $v0 $zero\n";
+		robot
+			.add_code("nor $v0, $v0, $zero");
 		break;
 
 	case NEGATIVE_UNARY:
-		code_buffer += "subu $v0 $zero $v0\n";
+		code_buffer += 
+			"subu $v0 $zero $v0\n";
+		robot
+			.add_code("sub $v0, $zero, $v0");
 		break;
 
 	case POSITIVE_UNARY:
@@ -51,11 +58,17 @@ int MccUnaryOperatorExpression::generate_code() const
 		break;
 
 	case NOT_UNARY:
-		code_buffer += "sltu $v0 $zero $v0\n";
+		code_buffer += 
+			"sltu $v0 $zero $v0\n";
+		robot
+			.add_code("sltu $v0, $zero, $v0");
 		break;
 
 	case PORT_UNARY:
-		code_buffer += "lw $v0 0($v0)\n";
+		code_buffer += 
+			"lw $v0 0($v0)\n";
+		robot
+			.add_code("lw $v0, 0H($v0)");
 		break;
 	}
 	return 0;
