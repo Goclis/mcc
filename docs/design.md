@@ -177,6 +177,34 @@ Gen(m_right_operand)
 ...
 ```
 
+__用到的指令__
+
+- add
+- sub
+- subu
+- and
+- mult
+- div
+- mfhi
+- mflo
+- or
+- xor
+- nor
+- slt
+- sltu
+- sllv
+- srlv
+- jr
+- addiu
+- ori
+- lui
+- lw
+- sw
+- beq
+- bne
+- j
+- jal
+
 __MccArrayAccessExpression__
 
 ```
