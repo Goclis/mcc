@@ -29,6 +29,9 @@ public:
 	// 初始化func码
 	void init_func_codes();
 
+	// 初始化op码
+	void init_op_codes();
+
 
 	// 扫描代码，进行转换
 	void scan();
@@ -53,7 +56,20 @@ public:
 	 */
 	string generate_r_instruction(
 		const string &name, 
-		const string &operands) const;
+		const string &operands_str) const;
+
+	/**
+	 * @breif 生成I类型的指令的机器码。
+	 *
+	 * @param name 指令的名字，如addiu。
+	 *
+	 * @param operands 指令使用的操作数，全部组合在了一起。
+	 *
+	 * @return 生成的机器码。
+	 */
+	string generate_i_instruction(
+		const string &name,
+		const string &operands_str) const;
 
 	// 辅助方法
 	/**
@@ -67,11 +83,14 @@ public:
 		const string &str, 
 		vector<string> &operands) const;
 
-	// 查找指令对应的func代码
+	// 查找指令对应的func编码
 	string get_func_code(const string &name) const;
 
-	// 查找寄存器对应的代码
+	// 查找寄存器对应的编码
 	string get_register_code(const string &reg) const;
+
+	// 查找操作对应的编码
+	string get_op_code(const string &op) const;
 
 	// 打印警告日志
 	void log_warning(const string &info) const;
@@ -90,5 +109,12 @@ private:
 	// func码的映射表
 	typedef pair<string, string> FuncCodePair;
 	map<string, string> m_func_codes;
+
+	// op码的映射表
+	typedef pair<string, string> OpCodePair;
+	map<string, string> m_op_codes;
+
+	// label到地址的映射表
+	
 };
 

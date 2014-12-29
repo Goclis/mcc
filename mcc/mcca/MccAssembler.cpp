@@ -9,6 +9,7 @@ MccAssembler::MccAssembler()
 {
 	init_registers();
 	init_func_codes();
+	init_op_codes();
 	
 	// Test
 	m_codes.push_back("add $v0, $v0, $v1");
@@ -63,6 +64,18 @@ void MccAssembler::init_func_codes()
 }
 
 
+void MccAssembler::init_op_codes()
+{
+	m_op_codes.insert(OpCodePair("addiu", "001001"));
+	m_op_codes.insert(OpCodePair("ori", "001101"));
+	m_op_codes.insert(OpCodePair("lui", "001111"));
+	m_op_codes.insert(OpCodePair("lw", "100011"));
+	m_op_codes.insert(OpCodePair("sw", "101011"));
+	m_op_codes.insert(OpCodePair("beq", "000100"));
+	m_op_codes.insert(OpCodePair("bne", "000101"));
+}
+
+
 void MccAssembler::scan()
 {
 	// 遍历代码，进行分类处理
@@ -110,6 +123,9 @@ void MccAssembler::deal_instruction(const string &code)
 			|| "lui" == instruction || "lw" == instruction
 			|| "sw" == instruction || "beq" == instruction
 			|| "bne" == instruction ) {
+		m_machine_codes.push_back(generate_i_instruction(
+			instruction,
+			code.substr(instruction.length() + 1)));
 		// I类型
 	} else if ("j" == instruction || "jal" == instruction) {
 		// J类型
@@ -129,7 +145,6 @@ string MccAssembler::generate_r_instruction(
 	vector<string> operands;
 	split_operands(operands_str, operands);
 	size_t operands_num = operands.size();
-	// 根据指令的不同，对操作数做不同的处理
 	if (3 == operands_num) {
 		// 有三个操作数，顺序为rd, rs, rt
 		rd = get_register_code(operands[0]);
@@ -153,6 +168,76 @@ string MccAssembler::generate_r_instruction(
 	func = get_func_code(name);
 
 	return op + rs + rt + rd + shamt + func;
+}
+
+
+string MccAssembler::generate_i_instruction(
+	const string &name,
+	const string &operands_str) const
+{
+	string op, rs, rt, immediate;
+
+	// op
+	op = get_op_code(name);
+
+	// rs, rt
+	vector<string> operands;
+	string immediate_or_offset;
+	split_operands(operands_str, operands);
+	// 根据指令的不同，做不同的处理
+	if ("addiu" == name || "ori" == name) {
+		rt = get_register_code(operands[0]);
+		rs = get_register_code(operands[1]);
+		immediate_or_offset = operands[2];
+	} else if ("lui" == name) {
+		rs = "000000";
+		rt = get_register_code(operands[0]);
+		immediate_or_offset = operands[1];
+	} else if ("lw" == name || "sw" == name) {
+		rt = get_register_code(operands[0]);
+		string &to_seperate = operands[1];
+
+		// 需要从第二个操作数中分离出立即数（op1）和rs（op2）
+		string op1, op2;
+		bool add_to_op1 = false;
+		char current_char;
+		for (int i = 0, len = to_seperate.length(); i < len; ++i) {
+			current_char = to_seperate[i];
+			if ('(' == current_char) {
+				add_to_op1 = true;
+			} else if (')' == current_char) {
+				add_to_op1 = false;
+			}
+
+			if (add_to_op1) {
+				op1 += current_char;
+			} else {
+				op2 += current_char;
+			}
+		}
+		
+		rs = get_register_code(op2);
+		immediate_or_offset = op1;
+	} else if ("beq" == name || "bne" == name) {
+		rt = get_register_code(operands[0]);
+		rs = get_register_code(operands[1]);
+		string &label = operands[2];
+
+		// 查找该label是否已确定位置，未确定则需要记录下来，往后进行添加
+		if (/*确定*/1) {
+			immediate_or_offset; // = 确定的值，否则不处理，往后发现了label再进行填充
+		} else {
+
+		}
+	}
+
+	// immediate
+	if (0 != immediate_or_offset.length()) {
+		// 转换成16位二进制
+
+	}
+
+	return op + rs + rt + immediate;
 }
 
 
@@ -210,6 +295,20 @@ string MccAssembler::get_register_code(const string &reg) const
 		return ret;
 	} else {
 		log_warning("未找到【" + reg + "】对应的寄存器编码");
+		return "000000";
+	}
+}
+
+
+string MccAssembler::get_op_code(const string &op) const
+{
+	map<string, string>::const_iterator iter
+		= m_op_codes.find(op);
+
+	if (iter != m_op_codes.end()) {
+		return iter->second;
+	} else {
+		log_warning("未找到【" + op + "】对应的op编码");
 		return "000000";
 	}
 }
