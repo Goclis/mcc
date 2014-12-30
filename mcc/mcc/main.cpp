@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <fstream>
 #include <iostream>
+#include "MccAssembler.h"
 #include "MccRobot.h"
 using namespace std;
 
@@ -53,6 +54,10 @@ int main(int args, char** argv)
 	// After parsing, do more thing.
 	if (robot.check_semantic_error()) {
 		robot.generate_code();
+
+		MccAssembler mcca(robot.get_codes());
+		mcca.scan();
+
 
 		// Deal with conflict between input filename and output filename.
 		if (input_filename == output_filename) {

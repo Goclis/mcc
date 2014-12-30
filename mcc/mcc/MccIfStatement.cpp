@@ -49,7 +49,7 @@ int MccIfStatement::generate_code() const
 	this->m_condition->generate_code();
 	code_buffer += "beq $v0 0 " + false_branch_label + "\n";
 	robot
-		.add_code("beq $v0, 0, " + false_branch_label);
+		.add_code("beq $v0, $zero, " + false_branch_label);
 
 	// Gen(m_if).
 	this->m_if->generate_code();

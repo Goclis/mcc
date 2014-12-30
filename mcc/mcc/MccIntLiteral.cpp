@@ -33,7 +33,7 @@ int MccIntLiteral::generate_code() const
 		code_buffer += Utility::string_concat_int(
 			"addu $v0 $v0 ", m_value) + "\n";
 		robot
-			.add_code(Utility::string_concat_int("addu $v0, $zero, ", m_value));
+			.add_code(Utility::string_concat_int("addiu $v0, $zero, ", m_value));
 	} else {
 		// Calculate two parts.
 		// Convert value to hexadecimal number.

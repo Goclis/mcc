@@ -153,6 +153,9 @@
     <ClCompile Include="MccReturnTypeError.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MccAssembler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parser\parser.hpp">
@@ -285,6 +288,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MccReturnTypeError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MccAssembler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

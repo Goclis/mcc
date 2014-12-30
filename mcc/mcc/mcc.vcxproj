@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)mcca;$(IncludePath)</IncludePath>
     <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MccArrayAccessExpression.cpp" />
+    <ClCompile Include="MccAssembler.cpp" />
     <ClCompile Include="MccAssignStatement.cpp" />
     <ClCompile Include="MccBinaryOperatorExpression.cpp" />
     <ClCompile Include="MccBlockStatement.cpp" />
@@ -123,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MccArrayAccessExpression.h" />
+    <ClInclude Include="MccAssembler.h" />
     <ClInclude Include="MccAssignStatement.h" />
     <ClInclude Include="MccBinaryOperatorExpression.h" />
     <ClInclude Include="MccBlockStatement.h" />
