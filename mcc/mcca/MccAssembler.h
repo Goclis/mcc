@@ -9,6 +9,13 @@ using std::map;
 using std::pair;
 
 
+// 记录指令缺失信息的struct
+struct LackInfo {
+	bool concern_offset; // true - offset, false - address
+	unsigned int code_line;
+};
+
+
 /**
  * MiniC编译器对应汇编器。
  *
@@ -32,13 +39,12 @@ public:
 	// 初始化op码
 	void init_op_codes();
 
-
 	// 扫描代码，进行转换
 	void scan();
 
 	// 一系列的处理方法
 	// 处理label
-	void deal_label(const string &code);
+	void deal_label(const string &label);
 
 	// 处理指令
 	void deal_instruction(const string &code);
@@ -69,7 +75,11 @@ public:
 	 */
 	string generate_i_instruction(
 		const string &name,
-		const string &operands_str) const;
+		const string &operands_str);
+
+	string generate_j_instruction(
+		const string &name,
+		const string &label);
 
 	// 辅助方法
 	/**
@@ -91,6 +101,30 @@ public:
 
 	// 查找操作对应的编码
 	string get_op_code(const string &op) const;
+
+	// 查找某label对应的缺失信息
+	vector<LackInfo*>& get_lack_infos(const string &label);
+
+	/**
+	 * @brief 将十进制数转换为二进制字符串
+	 *
+	 * @param num 待转化的数字
+	 *
+	 * @param digits 位数
+	 *
+	 * @return 转换得到的字符串
+	 */
+	string convert_scale(
+		int num, 
+		unsigned int digits) const;
+
+	// 重载，数字用字符串表示，源进制信息包含在数字中，目前只处理16进制数
+	string convert_scale(
+		string num,
+		unsigned int digits) const;
+
+	// 将十六进制的字符转换为4位二进制字符串
+	string convert_hex_to_binary(char c) const;
 
 	// 打印警告日志
 	void log_warning(const string &info) const;
@@ -115,6 +149,10 @@ private:
 	map<string, string> m_op_codes;
 
 	// label到地址的映射表
-	
+	typedef pair<string, unsigned int> LabelAddrPair;
+	map<string, unsigned int> m_labels;
+
+	// 缺失label的指令
+	map<string, vector<LackInfo*>> m_lack_infos;
 };
 

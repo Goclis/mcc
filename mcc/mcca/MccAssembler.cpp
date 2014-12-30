@@ -13,6 +13,12 @@ MccAssembler::MccAssembler()
 	
 	// Test
 	m_codes.push_back("add $v0, $v0, $v1");
+	m_codes.push_back("bne $v0, $v0, main");
+	m_codes.push_back("j main");
+	m_codes.push_back("main:");
+	m_codes.push_back("add $v0, $v0, $v1");
+	m_codes.push_back("beq $v0, $v0, main");
+	m_codes.push_back("jal main");
 }
 
 
@@ -85,7 +91,7 @@ void MccAssembler::scan()
 
 		if (current_line.find(':') != string::npos) {
 			// 代码中发现了':'，为label
-			deal_label(current_line);
+			deal_label(current_line.substr(0, current_line.length() - 1));
 		} else {
 			// 正常的指令代码
 			deal_instruction(current_line);
@@ -94,9 +100,34 @@ void MccAssembler::scan()
 }
 
 
-void MccAssembler::deal_label(const string &code)
+void MccAssembler::deal_label(const string &label)
 {
-	
+	// 记录label的代码行
+	unsigned int line_num = m_machine_codes.size();
+	m_labels[label] = line_num;
+
+	// 查找是否有由于此label导致的指令空缺，补上
+	vector<LackInfo*> &lacks = get_lack_infos(label);
+	LackInfo *info;
+	for (size_t i = 0, len = lacks.size(); i < len; ++i) {
+		info = lacks[i];
+		if (info->concern_offset) {
+			// 计算offset，bne或beq
+			int offset = line_num - info->code_line - 1;
+			m_machine_codes[info->code_line] += convert_scale(
+				offset,
+				16);
+		} else {
+			// 地址，j或jal
+			m_machine_codes[info->code_line] += convert_scale(
+				line_num,
+				26);
+		}
+
+		// 释放掉LackInfo
+		delete info;
+	}
+	lacks.clear();
 }
 
 
@@ -129,6 +160,10 @@ void MccAssembler::deal_instruction(const string &code)
 		// I类型
 	} else if ("j" == instruction || "jal" == instruction) {
 		// J类型
+		//@todo 目前不处理立即数的
+		m_machine_codes.push_back(generate_j_instruction(
+			instruction,
+			code.substr(instruction.length() + 1)));
 	}
 }
 
@@ -161,8 +196,8 @@ string MccAssembler::generate_r_instruction(
 		rs = rt = "000000";
 	}
 
-	// shamt，对于可能用到的R指令，均为000000
-	shamt = "000000";
+	// shamt，对于可能用到的R指令，均为00000
+	shamt = "00000";
 
 	// func
 	func = get_func_code(name);
@@ -173,7 +208,7 @@ string MccAssembler::generate_r_instruction(
 
 string MccAssembler::generate_i_instruction(
 	const string &name,
-	const string &operands_str) const
+	const string &operands_str)
 {
 	string op, rs, rt, immediate;
 
@@ -223,21 +258,72 @@ string MccAssembler::generate_i_instruction(
 		rs = get_register_code(operands[1]);
 		string &label = operands[2];
 
-		// 查找该label是否已确定位置，未确定则需要记录下来，往后进行添加
-		if (/*确定*/1) {
-			immediate_or_offset; // = 确定的值，否则不处理，往后发现了label再进行填充
-		} else {
+		//@todo 未来可能需要增加处理bne和beq使用的是直接的数字而非label的情况
 
+		// 查找该label是否已确定位置，未确定则需要记录下来，往后进行添加
+		unsigned int this_code_line = m_machine_codes.size();
+		map<string, unsigned int>::const_iterator iter
+			= m_labels.find(label);
+		if (iter != m_labels.end()) {
+			// 该label已出现，生成offset
+			unsigned int label_line = iter->second;
+			int offset = label_line - this_code_line;
+
+			// 将offset转换为16位二进制，存至immediate
+			immediate = convert_scale(
+				offset,
+				16);
+		} else {
+			// label未确定，添加缺失信息
+			LackInfo *lack_info = new LackInfo;
+			lack_info->code_line = this_code_line;
+			lack_info->concern_offset = true;
+
+			vector<LackInfo*> &lack_infos = get_lack_infos(label);
+			lack_infos.push_back(lack_info);
 		}
 	}
 
 	// immediate
 	if (0 != immediate_or_offset.length()) {
 		// 转换成16位二进制
-
+		// 这里可能的立即数都是编译器生成的，强制要求编译器生成的是16进制
+		immediate = convert_scale(
+			immediate_or_offset,
+			16);
 	}
 
 	return op + rs + rt + immediate;
+}
+
+
+string MccAssembler::generate_j_instruction(
+	const string &name,
+	const string &label)
+{
+	string op, address;
+	if ("j" == name) {
+		op = "000010";
+	} else if ("jal" == name) {
+		op = "000011";
+	}
+
+	map<string, unsigned int>::const_iterator iter
+		= m_labels.find(label);
+	if (iter != m_labels.end()) {
+		unsigned int code_line = iter->second;
+		address = convert_scale((int)code_line, 26);
+	} else {
+		// label未确定，添加缺失信息
+		LackInfo *lack_info = new LackInfo;
+		lack_info->code_line = m_machine_codes.size();
+		lack_info->concern_offset = false;
+
+		vector<LackInfo*> &lack_infos = get_lack_infos(label);
+		lack_infos.push_back(lack_info);
+	}
+
+	return op + address;
 }
 
 
@@ -284,15 +370,9 @@ string MccAssembler::get_register_code(const string &reg) const
 		= m_registers.find(reg);
 
 	if (iter != m_registers.end()) {
-		stringstream sstm;
-		sstm << iter->second;
-		string ret = sstm.str();
-		int rest = 6 - ret.length();
-		while (rest > 0) {
-			ret.insert(ret.begin(), '0');
-			--rest;
-		}
-		return ret;
+		return convert_scale(
+			(int)iter->second,
+			5);
 	} else {
 		log_warning("未找到【" + reg + "】对应的寄存器编码");
 		return "000000";
@@ -313,6 +393,127 @@ string MccAssembler::get_op_code(const string &op) const
 	}
 }
 
+
+vector<LackInfo*>& MccAssembler::get_lack_infos(const string &label)
+{
+	map<string, vector<LackInfo*>>::iterator iter
+		= m_lack_infos.find(label);
+	if (iter != m_lack_infos.end()) {
+		return iter->second;
+	} else {
+		vector<LackInfo*> new_vector;
+		m_lack_infos[label] = new_vector;
+		return m_lack_infos[label];
+	}
+}
+
+
+string MccAssembler::convert_scale(
+	int num, 
+	unsigned int digits) const
+{
+	char hex_chars[10] = { 0 };
+	sprintf(hex_chars, "%X", num);
+
+	string to_convert;
+	for (int i = 0; i < 10; ++i) {
+		if (hex_chars[i] != '\0') {
+			to_convert += hex_chars[i];
+		}
+	}
+	to_convert += "H";
+	
+	return convert_scale(to_convert, digits);
+}
+
+
+string MccAssembler::convert_scale(
+	string num,
+	unsigned int digits) const
+{
+	//@todo 先分析num，然后调用相应重载
+	string ret;
+	if (num.find('H') != string::npos) {
+		// 16进制数，符合约定
+		for (int i = 0, len = num.length() - 1; i < len; ++i) {
+			ret += convert_hex_to_binary(num[i]);
+		}
+		
+		int current_len = ret.length();
+		if (current_len > digits) {
+			ret = ret.substr(current_len - digits);
+		} else if (current_len < digits) {
+			for (int i = current_len; i < digits; ++i) {
+				ret.insert(ret.begin(), '0');
+			}
+		}
+	} else {
+		for (unsigned int i = 0; i < digits; ++i) {
+			ret += "0";
+		}
+	}
+	return ret;
+}
+
+
+string MccAssembler::convert_hex_to_binary(char c) const
+{
+	string ret;
+	switch (c) {
+	case '0':
+		ret += "0000";
+		break;
+	case '1':
+		ret += "0001";
+		break;
+	case '2':
+		ret += "0010";
+		break;
+	case '3':
+		ret += "0011";
+		break;
+	case '4':
+		ret += "0100";
+		break;
+	case '5':
+		ret += "0101";
+		break;
+	case '6':
+		ret += "0110";
+		break;
+	case '7':
+		ret += "0111";
+		break;
+	case '8':
+		ret += "1000";
+		break;
+	case '9':
+		ret += "1001";
+		break;
+	case 'A':
+		ret += "1010";
+		break;
+	case 'B':
+		ret += "1011";
+		break;
+	case 'C':
+		ret += "1100";
+		break;
+	case 'D':
+		ret += "1101";
+		break;
+	case 'E':
+		ret += "1110";
+		break;
+	case 'F':
+		ret += "1111";
+		break;
+	default:
+		break;
+	}
+
+	return ret;
+}
 
 void MccAssembler::log_warning(const string &info) const
 {
