@@ -180,6 +180,7 @@ Gen(m_right_operand)
 __用到的指令__
 
 - add
+- addu
 - sub
 - subu
 - and
@@ -281,7 +282,7 @@ __MccIfStatement__
 
 ```
 Gen(m_condition)				// 条件
-beq $v0 0 false_branch_label	// false_branch_label由编译器生成维护
+beq $v0 $zero false_branch_label	// false_branch_label由编译器生成维护
 Gen(m_if)
 j false_branch_label_end		// false_branch_label拼接上"_end"
 false_branch_label:
@@ -294,7 +295,7 @@ __MccWhileStatement__
 ```
 while_start_label:				// 由编译器生成维护
 Gen(m_condition)				// 条件
-beq $v0 0 break_label			// break_label由编译器生成维护
+beq $v0 $zero break_label			// break_label由编译器生成维护
 Gen(m_statement)				// While body
 break_label:					// 跳出while循环的地方
 ```
