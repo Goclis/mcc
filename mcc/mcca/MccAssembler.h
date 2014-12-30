@@ -27,6 +27,7 @@ class MccAssembler
 {
 public:
 	MccAssembler();
+	MccAssembler(const vector<string> &codes);
 	~MccAssembler();
 	
 	// 一系列初始化方法，仅仅初始化可能用到的值

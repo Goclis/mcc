@@ -22,6 +22,15 @@ MccAssembler::MccAssembler()
 }
 
 
+MccAssembler::MccAssembler(const vector<string> &codes)
+	: m_codes(codes.begin(), codes.end())
+{
+	init_registers();
+	init_func_codes();
+	init_op_codes();
+}
+
+
 MccAssembler::~MccAssembler()
 {
 }
@@ -52,6 +61,7 @@ void MccAssembler::init_registers()
 void MccAssembler::init_func_codes()
 {
 	m_func_codes.insert(FuncCodePair("add", "100000"));
+	m_func_codes.insert(FuncCodePair("addu", "100001"));
 	m_func_codes.insert(FuncCodePair("sub", "100010"));
 	m_func_codes.insert(FuncCodePair("subu", "100011"));
 	m_func_codes.insert(FuncCodePair("and", "100100"));
@@ -138,7 +148,7 @@ void MccAssembler::deal_instruction(const string &code)
 	sstm >> instruction;
 
 	// 只分析会用到的指令
-	if ("add" == instruction || "sub" == instruction
+	if ("add" == instruction || "addu" == instruction || "sub" == instruction
 			|| "subu" == instruction || "and" == instruction
 			|| "mult" == instruction || "div" == instruction
 			|| "mfhi" == instruction || "mflo" == instruction
@@ -187,13 +197,13 @@ string MccAssembler::generate_r_instruction(
 		rt = get_register_code(operands[2]);
 	} else if (2 == operands_num) {
 		// 有两个操作数，顺序为rs, rt，rd为000000
-		rd = "000000";
+		rd = "00000";
 		rs = get_register_code(operands[0]);
 		rt = get_register_code(operands[1]);
 	} else if (1 == operands_num) {
 		// 一个操作数，仅rd，另外两个为000000
 		rd = get_register_code(operands[0]);
-		rs = rt = "000000";
+		rs = rt = "00000";
 	}
 
 	// shamt，对于可能用到的R指令，均为00000
@@ -225,7 +235,7 @@ string MccAssembler::generate_i_instruction(
 		rs = get_register_code(operands[1]);
 		immediate_or_offset = operands[2];
 	} else if ("lui" == name) {
-		rs = "000000";
+		rs = "00000";
 		rt = get_register_code(operands[0]);
 		immediate_or_offset = operands[1];
 	} else if ("lw" == name || "sw" == name) {
@@ -234,14 +244,16 @@ string MccAssembler::generate_i_instruction(
 
 		// 需要从第二个操作数中分离出立即数（op1）和rs（op2）
 		string op1, op2;
-		bool add_to_op1 = false;
+		bool add_to_op1 = true;
 		char current_char;
 		for (int i = 0, len = to_seperate.length(); i < len; ++i) {
 			current_char = to_seperate[i];
 			if ('(' == current_char) {
-				add_to_op1 = true;
-			} else if (')' == current_char) {
 				add_to_op1 = false;
+				continue;
+			} else if (')' == current_char) {
+				add_to_op1 = true;
+				continue;
 			}
 
 			if (add_to_op1) {
