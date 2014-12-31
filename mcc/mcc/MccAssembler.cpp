@@ -1,6 +1,7 @@
 #include "MccAssembler.h"
 #include <sstream>
 #include <iostream>
+#include <fstream>
 #include <cstdio>
 using namespace std;
 
@@ -10,7 +11,7 @@ MccAssembler::MccAssembler()
 	init_registers();
 	init_func_codes();
 	init_op_codes();
-	
+
 	// Test
 	m_codes.push_back("add $v0, $v0, $v1");
 	m_codes.push_back("bne $v0, $v0, main");
@@ -110,6 +111,28 @@ void MccAssembler::scan()
 }
 
 
+void MccAssembler::output_coes()
+{
+	string rom_filename = "rom.coe";
+	string ram_filename = "ram.coe";
+
+	// ram.coe
+	//@todo 这段固定
+
+	// rom.coe
+	ofstream rom(rom_filename);
+	rom <<
+		"MEMORY_INITIALIZATION_RADIX=2;\n"
+		"MEMORY_INITIALIZATION_VECTOR=\n";
+	size_t i = 0;
+	for (size_t size = m_machine_codes.size() - 1; i < size; ++i) {
+		rom << m_machine_codes[i] << ",\n";
+	}
+	rom << m_machine_codes[i] << ";\n";
+	rom.close();
+}
+
+
 void MccAssembler::deal_label(const string &label)
 {
 	// 记录label的代码行
@@ -149,25 +172,25 @@ void MccAssembler::deal_instruction(const string &code)
 
 	// 只分析会用到的指令
 	if ("add" == instruction || "addu" == instruction || "sub" == instruction
-			|| "subu" == instruction || "and" == instruction
-			|| "mult" == instruction || "div" == instruction
-			|| "mfhi" == instruction || "mflo" == instruction
-			|| "or" == instruction || "xor" == instruction
-			|| "nor" == instruction || "slt" == instruction
-			|| "sltu" == instruction || "sllv" == instruction
-			|| "srlv" == instruction || "jr" == instruction) {
+		|| "subu" == instruction || "and" == instruction
+		|| "mult" == instruction || "div" == instruction
+		|| "mfhi" == instruction || "mflo" == instruction
+		|| "or" == instruction || "xor" == instruction
+		|| "nor" == instruction || "slt" == instruction
+		|| "sltu" == instruction || "sllv" == instruction
+		|| "srlv" == instruction || "jr" == instruction) {
 		// R类型
 		m_machine_codes.push_back(generate_r_instruction(
-			instruction, 
+			instruction,
 			code.substr(instruction.length() + 1)));
 	} else if ("addiu" == instruction || "ori" == instruction
-			|| "lui" == instruction || "lw" == instruction
-			|| "sw" == instruction || "beq" == instruction
-			|| "bne" == instruction ) {
+		|| "lui" == instruction || "lw" == instruction
+		|| "sw" == instruction || "beq" == instruction
+		|| "bne" == instruction) {
+		// I类型
 		m_machine_codes.push_back(generate_i_instruction(
 			instruction,
 			code.substr(instruction.length() + 1)));
-		// I类型
 	} else if ("j" == instruction || "jal" == instruction) {
 		// J类型
 		//@todo 目前不处理立即数的
@@ -179,7 +202,7 @@ void MccAssembler::deal_instruction(const string &code)
 
 
 string MccAssembler::generate_r_instruction(
-	const string &name, 
+	const string &name,
 	const string &operands_str) const
 {
 	string op, rs, rt, rd, shamt, func;
@@ -262,7 +285,7 @@ string MccAssembler::generate_i_instruction(
 				op2 += current_char;
 			}
 		}
-		
+
 		rs = get_register_code(op2);
 		immediate_or_offset = op1;
 	} else if ("beq" == name || "bne" == name) {
@@ -340,7 +363,7 @@ string MccAssembler::generate_j_instruction(
 
 
 void MccAssembler::split_operands(
-	const string &str, 
+	const string &str,
 	vector<string> &operands) const
 {
 	string token;
@@ -364,7 +387,7 @@ void MccAssembler::split_operands(
 
 string MccAssembler::get_func_code(const string &name) const
 {
-	map<string, string>::const_iterator iter 
+	map<string, string>::const_iterator iter
 		= m_func_codes.find(name);
 
 	if (iter != m_func_codes.end()) {
@@ -378,7 +401,7 @@ string MccAssembler::get_func_code(const string &name) const
 
 string MccAssembler::get_register_code(const string &reg) const
 {
-	map<string, unsigned int>::const_iterator iter 
+	map<string, unsigned int>::const_iterator iter
 		= m_registers.find(reg);
 
 	if (iter != m_registers.end()) {
@@ -421,7 +444,7 @@ vector<LackInfo*>& MccAssembler::get_lack_infos(const string &label)
 
 
 string MccAssembler::convert_scale(
-	int num, 
+	int num,
 	unsigned int digits) const
 {
 	char hex_chars[10] = { 0 };
@@ -434,7 +457,7 @@ string MccAssembler::convert_scale(
 		}
 	}
 	to_convert += "H";
-	
+
 	return convert_scale(to_convert, digits);
 }
 
@@ -450,7 +473,7 @@ string MccAssembler::convert_scale(
 		for (int i = 0, len = num.length() - 1; i < len; ++i) {
 			ret += convert_hex_to_binary(num[i]);
 		}
-		
+
 		int current_len = ret.length();
 		if (current_len > digits) {
 			ret = ret.substr(current_len - digits);

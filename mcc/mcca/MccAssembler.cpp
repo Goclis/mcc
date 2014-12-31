@@ -1,6 +1,7 @@
 #include "MccAssembler.h"
 #include <sstream>
 #include <iostream>
+#include <fstream>
 #include <cstdio>
 using namespace std;
 
@@ -110,6 +111,28 @@ void MccAssembler::scan()
 }
 
 
+void MccAssembler::output_coes()
+{
+	string rom_filename = "rom.coe";
+	string ram_filename = "ram.coe";
+
+	// ram.coe
+	//@todo 这段固定
+
+	// rom.coe
+	ofstream rom(rom_filename);
+	rom <<
+		"MEMORY_INITIALIZATION_RADIX=2;\n"
+		"MEMORY_INITIALIZATION_VECTOR=\n";
+	size_t i = 0;
+	for (size_t size = m_machine_codes.size() - 1; i < size; ++i) {
+		rom << m_machine_codes[i] << ",\n";
+	}
+	rom << m_machine_codes[i] << ";\n";
+	rom.close();
+}
+
+
 void MccAssembler::deal_label(const string &label)
 {
 	// 记录label的代码行
@@ -164,10 +187,10 @@ void MccAssembler::deal_instruction(const string &code)
 			|| "lui" == instruction || "lw" == instruction
 			|| "sw" == instruction || "beq" == instruction
 			|| "bne" == instruction ) {
+		// I类型
 		m_machine_codes.push_back(generate_i_instruction(
 			instruction,
 			code.substr(instruction.length() + 1)));
-		// I类型
 	} else if ("j" == instruction || "jal" == instruction) {
 		// J类型
 		//@todo 目前不处理立即数的

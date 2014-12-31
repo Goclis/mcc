@@ -43,6 +43,9 @@ public:
 	// 扫描代码，进行转换
 	void scan();
 
+	// 输出到coe文件，默认为rom.coe和ram.coe
+	void output_coes();
+
 	// 一系列的处理方法
 	// 处理label
 	void deal_label(const string &label);

@@ -57,6 +57,7 @@ int main(int args, char** argv)
 
 		MccAssembler mcca(robot.get_codes());
 		mcca.scan();
+		mcca.output_coes();
 
 
 		// Deal with conflict between input filename and output filename.
