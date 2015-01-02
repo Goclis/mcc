@@ -112,6 +112,10 @@ void MccAssembler::scan()
 			deal_instruction(current_line);
 		}
 	}
+
+	//@todo 插入默认的中断处理程序
+	m_interrupt_address["default"] = m_machine_codes.size();
+	m_machine_codes.push_back("01000010000000000000000000011000");
 }
 
 
@@ -121,13 +125,22 @@ void MccAssembler::output_coes()
 	string ram_filename = "ram.coe";
 
 	// ram.coe
-	//@todo 这段固定
 	ofstream ram(ram_filename);
 	ram <<
 		"MEMORY_INITIALIZATION_RADIX=2;\n"
-		"MEMORY_INITIALIZATION_VECTOR=\n"
-		"00000000000000000000000000000000,\n"
-		"00000000000000000000000000010111;\n";
+		"MEMORY_INITIALIZATION_VECTOR=\n";
+	// 根据记录的中断生成中断向量表
+	string interrupts[] = {
+		"interrupt0",
+		"interrupt1",
+		"interrupt2",
+		"interrupt3"
+	};
+	int itrs = 0;
+	for (; itrs < 3; ++itrs) {
+		ram << get_interrupt_address(interrupts[itrs]) << ",\n";
+	}
+	ram << get_interrupt_address(interrupts[itrs]) << ";\n";
 	ram.close();
 
 	// rom.coe
@@ -136,7 +149,12 @@ void MccAssembler::output_coes()
 		"MEMORY_INITIALIZATION_RADIX=2;\n"
 		"MEMORY_INITIALIZATION_VECTOR=\n";
 	size_t i = 0;
-	for (size_t size = m_machine_codes.size() - 1; i < size; ++i) {
+	size_t size = m_machine_codes.size();
+	if (0 != size) {
+		--size;
+	}
+
+	for (; i < size; ++i) {
 		rom << m_machine_codes[i] << ",\n";
 	}
 	rom << m_machine_codes[i] << ";\n";
@@ -149,6 +167,12 @@ void MccAssembler::deal_label(const string &label)
 	// 记录label的代码行
 	unsigned int line_num = m_machine_codes.size();
 	m_labels[label] = line_num;
+
+	// 如果该label是中断处理程序的label，需要记录下来
+	if ("interrupt0" == label || "interrupt1" == label
+		|| "interrupt2" == label || "interrupt3" == label) {
+		m_interrupt_address[label] = line_num;
+	}
 
 	// 查找是否有由于此label导致的指令空缺，补上
 	vector<LackInfo*> &lacks = get_lack_infos(label);
@@ -450,6 +474,18 @@ vector<LackInfo*>& MccAssembler::get_lack_infos(const string &label)
 		vector<LackInfo*> new_vector;
 		m_lack_infos[label] = new_vector;
 		return m_lack_infos[label];
+	}
+}
+
+
+string MccAssembler::get_interrupt_address(const string &int_name)
+{
+	map<string, unsigned int>::iterator iter
+		= m_interrupt_address.find(int_name);
+	if (iter != m_interrupt_address.end()) {
+		return convert_scale((int)iter->second, 32);
+	} else {
+		return convert_scale(m_interrupt_address["default"], 32);
 	}
 }
 

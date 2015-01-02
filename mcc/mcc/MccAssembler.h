@@ -109,6 +109,10 @@ public:
 	// 查找某label对应的缺失信息
 	vector<LackInfo*>& get_lack_infos(const string &label);
 
+	// 获取中断处理程序的32位地址，如果不存在返回默认的中断处理程序的地址
+	string get_interrupt_address(const string &int_name);
+	
+
 	/**
 	* @brief 将十进制数转换为二进制字符串
 	*
@@ -142,6 +146,9 @@ private:
 
 	// 目标代码
 	vector<string> m_machine_codes;
+
+	// 中断处理程序的地址
+	map<string, unsigned int> m_interrupt_address;
 
 	// 寄存器映射表，由通俗名称到具体对应的数字的映射，如$zero->0
 	typedef pair<string, unsigned int> RegisterPair;
