@@ -123,6 +123,13 @@ void MccAssembler::output_coes()
 
 	// ram.coe
 	//@todo ’‚∂ŒπÃ∂®
+	ofstream ram(ram_filename);
+	ram <<
+		"MEMORY_INITIALIZATION_RADIX=2;\n"
+		"MEMORY_INITIALIZATION_VECTOR=\n"
+		"00000000000000000000000000000000,\n"
+		"00000000000000000000000000010111;\n";
+	ram.close();
 
 	// rom.coe
 	ofstream rom(rom_filename);

@@ -11,7 +11,7 @@ MccAssembler::MccAssembler()
 	init_registers();
 	init_func_codes();
 	init_op_codes();
-	
+
 	// Test
 	m_codes.push_back("add $v0, $v0, $v1");
 	m_codes.push_back("bne $v0, $v0, main");
@@ -107,7 +107,8 @@ void MccAssembler::scan()
 		if (current_line.find(':') != string::npos) {
 			// 代码中发现了':'，为label
 			deal_label(current_line.substr(0, current_line.length() - 1));
-		} else {
+		}
+		else {
 			// 正常的指令代码
 			deal_instruction(current_line);
 		}
@@ -122,6 +123,13 @@ void MccAssembler::output_coes()
 
 	// ram.coe
 	//@todo 这段固定
+	ofstream ram(ram_filename);
+	ram <<
+		"MEMORY_INITIALIZATION_RADIX=2;\n"
+		"MEMORY_INITIALIZATION_VECTOR=\n"
+		"00000000000000000000000000000000,\n"
+		"00000000000000000000000000010111;\n";
+	ram.close();
 
 	// rom.coe
 	ofstream rom(rom_filename);
@@ -154,7 +162,8 @@ void MccAssembler::deal_label(const string &label)
 			m_machine_codes[info->code_line] += convert_scale(
 				offset,
 				16);
-		} else {
+		}
+		else {
 			// 地址，j或jal
 			m_machine_codes[info->code_line] += convert_scale(
 				line_num,
@@ -176,26 +185,28 @@ void MccAssembler::deal_instruction(const string &code)
 
 	// 只分析会用到的指令
 	if ("add" == instruction || "addu" == instruction || "sub" == instruction
-			|| "subu" == instruction || "and" == instruction
-			|| "mult" == instruction || "div" == instruction
-			|| "mfhi" == instruction || "mflo" == instruction
-			|| "or" == instruction || "xor" == instruction
-			|| "nor" == instruction || "slt" == instruction
-			|| "sltu" == instruction || "sllv" == instruction
-			|| "srlv" == instruction || "jr" == instruction) {
+		|| "subu" == instruction || "and" == instruction
+		|| "mult" == instruction || "div" == instruction
+		|| "mfhi" == instruction || "mflo" == instruction
+		|| "or" == instruction || "xor" == instruction
+		|| "nor" == instruction || "slt" == instruction
+		|| "sltu" == instruction || "sllv" == instruction
+		|| "srlv" == instruction || "jr" == instruction) {
 		// R类型
 		m_machine_codes.push_back(generate_r_instruction(
-			instruction, 
+			instruction,
 			code.substr(instruction.length() + 1)));
-	} else if ("addiu" == instruction || "ori" == instruction
-			|| "lui" == instruction || "lw" == instruction
-			|| "sw" == instruction || "beq" == instruction
-			|| "bne" == instruction ) {
+	}
+	else if ("addiu" == instruction || "ori" == instruction
+		|| "lui" == instruction || "lw" == instruction
+		|| "sw" == instruction || "beq" == instruction
+		|| "bne" == instruction) {
 		// I类型
 		m_machine_codes.push_back(generate_i_instruction(
 			instruction,
 			code.substr(instruction.length() + 1)));
-	} else if ("j" == instruction || "jal" == instruction) {
+	}
+	else if ("j" == instruction || "jal" == instruction) {
 		// J类型
 		//@todo 目前不处理立即数的
 		m_machine_codes.push_back(generate_j_instruction(
@@ -206,7 +217,7 @@ void MccAssembler::deal_instruction(const string &code)
 
 
 string MccAssembler::generate_r_instruction(
-	const string &name, 
+	const string &name,
 	const string &operands_str) const
 {
 	string op, rs, rt, rd, shamt, func;
@@ -222,12 +233,14 @@ string MccAssembler::generate_r_instruction(
 		rd = get_register_code(operands[0]);
 		rs = get_register_code(operands[1]);
 		rt = get_register_code(operands[2]);
-	} else if (2 == operands_num) {
+	}
+	else if (2 == operands_num) {
 		// 有两个操作数，顺序为rs, rt，rd为000000
 		rd = "00000";
 		rs = get_register_code(operands[0]);
 		rt = get_register_code(operands[1]);
-	} else if (1 == operands_num) {
+	}
+	else if (1 == operands_num) {
 		// 一个操作数，仅rd，另外两个为000000
 		rd = get_register_code(operands[0]);
 		rs = rt = "00000";
@@ -261,11 +274,13 @@ string MccAssembler::generate_i_instruction(
 		rt = get_register_code(operands[0]);
 		rs = get_register_code(operands[1]);
 		immediate_or_offset = operands[2];
-	} else if ("lui" == name) {
+	}
+	else if ("lui" == name) {
 		rs = "00000";
 		rt = get_register_code(operands[0]);
 		immediate_or_offset = operands[1];
-	} else if ("lw" == name || "sw" == name) {
+	}
+	else if ("lw" == name || "sw" == name) {
 		rt = get_register_code(operands[0]);
 		string &to_seperate = operands[1];
 
@@ -278,21 +293,24 @@ string MccAssembler::generate_i_instruction(
 			if ('(' == current_char) {
 				add_to_op1 = false;
 				continue;
-			} else if (')' == current_char) {
+			}
+			else if (')' == current_char) {
 				add_to_op1 = true;
 				continue;
 			}
 
 			if (add_to_op1) {
 				op1 += current_char;
-			} else {
+			}
+			else {
 				op2 += current_char;
 			}
 		}
-		
+
 		rs = get_register_code(op2);
 		immediate_or_offset = op1;
-	} else if ("beq" == name || "bne" == name) {
+	}
+	else if ("beq" == name || "bne" == name) {
 		rt = get_register_code(operands[0]);
 		rs = get_register_code(operands[1]);
 		string &label = operands[2];
@@ -312,7 +330,8 @@ string MccAssembler::generate_i_instruction(
 			immediate = convert_scale(
 				offset,
 				16);
-		} else {
+		}
+		else {
 			// label未确定，添加缺失信息
 			LackInfo *lack_info = new LackInfo;
 			lack_info->code_line = this_code_line;
@@ -343,7 +362,8 @@ string MccAssembler::generate_j_instruction(
 	string op, address;
 	if ("j" == name) {
 		op = "000010";
-	} else if ("jal" == name) {
+	}
+	else if ("jal" == name) {
 		op = "000011";
 	}
 
@@ -352,7 +372,8 @@ string MccAssembler::generate_j_instruction(
 	if (iter != m_labels.end()) {
 		unsigned int code_line = iter->second;
 		address = convert_scale((int)code_line, 26);
-	} else {
+	}
+	else {
 		// label未确定，添加缺失信息
 		LackInfo *lack_info = new LackInfo;
 		lack_info->code_line = m_machine_codes.size();
@@ -367,7 +388,7 @@ string MccAssembler::generate_j_instruction(
 
 
 void MccAssembler::split_operands(
-	const string &str, 
+	const string &str,
 	vector<string> &operands) const
 {
 	string token;
@@ -377,9 +398,11 @@ void MccAssembler::split_operands(
 		if (',' == current_char) {
 			operands.push_back(token);
 			token.clear();
-		} else if (' ' == current_char) {
+		}
+		else if (' ' == current_char) {
 			// 忽略
-		} else {
+		}
+		else {
 			token += current_char;
 		}
 	}
@@ -391,12 +414,13 @@ void MccAssembler::split_operands(
 
 string MccAssembler::get_func_code(const string &name) const
 {
-	map<string, string>::const_iterator iter 
+	map<string, string>::const_iterator iter
 		= m_func_codes.find(name);
 
 	if (iter != m_func_codes.end()) {
 		return iter->second;
-	} else {
+	}
+	else {
 		log_warning("未找到【" + name + "】的func_code");
 		return "000000";
 	}
@@ -405,14 +429,15 @@ string MccAssembler::get_func_code(const string &name) const
 
 string MccAssembler::get_register_code(const string &reg) const
 {
-	map<string, unsigned int>::const_iterator iter 
+	map<string, unsigned int>::const_iterator iter
 		= m_registers.find(reg);
 
 	if (iter != m_registers.end()) {
 		return convert_scale(
 			(int)iter->second,
 			5);
-	} else {
+	}
+	else {
 		log_warning("未找到【" + reg + "】对应的寄存器编码");
 		return "000000";
 	}
@@ -426,7 +451,8 @@ string MccAssembler::get_op_code(const string &op) const
 
 	if (iter != m_op_codes.end()) {
 		return iter->second;
-	} else {
+	}
+	else {
 		log_warning("未找到【" + op + "】对应的op编码");
 		return "000000";
 	}
@@ -439,7 +465,8 @@ vector<LackInfo*>& MccAssembler::get_lack_infos(const string &label)
 		= m_lack_infos.find(label);
 	if (iter != m_lack_infos.end()) {
 		return iter->second;
-	} else {
+	}
+	else {
 		vector<LackInfo*> new_vector;
 		m_lack_infos[label] = new_vector;
 		return m_lack_infos[label];
@@ -448,7 +475,7 @@ vector<LackInfo*>& MccAssembler::get_lack_infos(const string &label)
 
 
 string MccAssembler::convert_scale(
-	int num, 
+	int num,
 	unsigned int digits) const
 {
 	char hex_chars[10] = { 0 };
@@ -461,7 +488,7 @@ string MccAssembler::convert_scale(
 		}
 	}
 	to_convert += "H";
-	
+
 	return convert_scale(to_convert, digits);
 }
 
@@ -477,16 +504,18 @@ string MccAssembler::convert_scale(
 		for (int i = 0, len = num.length() - 1; i < len; ++i) {
 			ret += convert_hex_to_binary(num[i]);
 		}
-		
+
 		int current_len = ret.length();
 		if (current_len > digits) {
 			ret = ret.substr(current_len - digits);
-		} else if (current_len < digits) {
+		}
+		else if (current_len < digits) {
 			for (int i = current_len; i < digits; ++i) {
 				ret.insert(ret.begin(), '0');
 			}
 		}
-	} else {
+	}
+	else {
 		for (unsigned int i = 0; i < digits; ++i) {
 			ret += "0";
 		}
