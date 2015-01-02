@@ -14,6 +14,7 @@ int main(int args, char** argv)
 {
 	MccRobot &robot = theMccRobot();
 
+#ifdef DEBUG_MODE
 	// Test selection.
 	int select_input;
 	cout << "Input 1 or 2 to select input file, 1 select 'test', 2 select 'correct'\n"
@@ -29,6 +30,7 @@ int main(int args, char** argv)
 		cout << "Wrong selection.\n";
 		exit(0);
 	}
+#endif
 
 	// Deal with main arguments.
 	// args[1]: input file name.
@@ -55,11 +57,6 @@ int main(int args, char** argv)
 	if (robot.check_semantic_error()) {
 		robot.generate_code();
 
-		MccAssembler mcca(robot.get_codes());
-		mcca.scan();
-		mcca.output_coes();
-
-
 		// Deal with conflict between input filename and output filename.
 		if (input_filename == output_filename) {
 			output_filename += ".out";
@@ -68,6 +65,11 @@ int main(int args, char** argv)
 		// Output generated code.
 		ofstream out_stream(output_filename);
 		out_stream << robot.get_global_var_code_buffer() << robot.get_code_buffer();
+
+		// Generate machine code by using assembler.
+		MccAssembler mcca(robot.get_codes());
+		mcca.scan();
+		mcca.output_coes();
 	} else {
 		cout << "Found error.\n";
 	}

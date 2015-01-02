@@ -71,9 +71,8 @@ void MccRobot::generate_code()
 	for (size_t i = 0, len = this->m_decls.size(); i < len; ++i) {
 		this->m_decls[i]->generate_code();
 	}
-
-	cout << this->m_global_var_code_buffer;
-	cout << this->m_code_buffer;
+	
+	cout << "Code Generation Finished.\n";
 }
 
 
