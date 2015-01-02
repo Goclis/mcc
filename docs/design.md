@@ -4,7 +4,7 @@ Mini C Compiler
 一个简单的编译器，语法为C的子集，目标代码的运行环境为MIPS。
 
 ###开发环境
-- Visual Studio 2010
+- Visual Studio 2013 Community
 - Flex & Bison
 
 ####Flex & Bison
@@ -15,16 +15,20 @@ flex -o tokens.cpp tokens.l
 
 ###使用
 ```
-mcc.exe inputfile
-
-mcc.exe test.c
+mcc.exe inputfile # eg: mcc.exe test.c
 ```
+
+__输入__
 
 输入文件有后缀时输出代码为去掉后缀的，否则会添加上`.out`，输入输出文件名映射例子如下：
 
 - test: test.out
 - test.c: test
 - another.c.c: another
+
+__输出__
+
+除了输出相应的汇编代码外，还会产生`rom.coe`和`ram.coe`两个文件。
 
 ###MIPS指令集
 目标的机器代码是基于MIPS指令集的，所以需要考虑一些MIPS指令的规则：
@@ -68,6 +72,9 @@ addiu $sp $sp 1
 - $v0：返回值。
 - $v1：双操作数的另外一个。
 - $zero：零寄存器。
+- $sp：栈指针寄存器。
+- $t0：用来代替$fp。
+- $ra：返回地址。
 
 ####指令的使用
 __规定__
