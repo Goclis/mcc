@@ -11,7 +11,6 @@ MccStatement::~MccStatement(void)
 }
 
 
-//@todo Remove it.
 int MccStatement::generate_code() const
 {
 	cout << "MccStatement generation." << endl;
@@ -19,7 +18,7 @@ int MccStatement::generate_code() const
 	return 0;
 }
 
-//@todo Remove it.
+
 void MccStatement::semantic_detect()
 {
 

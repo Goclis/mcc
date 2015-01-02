@@ -75,14 +75,6 @@ public:
 
 	/**
 	 * @brief Setters and Getters.
-	 *
-	 * @todo FunctionDeclaration needs to offer several functions for these 
-	 *	statements within it to report message.
-	 *
-	 *	For example, (1) MccVariableDeclaration needs to report a new variable name
-	 *	and its size. (2) MccConditionStatement needs to report the change of current
-	 *	block level. (3) MccReturnStatement needs to report whether the func should
-	 *	generate code for retrieving activation record or not.
 	 */
 	int get_cond_stmt_level() const;
 	void increase_cond_stmt_level();

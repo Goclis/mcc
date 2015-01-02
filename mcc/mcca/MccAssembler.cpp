@@ -113,7 +113,7 @@ void MccAssembler::scan()
 		}
 	}
 
-	//@todo 插入默认的中断处理程序
+	// 插入默认的中断处理程序
 	m_interrupt_address["default"] = m_machine_codes.size();
 	m_machine_codes.push_back("01000010000000000000000000011000");
 }
@@ -227,8 +227,7 @@ void MccAssembler::deal_instruction(const string &code)
 			instruction,
 			code.substr(instruction.length() + 1)));
 	} else if ("j" == instruction || "jal" == instruction) {
-		// J类型
-		//@todo 目前不处理立即数的
+		// J类型，目前不处理立即数的
 		m_machine_codes.push_back(generate_j_instruction(
 			instruction,
 			code.substr(instruction.length() + 1)));
@@ -513,7 +512,6 @@ string MccAssembler::convert_scale(
 	string num,
 	unsigned int digits) const
 {
-	//@todo 先分析num，然后调用相应重载
 	string ret;
 	if (num.find('H') != string::npos) {
 		// 16进制数，符合约定
@@ -530,6 +528,7 @@ string MccAssembler::convert_scale(
 			}
 		}
 	} else {
+		// 非16进制数，直接返回全0
 		for (unsigned int i = 0; i < digits; ++i) {
 			ret += "0";
 		}
