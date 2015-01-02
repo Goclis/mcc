@@ -137,7 +137,12 @@ void MccAssembler::output_coes()
 		"MEMORY_INITIALIZATION_RADIX=2;\n"
 		"MEMORY_INITIALIZATION_VECTOR=\n";
 	size_t i = 0;
-	for (size_t size = m_machine_codes.size() - 1; i < size; ++i) {
+	size_t size = m_machine_codes.size();
+	if (0 != size) {
+		--size;
+	}
+
+	for (; i < size; ++i) {
 		rom << m_machine_codes[i] << ",\n";
 	}
 	rom << m_machine_codes[i] << ";\n";
