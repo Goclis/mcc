@@ -98,9 +98,10 @@ int MccFunctionDeclaration::generate_code()
 
 	robot
 		.add_code(func_label + ":");
-
-	if ("CALLBACK" == func_label) {
-		// Callback function, no parameter.
+	
+	if ("interrupt0" == func_label || "interrupt1" == func_label
+			|| "interrupt2" == func_label || "interrupt3" == func_label) {
+		// Interrupt callback function (interrupt0~3), no parameter.
 		// Push($v0).
 		code_buffer +=
 			"sw $v0, 0H($sp)\n"

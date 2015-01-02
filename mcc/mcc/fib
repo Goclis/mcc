@@ -34,3 +34,15 @@ void display(int i)
 {
 	$0xFFFF = i;
 }
+
+void interrupt0(void)
+{
+	int j;
+	j = $0xFFFF;
+}
+
+void interrupt1(void)
+{
+	int i;
+	i = $0xFFFE;
+}

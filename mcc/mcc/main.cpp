@@ -54,7 +54,10 @@ int main(int args, char** argv)
 	}
 
 	// Parse.
-	yyparse();
+	if (0 != yyparse()) {
+		cout << "Parse error.\n";
+		exit(1);
+	}
 	
 	// After parsing, do more thing.
 	if (robot.check_semantic_error()) {
