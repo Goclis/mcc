@@ -45,14 +45,16 @@ int MccBinaryOperatorExpression::generate_code() const
 		code_buffer += 
 			"beq $v0 $zero " + quick_branch_label + "\n";
 		robot
-			.add_code("beq $v0, $zero, " + quick_branch_label);
+			.add_code("beq $v0, $zero, " + quick_branch_label)
+			.add_code("srlv $v1, $zero, $zero");
 	} else if (this->m_operator == OR_BINARY) {
 		// If $v0 is not 0, no need to calculate the right operand.
 		quick_branch_label = robot.generate_branch_label();
 		code_buffer += 
 			"bne $v0 $zero " + quick_branch_label + "\n";
 		robot
-			.add_code("bne $v0, $zero, " + quick_branch_label);
+			.add_code("bne $v0, $zero, " + quick_branch_label)
+			.add_code("srlv $v1, $zero, $zero");
 	}
 
 	// Push $v0.
@@ -102,8 +104,10 @@ int MccBinaryOperatorExpression::generate_code() const
 
 			robot
 				.add_code("beq $v0, $v1, " + branch_label)
+				.add_code("srlv $v1, $zero, $zero")
 				.add_code("addiu $v0, $zero, 0")
 				.add_code("j " + branch_end)
+				.add_code("srlv $v1, $zero, $zero")
 				.add_code(branch_label + ":")
 				.add_code("addiu $v0, $zero, 1")
 				.add_code(branch_end + ":");
@@ -124,8 +128,10 @@ int MccBinaryOperatorExpression::generate_code() const
 
 			robot
 				.add_code("bne $v0, $v1, " + branch_label)
+				.add_code("srlv $v1, $zero, $zero")
 				.add_code("addiu $v0, $zero, 0")
 				.add_code("j " + branch_end)
+				.add_code("srlv $v1, $zero, $zero")
 				.add_code(branch_label + ":")
 				.add_code("addiu $v0, $zero, 1")
 				.add_code(branch_end + ":");

@@ -57,7 +57,8 @@ int MccReturnStatement::generate_code() const
 	robot
 		.add_code(Utility::string_concat_int("addiu $sp, $sp, ", parameter_size + 2))
 		.add_code("lw $t0, 0H($sp)")
-		.add_code("jr $ra");
+		.add_code("jr $ra")
+		.add_code("srlv $v1, $zero, $zero");
 	
 	// The return statement is out of any if statements, so the function 
 	// declaration no need to generate codes for retrieving activation record.

@@ -52,6 +52,11 @@ lw reg 1($sp)
 addiu $sp $sp 1
 ```
 
+NOP
+```
+srlv $v1, $zero, $zero
+```
+
 ####自定的约定
 - 乘法爆掉的情况为undefined。
 - 立即数超过[-2^31,2^31-1]会被截尾，这个由VS类型强制转换处理。
@@ -277,23 +282,27 @@ __MccBreakStatement__
 
 ```
 j break_label					// break_label由编译器维护
+NOP
 ```
 
 __MccContinueStatment__
 
 ```
 j continue_label				// continue_label由编译器维护
+NOP
 ```
 
 __MccIfStatement__
 
 ```
-Gen(m_condition)				// 条件
+Gen(m_condition)					// 条件
 beq $v0 $zero false_branch_label	// false_branch_label由编译器生成维护
+NOP
 Gen(m_if)
-j false_branch_label_end		// false_branch_label拼接上"_end"
+j false_branch_label_end			// false_branch_label拼接上"_end"
+NOP
 false_branch_label:
-Gen(m_else)						// 如果有的话
+Gen(m_else)							// 如果有的话
 false_branch_label_end:
 ```
 
@@ -302,7 +311,8 @@ __MccWhileStatement__
 ```
 while_start_label:				// 由编译器生成维护
 Gen(m_condition)				// 条件
-beq $v0 $zero break_label			// break_label由编译器生成维护
+beq $v0 $zero break_label		// break_label由编译器生成维护
+NOP
 Gen(m_statement)				// While body
 break_label:					// 跳出while循环的地方
 ```
@@ -331,6 +341,7 @@ lw $ra 1($sp)					// 取出返回地址
 addiu $sp $sp args_fp_size		// pop掉剩余的活动记录的内存，包括参数等，args_fp_size由编译器维护
 lw $fp 0($sp)					// 恢复$fp
 jr $ra
+NOP
 ```
 
 __MccMethodCallExpression__
@@ -343,6 +354,7 @@ Push($v0)					// 计算并保存参数n
 Gen(arg1)
 Push($v0)					// 计算并保存参数1
 jal func_name				// func_name为目标的方法名
+NOP
 ```
 
 __MccVariableDeclaration__
@@ -375,6 +387,7 @@ lw $ra 1($sp)					// 取出返回地址
 addiu $sp $sp args_fp_size		// pop掉剩余的活动记录的内存，包括参数等，args_fp_size由编译器维护
 lw $fp 0($sp)					// 恢复$fp
 jr $ra	
+NOP
 
 
 // 回调方法（无参数）
@@ -431,9 +444,11 @@ Gen(m_left_operand)				// 左操作数
 // 这部分只有逻辑AND和逻辑OR需要，quick_branch_label由编译器生成
 (1) &&
 beq $v0 $zero quick_branch_label
+NOP
 
 (2) ||
 bne $v0 $zero quick_branch_label
+NOP
 ----
 Push($v0)						// 保存左操作数
 Gen(m_right_operand)			// 右操作数
@@ -445,16 +460,20 @@ sltu $v0 $zero $v0
 
 (2) ==
 beq $v0 $v1 branch
+NOP
 addiu $v0 $zero 0
 j branch_end
+NOP
 branch:
 addiu $v0 $zer0 1
 branch_end:
 
 (3) !=
 bne $v0 $v1 branch
+NOP
 addiu $v0 $zero 0
 j branch_end
+NOP
 branch:
 addiu $v0 $zer0 1
 branch_end:

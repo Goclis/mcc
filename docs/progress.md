@@ -1,5 +1,5 @@
 ###Todos
-- 跳转指令（jxx）以及选择跳转指令（beq和bne）的生成代码需要修改，每一个后面都需要NOP。
+- 更新编译器各个结点输出到buffer的代码生成内容（设计已经修改了很多）。
 - MccMethodNameChecker的行号定位并不准，因为方法的行号为`{`和`}`出现后才设置的，会偏差。
 - MccFunctionDeclaration需要特殊处理中断处理程序（以名字区分）。
 - >>是逻辑右移还是算术右移，目前是逻辑右移。
@@ -62,3 +62,4 @@
 - 增加了DEBUG_MODE，在MccRobot.h中修改，能取消输出一些DEBUG信息。
 - 完成了方法名不能为label+数字的检查，即MccMethodNameChecker。
 - **2015/01/02**：汇编器完成了对beq和bne中offset的修改。
+- **2015/01/02**：编译器修改了跳转指令的代码生成，在每个跳转指令的后面都加入了NOP（srlv $v1, $zero, $zero）。

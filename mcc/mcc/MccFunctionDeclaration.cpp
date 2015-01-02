@@ -218,7 +218,8 @@ int MccFunctionDeclaration::generate_code()
 			robot
 				.add_code(Utility::string_concat_int("addiu $sp, $sp, ", m_parameter_size + 2))
 				.add_code("lw $t0, 0H($sp)")
-				.add_code("jr $ra");
+				.add_code("jr $ra")
+				.add_code("srlv $v1, $zero, $zero");
 		}
 	}
 

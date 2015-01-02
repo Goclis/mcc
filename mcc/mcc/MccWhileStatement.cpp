@@ -48,7 +48,8 @@ int MccWhileStatement::generate_code() const
 	code_buffer += 
 		"beq $v0 0 " + break_label + "\n";
 	robot
-		.add_code("beq $v0, 0, " + break_label);
+		.add_code("beq $v0, 0, " + break_label)
+		.add_code("srlv $v1, $zero, $zero");
 
 	// While body.
 	this->m_statement->generate_code();
@@ -57,7 +58,8 @@ int MccWhileStatement::generate_code() const
 	code_buffer += 
 		"j " + while_start_label + "\n";
 	robot
-		.add_code("j " + while_start_label);
+		.add_code("j " + while_start_label)
+		.add_code("srlv $v1, $zero, $zero");
 
 	// While end.
 	code_buffer += 

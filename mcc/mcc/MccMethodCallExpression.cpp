@@ -65,7 +65,8 @@ int MccMethodCallExpression::generate_code() const
 	code_buffer += 
 		"jal " + func_name + "\n";
 	robot
-		.add_code("jal " + func_name);
+		.add_code("jal " + func_name)
+		.add_code("srlv $v1, $zero, $zero");
 
 	return 0;
 }
