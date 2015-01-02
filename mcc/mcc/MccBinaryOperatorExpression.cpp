@@ -42,16 +42,18 @@ int MccBinaryOperatorExpression::generate_code() const
 	if (this->m_operator == AND_BINARY) {
 		// If $v0 is 0, no need to calculate the right operand.
 		quick_branch_label = robot.generate_branch_label();
-		code_buffer += 
-			"beq $v0 $zero " + quick_branch_label + "\n";
+		code_buffer +=
+			"beq $v0, $zero, " + quick_branch_label + "\n"
+			"srlv $v1, $zero, $zero\n";
 		robot
 			.add_code("beq $v0, $zero, " + quick_branch_label)
 			.add_code("srlv $v1, $zero, $zero");
 	} else if (this->m_operator == OR_BINARY) {
 		// If $v0 is not 0, no need to calculate the right operand.
 		quick_branch_label = robot.generate_branch_label();
-		code_buffer += 
-			"bne $v0 $zero " + quick_branch_label + "\n";
+		code_buffer +=
+			"bne $v0, $zero, " + quick_branch_label + "\n"
+			"srlv $v1, $zero, $zero\n";
 		robot
 			.add_code("bne $v0, $zero, " + quick_branch_label)
 			.add_code("srlv $v1, $zero, $zero");
@@ -59,9 +61,9 @@ int MccBinaryOperatorExpression::generate_code() const
 
 	// Push $v0.
 	code_buffer += 
-		"sw $v0 0($sp)\n"
-		"addiu $v1 $zero 1\n"
-		"subu $sp $sp $v1\n";
+		"sw $v0, 0H($sp)\n"
+		"addiu $v0, $zero, 1\n"
+		"subu $sp, $sp, $v0\n";
 	robot
 		.add_code("sw $v0, 0H($sp)")
 		.add_code("addiu $v0, $zero, 1")
@@ -72,8 +74,8 @@ int MccBinaryOperatorExpression::generate_code() const
 
 	// Pop $v1.
 	code_buffer += 
-		"lw $v1 1($sp)\n"
-		"addiu $sp $sp 1\n";
+		"lw $v1, 1H($sp)\n"
+		"addiu $sp, $sp, 1\n";
 	robot
 		.add_code("lw $v1, 1H($sp)")
 		.add_code("addiu $sp, $sp, 1");
@@ -84,7 +86,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	case OR_BINARY:
 		{
 			code_buffer += 
-				"sltu $v0 $zero $v0\n";
+				"sltu $v0, $zero, $v0\n";
 			robot
 				.add_code("sltu $v0, $zero, $v0");
 			break;
@@ -95,11 +97,13 @@ int MccBinaryOperatorExpression::generate_code() const
 			string branch_label = robot.generate_branch_label();
 			string branch_end = branch_label + "_end";
 			code_buffer += 
-				"beq $v0 $v1 " + branch_label + "\n"
-				"addiu $v0 $zero 0\n"
-				"j " + branch_end + "\n" +
+				"beq $v0, $v1, " + branch_label + "\n"
+				"srlv $v1, $zero, $zero\n"
+				"addiu $v0, $zero, 0\n"
+				"j " + branch_end + "\n"
+				"srlv $v1, $zero, $zero" +
 				branch_label + ":\n"
-				"addiu $v0 $zero 1\n" +
+				"addiu $v0, $zero, 1\n" +
 				branch_end + ":\n";
 
 			robot
@@ -120,10 +124,12 @@ int MccBinaryOperatorExpression::generate_code() const
 			string branch_end = branch_label + "_end";
 			code_buffer += 
 				"bne $v0 $v1 " + branch_label + "\n"
-				"addiu $v0 $zero 0\n"
-				"j " + branch_end + "\n" +
+				"srlv $v1, $zero, $zero\n"
+				"addiu $v0, $zero, 0\n"
+				"j " + branch_end + "\n"
+				"srlv $v1, $zero, $zero\n" +
 				branch_label + ":\n"
-				"addiu $v0 $zero 1\n" +
+				"addiu $v0, $zero, 1\n" +
 				branch_end + ":\n";
 
 			robot
@@ -141,8 +147,8 @@ int MccBinaryOperatorExpression::generate_code() const
 	case LE_BINARY:
 		{
 			code_buffer += 
-				"slt $v0 $v0 $v1\n"
-				"sltu $v0 $zero $v0\n";
+				"slt $v0, $v0, $v1\n"
+				"sltu $v0, $zero, $v0\n";
 
 			robot
 				.add_code("slt $v0, $v0, $v1")
@@ -153,7 +159,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	case LT_BINARY:
 		{
 			code_buffer += 
-				"slt $v0 $v1 $v0\n";
+				"slt $v0, $v1, $v0\n";
 
 			robot
 				.add_code("slt $v0, $v1, $v0");
@@ -163,7 +169,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	case GT_BINARY:
 		{
 			code_buffer += 
-				"slt $v0 $v0 $v1\n";
+				"slt $v0, $v0, $v1\n";
 
 			robot
 				.add_code("slt $v0, $v0, $v1");
@@ -173,8 +179,8 @@ int MccBinaryOperatorExpression::generate_code() const
 	case GE_BINARY:
 		{
 			code_buffer += 
-				"slt $v0 $v1 $v0\n"
-				"sltu $v0 $zero $v0\n";
+				"slt $v0, $v1, $v0\n"
+				"sltu $v0, $zero, $v0\n";
 
 			robot
 				.add_code("slt $v0, $v1, $v0")
@@ -185,8 +191,8 @@ int MccBinaryOperatorExpression::generate_code() const
 	case AND_BINARY:
 		{
 			code_buffer += 
-				"and $v0 $v1 $v0\n"
-				"sltu $v0 $zero $v0\n";
+				"and $v0, $v1, $v0\n"
+				"sltu $v0, $zero, $v0\n";
 
 			robot
 				.add_code("and $v0, $v1, $v0")
@@ -197,7 +203,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	case PLUS_BINARY:
 		{
 			code_buffer += 
-				"add $v0 $v1 $v0\n";
+				"add $v0, $v1, $v0\n";
 
 			robot
 				.add_code("add $v0, $v1, $v0");
@@ -207,7 +213,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	case MINUS_BINARY:
 		{
 			code_buffer += 
-				"sub $v0 $v1 $v0\n";
+				"sub $v0, $v1, $v0\n";
 
 			robot
 				.add_code("sub $v0, $v1, $v0");
@@ -217,7 +223,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	case MULT_BINARY:
 		{
 			code_buffer += 
-				"mult $v1 $v0\n"
+				"mult $v1, $v0\n"
 				"mflo $v0\n";
 
 			robot
@@ -229,7 +235,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	case DIV_BINARY:
 		{
 			code_buffer += 
-				"div $v1 $v0\n"
+				"div $v1, $v0\n"
 				"mflo $v0\n";
 
 			robot
@@ -241,7 +247,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	case MD_BINARY:
 		{
 			code_buffer += 
-				"div $v1 $v0\n"
+				"div $v1, $v0\n"
 				"mfhi $v0\n";
 
 			robot
@@ -253,7 +259,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	case BIT_AND_BINARY:
 		{
 			code_buffer += 
-				"and $v0 $v1 $v0\n";
+				"and $v0, $v1, $v0\n";
 
 			robot
 				.add_code("and $v0, $v1, $v0");
@@ -263,7 +269,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	case EXCLUSIVE_BINARY:
 		{
 			code_buffer += 
-				"xor $v0 $v1 $v0\n";
+				"xor $v0, $v1, $v0\n";
 
 			robot
 				.add_code("xor $v0, $v1, $v0");
@@ -273,7 +279,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	case LSHIFT_BINARY:
 		{
 			code_buffer += 
-				"sllv $v0 $v1 $v0\n";
+				"sllv $v0, $v1, $v0\n";
 
 			robot
 				.add_code("sllv $v0, $v1, $v0");
@@ -283,7 +289,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	case RSHIFT_BINARY:
 		{
 			code_buffer += 
-				"srlv $v0 $v1 $v0\n";
+				"srlv $v0, $v1, $v0\n";
 
 			robot
 				.add_code("srlv $v0, $v1, $v0");
@@ -293,7 +299,7 @@ int MccBinaryOperatorExpression::generate_code() const
 	case BIT_OR_BINARY:
 		{
 			code_buffer += 
-				"or $v0 $v1 $v0\n";
+				"or $v0, $v1, $v0\n";
 
 			robot
 				.add_code("or $v0, $v1, $v0");
@@ -302,7 +308,8 @@ int MccBinaryOperatorExpression::generate_code() const
 	}
 
 	if (this->m_operator == AND_BINARY || this->m_operator == OR_BINARY) {
-		code_buffer += quick_branch_label + ":\n";
+		code_buffer += 
+			quick_branch_label + ":\n";
 		robot
 			.add_code(quick_branch_label + ":");
 	}

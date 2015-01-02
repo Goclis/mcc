@@ -21,7 +21,9 @@ int MccContinueStatement::generate_code() const
 	code_buffer += "MccContinueStatement generation.\n";
 #endif
 
-	code_buffer += "j " + robot.get_current_continue_label() + "\n";
+	code_buffer +=
+		"j " + robot.get_current_continue_label() + "\n"
+		"srlv $v1, $zero, $zero\n";
 
 	robot
 		.add_code("j " + robot.get_current_continue_label())

@@ -38,22 +38,23 @@ int MccReturnStatement::generate_code() const
 	// Retrieve local variables.
 	if (local_var_size > 0) {
 		code_buffer += 
-			Utility::string_concat_int("addiu $sp $sp ", local_var_size) + "\n";
+			Utility::string_concat_int("addiu $sp, $sp, ", local_var_size) + "\n";
 		robot
 			.add_code(Utility::string_concat_int("addiu $sp, $sp, ", local_var_size));
 	}
 
 	// Restore $ra.
 	code_buffer += 
-		"lw $ra 1($sp)\n";
+		"lw $ra, 1H($sp)\n";
 	robot
 		.add_code("lw $ra, 1H($sp)");
 
 	// Pop parameters, $ra and $fp.
-	code_buffer += 
-		Utility::string_concat_int("addiu $sp $sp ", parameter_size + 2) + "\n"
-		"lw $fp 0($sp)\n"
-		"jr $ra\n";
+	code_buffer +=
+		Utility::string_concat_int("addiu $sp, $sp, ", parameter_size + 2) + "\n"
+		"lw $t0 0H($sp)\n"
+		"jr $ra\n"
+		"srlv $v1, $zero, $zero\n";
 	robot
 		.add_code(Utility::string_concat_int("addiu $sp, $sp, ", parameter_size + 2))
 		.add_code("lw $t0, 0H($sp)")

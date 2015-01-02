@@ -39,14 +39,14 @@ int MccUnaryOperatorExpression::generate_code() const
 	{
 	case NEG_UNARY:
 		code_buffer += 
-			"nor $v0 $v0 $zero\n";
+			"nor $v0, $v0, $zero\n";
 		robot
 			.add_code("nor $v0, $v0, $zero");
 		break;
 
 	case NEGATIVE_UNARY:
 		code_buffer += 
-			"subu $v0 $zero $v0\n";
+			"sub $v0, $zero, $v0\n";
 		robot
 			.add_code("sub $v0, $zero, $v0");
 		break;
@@ -59,14 +59,14 @@ int MccUnaryOperatorExpression::generate_code() const
 
 	case NOT_UNARY:
 		code_buffer += 
-			"sltu $v0 $zero $v0\n";
+			"sltu $v0, $zero, $v0\n";
 		robot
 			.add_code("sltu $v0, $zero, $v0");
 		break;
 
 	case PORT_UNARY:
 		code_buffer += 
-			"lw $v0 0($v0)\n";
+			"lw $v0, 0H($v0)\n";
 		robot
 			.add_code("lw $v0, 0H($v0)");
 		break;

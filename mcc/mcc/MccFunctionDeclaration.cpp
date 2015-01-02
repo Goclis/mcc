@@ -93,7 +93,8 @@ int MccFunctionDeclaration::generate_code()
 	m_local_var_size = 0;
 	m_parameter_size = 0;
 
-	code_buffer += func_label + ":\n";
+	code_buffer += 
+		func_label + ":\n";
 
 	robot
 		.add_code(func_label + ":");
@@ -102,28 +103,28 @@ int MccFunctionDeclaration::generate_code()
 		// Callback function, no parameter.
 		// Push($v0).
 		code_buffer +=
-			"sw $v0 0($sp)\n"
-			"addiu $v0 $zero 1\n"
-			"subu $sp $sp $v0\n";
+			"sw $v0, 0H($sp)\n"
+			"addiu $v0, $zero, 1\n"
+			"subu $sp, $sp, $v0\n";
 		robot
 			.add_code("sw $v0, 0H($sp)")
 			.add_code("addiu $v0, $zero, 1")
 			.add_code("subu $sp, $sp, $v0");
 		// Push($v1).
 		code_buffer +=
-			"sw $v1 0($sp)\n"
-			"addiu $v1 $zero 1\n"
-			"subu $sp $sp $v1\n";
+			"sw $v1, 0H($sp)\n"
+			"addiu $v1, $zero, 1\n"
+			"subu $sp, $sp, $v1\n";
 		robot
 			.add_code("sw $v1, 0H($sp)")
 			.add_code("addiu $v1, $zero, 1")
 			.add_code("subu $sp, $sp, $v1");
 		// Push($fp) and set $fp.
 		code_buffer +=
-			"sw $fp 0($sp)\n"
-			"addu $fp $zero $sp\n"
-			"addiu $v1 $zero 1\n"
-			"subu $sp $sp $v1\n";
+			"sw $t0, 0H($sp)\n"
+			"addu $t0, $zero, $sp\n"
+			"addiu $v0 $zero, 1\n"
+			"subu $sp, $sp, $v0\n";
 		robot
 			.add_code("sw $t0, 0H($sp)")
 			.add_code("addu $t0, $zero, $sp")
@@ -143,16 +144,16 @@ int MccFunctionDeclaration::generate_code()
 
 		// Retrieve local variables.
 		code_buffer +=
-			Utility::string_concat_int("addiu $sp $sp ", m_local_var_size) + "\n";
+			Utility::string_concat_int("addiu $sp, $sp, ", m_local_var_size) + "\n";
 		robot
 			.add_code(Utility::string_concat_int("addiu $sp, $sp, ", m_local_var_size));
 
 		// Restore $fp $v0 $v1.
 		code_buffer +=
-			"lw $fp 1($sp)\n"
-			"lw $v1 2($sp)\n"
-			"lw $v0 3($sp)\n"
-			"addiu $sp $sp 3\n";
+			"lw $t0, 1H($sp)\n"
+			"lw $v1, 2H($sp)\n"
+			"lw $v0, 3H($sp)\n"
+			"addiu $sp, $sp, 3\n";
 		robot
 			.add_code("lw $t0, 1H($sp)")
 			.add_code("lw $v1, 2H($sp)")
@@ -169,15 +170,15 @@ int MccFunctionDeclaration::generate_code()
 
 		// Set $fp.
 		code_buffer += 
-			"addu $fp $zero $sp\n";
+			"addu $t0, $zero, $sp\n";
 		robot
 			.add_code("addu $t0, $zero, $sp");
 
 		// Push $ra.
 		code_buffer +=
-			"sw $ra 0($sp)\n"
-			"addiu $v1 $zero 1\n"
-			"subu $sp $sp $v1\n";
+			"sw $ra, 0H($sp)\n"
+			"addiu $v0, $zero, 1\n"
+			"subu $sp, $sp, $v0\n";
 		robot
 			.add_code("sw $ra, 0H($sp)")
 			.add_code("addiu $v0, $zero, 1")
@@ -199,22 +200,23 @@ int MccFunctionDeclaration::generate_code()
 			// Retrieve local variables.
 			if (m_local_var_size > 0) {
 				code_buffer +=
-					Utility::string_concat_int("addiu $sp $sp ", m_local_var_size) + "\n";
+					Utility::string_concat_int("addiu $sp, $sp, ", m_local_var_size) + "\n";
 				robot
 					.add_code(Utility::string_concat_int("addiu $sp, $sp, ", m_local_var_size));
 			}
 
 			// Restore $ra.
 			code_buffer +=
-				"lw $ra 1($sp)\n";
+				"lw $ra, 1H($sp)\n";
 			robot
 				.add_code("lw $ra, 1H($sp)");
 
 			// Pop parameters, $ra and $fp.
 			code_buffer +=
-				Utility::string_concat_int("addiu $sp $sp ", m_parameter_size + 2) + "\n"
-				"lw $fp 0($sp)\n"
-				"jr $ra\n";
+				Utility::string_concat_int("addiu $sp, $sp, ", m_parameter_size + 2) + "\n"
+				"lw $t0, 0H($sp)\n"
+				"jr $ra\n"
+				"srlv $v1, $zero, $zero\n";
 			robot
 				.add_code(Utility::string_concat_int("addiu $sp, $sp, ", m_parameter_size + 2))
 				.add_code("lw $t0, 0H($sp)")

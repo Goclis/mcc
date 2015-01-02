@@ -31,7 +31,7 @@ int MccIntLiteral::generate_code() const
 	if (m_value >= -32768 && m_value <= 32767) {
 		// [-2^15, 2^15-1]
 		code_buffer += Utility::string_concat_int(
-			"addu $v0 $v0 ", m_value) + "\n";
+			"addiu $v0, $zero ", m_value) + "\n";
 		robot
 			.add_code(Utility::string_concat_int("addiu $v0, $zero, ", m_value));
 	} else {
@@ -51,9 +51,9 @@ int MccIntLiteral::generate_code() const
 		lower_bits += hex_value[7];
 
 		code_buffer += 
-			"ori $v0 $zero 0x" + lower_bits + "\n"
-			"lui $v1 " + higher_bits + "\n"
-			"addu $v0 $v0 $v1\n";
+			"ori $v0, $zero, 0x" + lower_bits + "\n"
+			"lui $v1, " + higher_bits + "\n"
+			"addu $v0, $v0, $v1\n";
 
 		robot
 			.add_code("ori $v0, $zero, 0x" + lower_bits)

@@ -47,7 +47,9 @@ int MccIfStatement::generate_code() const
 
 	// Gen(m_condition).
 	this->m_condition->generate_code();
-	code_buffer += "beq $v0 0 " + false_branch_label + "\n";
+	code_buffer +=
+		"beq $v0, $zer0, " + false_branch_label + "\n"
+		"srlv $v1, $zero, $zero\n";
 	robot
 		.add_code("beq $v0, $zero, " + false_branch_label)
 		.add_code("srlv $v1, $zero, $zero");
@@ -55,7 +57,8 @@ int MccIfStatement::generate_code() const
 	// Gen(m_if).
 	this->m_if->generate_code();
 	code_buffer += 
-		"j " + if_end + "\n";
+		"j " + if_end + "\n"
+		"srlv $v1, $zero, $zero\n";
 	robot
 		.add_code("j " + if_end)
 		.add_code("srlv $v1, $zero, $zero");
