@@ -13,6 +13,8 @@ extern FILE *yyin;
 int main(int args, char** argv)
 {
 	MccRobot &robot = theMccRobot();
+	string output_filename;
+	string input_filename;
 
 #ifdef DEBUG_MODE
 	// Test selection.
@@ -20,8 +22,6 @@ int main(int args, char** argv)
 	cout << "Input 1 or 2 to select input file, 1 select 'test', 2 select 'correct'\n"
 		"Your select: ";
 	cin >> select_input;
-	string output_filename;
-	string input_filename;
 	if (1 == select_input) {
 		output_filename = input_filename = "test";
 	} else if (2 == select_input) {
@@ -41,6 +41,9 @@ int main(int args, char** argv)
 		if (pos != -1) {
 			output_filename = input_filename.substr(0, pos);
 		}
+	} else if (input_filename.empty()) {
+		cout << "No input file.\n";
+		exit(0);
 	}
 
 	// Open input file as yyin, the input of flex.
