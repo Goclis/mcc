@@ -15,11 +15,15 @@ MccAssembler::MccAssembler()
 	// Test
 	m_codes.push_back("add $v0, $v0, $v1");
 	m_codes.push_back("bne $v0, $v0, main");
+	m_codes.push_back("srlv $v1, $zero, $zero");
 	m_codes.push_back("j main");
+	m_codes.push_back("srlv $v1, $zero, $zero");
 	m_codes.push_back("main:");
 	m_codes.push_back("add $v0, $v0, $v1");
 	m_codes.push_back("beq $v0, $v0, main");
+	m_codes.push_back("srlv $v1, $zero, $zero");
 	m_codes.push_back("jal main");
+	m_codes.push_back("srlv $v1, $zero, $zero");
 }
 
 
@@ -146,7 +150,7 @@ void MccAssembler::deal_label(const string &label)
 		info = lacks[i];
 		if (info->concern_offset) {
 			// 计算offset，bne或beq
-			int offset = line_num - info->code_line - 1;
+			int offset = calculate_offset(info->code_line, line_num);
 			m_machine_codes[info->code_line] += convert_scale(
 				offset,
 				16);
@@ -302,7 +306,7 @@ string MccAssembler::generate_i_instruction(
 		if (iter != m_labels.end()) {
 			// 该label已出现，生成offset
 			unsigned int label_line = iter->second;
-			int offset = label_line - this_code_line;
+			int offset = calculate_offset(this_code_line, label_line);
 
 			// 将offset转换为16位二进制，存至immediate
 			immediate = convert_scale(
@@ -549,6 +553,18 @@ string MccAssembler::convert_hex_to_binary(char c) const
 
 	return ret;
 }
+
+
+
+int MccAssembler::calculate_offset(int src, int trg) const
+{
+	int offset = trg - src;
+
+	offset -= 2;
+
+	return offset;
+}
+
 
 void MccAssembler::log_warning(const string &info) const
 {

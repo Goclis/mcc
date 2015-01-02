@@ -130,6 +130,9 @@ public:
 	// 将十六进制的字符转换为4位二进制字符串
 	string convert_hex_to_binary(char c) const;
 
+	// 计算offset
+	int calculate_offset(int src, int trg) const;
+
 	// 打印警告日志
 	void log_warning(const string &info) const;
 
