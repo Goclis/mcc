@@ -38,7 +38,12 @@ int main(int args, char** argv)
 	if (args > 1) {
 		string argv1 = string(argv[1]);
 		// Split argv1 into input_path and input_filename.
+		// Check windows path.
 		int pos = argv1.find_last_of('\\');
+		if (string::npos == pos) {
+			// Check unix path.
+			pos = argv1.find_last_of('/');
+		}
 		if (string::npos != pos) {
 			input_filename = argv1.substr(pos + 1);
 			input_path = argv1.substr(0, pos + 1);
@@ -80,6 +85,7 @@ int main(int args, char** argv)
 		// Output generated code.
 		ofstream out_stream(output_filename);
 		out_stream << robot.get_global_var_code_buffer() << robot.get_code_buffer();
+		out_stream.close();
 
 		// Generate machine code by using assembler.
 		MccAssembler mcca(robot.get_codes());
