@@ -17,7 +17,9 @@ int main(void)
 	int i;
 	i = fib(128);
 
-	
+	if (i <= 2) {
+		i = 3;
+	}
 	
 	return i;
 }
