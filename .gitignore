@@ -185,5 +185,6 @@ FakesAssemblies/
 # ClassDiagram
 *.cd
 *.out
+*.coe
 
 
