@@ -15,6 +15,7 @@ int main(int args, char** argv)
 	MccRobot &robot = theMccRobot();
 	string output_filename;
 	string input_filename;
+	string input_path;
 
 #ifdef DEBUG_MODE
 	// Test selection.
@@ -35,10 +36,18 @@ int main(int args, char** argv)
 	// Deal with main arguments.
 	// args[1]: input file name.
 	if (args > 1) {
-		input_filename = string(argv[1]);
+		string argv1 = string(argv[1]);
+		// Split argv1 into input_path and input_filename.
+		int pos = argv1.find_last_of('\\');
+		if (string::npos != pos) {
+			input_filename = argv1.substr(pos + 1);
+			input_path = argv1.substr(0, pos + 1);
+		} else {
+			input_filename = argv1;
+		}
 		output_filename = input_filename;
-		int pos = input_filename.find('.');
-		if (pos != -1) {
+		pos = input_filename.find('.');
+		if (string::npos != pos) {
 			output_filename = input_filename.substr(0, pos);
 		}
 	} else if (input_filename.empty()) {
@@ -47,7 +56,7 @@ int main(int args, char** argv)
 	}
 
 	// Open input file as yyin, the input of flex.
-	yyin = fopen(input_filename.c_str(), "r");
+	yyin = fopen((input_path + input_filename).c_str(), "r");
 	if (nullptr == yyin) {
 		cout << "Open file failed.\n";
 		exit(1);
