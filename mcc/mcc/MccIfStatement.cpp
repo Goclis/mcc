@@ -48,7 +48,7 @@ int MccIfStatement::generate_code() const
 	// Gen(m_condition).
 	this->m_condition->generate_code();
 	code_buffer +=
-		"beq $v0, $zer0, " + false_branch_label + "\n"
+		"beq $v0, $zero, " + false_branch_label + "\n"
 		"srlv $v1, $zero, $zero\n";
 	robot
 		.add_code("beq $v0, $zero, " + false_branch_label)

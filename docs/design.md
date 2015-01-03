@@ -476,7 +476,7 @@ addiu $v0 $zero 0
 j branch_end
 NOP
 branch:
-addiu $v0 $zer0 1
+addiu $v0 $zero 1
 branch_end:
 
 (3) !=
@@ -486,7 +486,7 @@ addiu $v0 $zero 0
 j branch_end
 NOP
 branch:
-addiu $v0 $zer0 1
+addiu $v0 $zero 1
 branch_end:
 
 (4) <=
