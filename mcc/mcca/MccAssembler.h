@@ -40,6 +40,9 @@ public:
 	// 初始化op码
 	void init_op_codes();
 
+	// 初始化ROM要固定插入的代码
+	void init_bios_codes();
+
 	// 扫描代码，进行转换
 	void scan();
 
@@ -126,7 +129,7 @@ public:
 		int num,
 		unsigned int digits) const;
 
-	// 重载，数字用字符串表示，源进制信息包含在数字中，目前只处理16进制数
+	// 重载，数字用字符串表示，源进制信息包含在数字中，目前只处理16进制数和10进制数
 	string convert_scale(
 		string num,
 		unsigned int digits) const;

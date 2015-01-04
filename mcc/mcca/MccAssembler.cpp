@@ -33,6 +33,7 @@ MccAssembler::MccAssembler(const vector<string> &codes)
 	init_registers();
 	init_func_codes();
 	init_op_codes();
+	init_bios_codes();
 }
 
 
@@ -94,6 +95,16 @@ void MccAssembler::init_op_codes()
 	m_op_codes.insert(OpCodePair("sw", "101011"));
 	m_op_codes.insert(OpCodePair("beq", "000100"));
 	m_op_codes.insert(OpCodePair("bne", "000101"));
+}
+
+
+void MccAssembler::init_bios_codes()
+{
+	// BIOS
+	vector<string> bios_codes;
+
+	// 插入统一的代码段中
+	m_codes.insert(m_codes.begin(), bios_codes.begin(), bios_codes.end());
 }
 
 
@@ -518,19 +529,31 @@ string MccAssembler::convert_scale(
 		for (int i = 0, len = num.length() - 1; i < len; ++i) {
 			ret += convert_hex_to_binary(num[i]);
 		}
-
-		int current_len = ret.length();
-		if (current_len > digits) {
-			ret = ret.substr(current_len - digits);
-		} else if (current_len < digits) {
-			for (int i = current_len; i < digits; ++i) {
-				ret.insert(ret.begin(), '0');
-			}
-		}
 	} else {
-		// 非16进制数，直接返回全0
-		for (unsigned int i = 0; i < digits; ++i) {
-			ret += "0";
+		// 非16进制数，默认为10进制数
+		// 计算出值
+		int value = 0;
+		int base = 1;
+		for (int i = num.length() - 1; i >= 0; --i) {
+			value += (num[i] - '0') * base;
+			base *= 10;
+		}
+
+		// 转换成二进制
+		int digit;
+		while (value > 0) {
+			digit = value % 2;
+			ret.insert(ret.begin(), digit + '0');
+			value /= 2;
+		}
+	}
+
+	int current_len = ret.length();
+	if (current_len > digits) {
+		ret = ret.substr(current_len - digits);
+	} else if (current_len < digits) {
+		for (int i = current_len; i < digits; ++i) {
+			ret.insert(ret.begin(), '0');
 		}
 	}
 	return ret;
@@ -595,7 +618,6 @@ string MccAssembler::convert_hex_to_binary(char c) const
 
 	return ret;
 }
-
 
 
 int MccAssembler::calculate_offset(int src, int trg) const
