@@ -51,13 +51,13 @@ int MccIntLiteral::generate_code() const
 		lower_bits += hex_value[7];
 
 		code_buffer += 
-			"ori $v0, $zero, 0x" + lower_bits + "\n"
-			"lui $v1, " + higher_bits + "\n"
+			"ori $v0, $zero, " + lower_bits + "H\n"
+			"lui $v1, " + higher_bits + "H\n"
 			"addu $v0, $v0, $v1\n";
 
 		robot
-			.add_code("ori $v0, $zero, 0x" + lower_bits)
-			.add_code("lui $v1, " + higher_bits)
+			.add_code("ori $v0, $zero, " + lower_bits + "H")
+			.add_code("lui $v1, " + higher_bits + "H")
 			.add_code("addu $v0, $v0, $v1");
 	}
 

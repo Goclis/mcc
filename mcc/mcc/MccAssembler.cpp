@@ -529,19 +529,31 @@ string MccAssembler::convert_scale(
 		for (int i = 0, len = num.length() - 1; i < len; ++i) {
 			ret += convert_hex_to_binary(num[i]);
 		}
-
-		int current_len = ret.length();
-		if (current_len > digits) {
-			ret = ret.substr(current_len - digits);
-		} else if (current_len < digits) {
-			for (int i = current_len; i < digits; ++i) {
-				ret.insert(ret.begin(), '0');
-			}
-		}
 	} else {
-		// 非16进制数，直接返回全0
-		for (unsigned int i = 0; i < digits; ++i) {
-			ret += "0";
+		// 非16进制数，默认为10进制数
+		// 计算出值
+		int value = 0;
+		int base = 1;
+		for (int i = num.length() - 1; i >= 0; --i) {
+			value += (num[i] - '0') * base;
+			base *= 10;
+		}
+		
+		// 转换成二进制
+		int digit;
+		while (value > 0) {
+			digit = value % 2;
+			ret.insert(ret.begin(), digit + '0');
+			value /= 2;
+		}
+	}
+
+	int current_len = ret.length();
+	if (current_len > digits) {
+		ret = ret.substr(current_len - digits);
+	} else if (current_len < digits) {
+		for (int i = current_len; i < digits; ++i) {
+			ret.insert(ret.begin(), '0');
 		}
 	}
 	return ret;
