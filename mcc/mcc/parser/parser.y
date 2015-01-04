@@ -485,7 +485,6 @@ expr
 	}
 	| IDENT '[' expr ']' {
 		MccIdentifier *ident = new MccIdentifier($1);
-		delete $1;
 		ident->set_lineno(yylineno);
 		$$ = new MccArrayAccessExpression(ident, $3);
 		($$)->set_lineno(yylineno);

@@ -2185,7 +2185,6 @@ yyreduce:
 #line 484 "parser.y"
     {
 		MccIdentifier *ident = new MccIdentifier((yyvsp[(1) - (4)].pStr));
-		delete (yyvsp[(1) - (4)].pStr);
 		ident->set_lineno(yylineno);
 		(yyval.pExpr) = new MccArrayAccessExpression(ident, (yyvsp[(3) - (4)].pExpr));
 		((yyval.pExpr))->set_lineno(yylineno);
