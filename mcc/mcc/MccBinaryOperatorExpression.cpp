@@ -101,7 +101,7 @@ int MccBinaryOperatorExpression::generate_code() const
 				"srlv $v1, $zero, $zero\n"
 				"addiu $v0, $zero, 0\n"
 				"j " + branch_end + "\n"
-				"srlv $v1, $zero, $zero" +
+				"srlv $v1, $zero, $zero\n" +
 				branch_label + ":\n"
 				"addiu $v0, $zero, 1\n" +
 				branch_end + ":\n";
