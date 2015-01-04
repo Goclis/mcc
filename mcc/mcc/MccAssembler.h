@@ -40,6 +40,9 @@ public:
 	// 初始化op码
 	void init_op_codes();
 
+	// 初始化ROM要固定插入的代码
+	void init_bios_codes();
+
 	// 扫描代码，进行转换
 	void scan();
 

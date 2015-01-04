@@ -33,6 +33,7 @@ MccAssembler::MccAssembler(const vector<string> &codes)
 	init_registers();
 	init_func_codes();
 	init_op_codes();
+	init_bios_codes();
 }
 
 
@@ -94,6 +95,16 @@ void MccAssembler::init_op_codes()
 	m_op_codes.insert(OpCodePair("sw", "101011"));
 	m_op_codes.insert(OpCodePair("beq", "000100"));
 	m_op_codes.insert(OpCodePair("bne", "000101"));
+}
+
+
+void MccAssembler::init_bios_codes()
+{
+	// BIOS
+	vector<string> bios_codes;
+	
+	// 插入统一的代码段中
+	m_codes.insert(m_codes.begin(), bios_codes.begin(), bios_codes.end());
 }
 
 
