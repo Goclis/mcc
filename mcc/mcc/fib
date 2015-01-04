@@ -1,3 +1,13 @@
+int testarr(int arr[10], int size)
+{
+	int i;
+
+	arr[2] = size;
+	i = arr[8];
+
+	return i;
+}
+
 int fib(int n)
 {
 	int i;
@@ -15,11 +25,14 @@ int fib(int n)
 int main(void)
 {
 	int i;
+	int arr[10];
 	i = fib(128);
 
 	if (i <= 2) {
 		i = 3;
 	}
+
+	i = arr[0];
 	
 	return i;
 }
