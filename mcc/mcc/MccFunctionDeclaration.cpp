@@ -155,13 +155,15 @@ int MccFunctionDeclaration::generate_code()
 			"lw $v1, 2H($sp)\n"
 			"lw $v0, 3H($sp)\n"
 			"addiu $sp, $sp, 3\n"
-			"eret\n";
+			"eret\n"
+			"srlv $zero, $zero, $zero\n";
 		robot
 			.add_code("lw $t0, 1H($sp)")
 			.add_code("lw $v1, 2H($sp)")
 			.add_code("lw $v0, 3H($sp)")
 			.add_code("addiu $sp, $sp, 3")
-			.add_code("eret");
+			.add_code("eret")
+			.add_code("srlv $zero, $zero, $zero");
 	} else {
 		// Iterate parameters, record position (positive offset of $fp).
 		for (size_t i = 0, size = m_parameter_list.size(); i < size; ++i) {

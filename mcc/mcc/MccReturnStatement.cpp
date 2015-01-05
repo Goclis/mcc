@@ -52,7 +52,7 @@ int MccReturnStatement::generate_code() const
 	// Pop parameters, $ra and $fp.
 	code_buffer +=
 		Utility::string_concat_int("addiu $sp, $sp, ", parameter_size + 2) + "\n"
-		"lw $t0 0H($sp)\n"
+		"lw $t0, 0H($sp)\n"
 		"jr $ra\n"
 		"srlv $v1, $zero, $zero\n";
 	robot

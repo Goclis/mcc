@@ -31,7 +31,7 @@ int MccIntLiteral::generate_code() const
 	if (m_value >= -32768 && m_value <= 32767) {
 		// [-2^15, 2^15-1]
 		code_buffer += Utility::string_concat_int(
-			"addiu $v0, $zero ", m_value) + "\n";
+			"addiu $v0, $zero, ", m_value) + "\n";
 		robot
 			.add_code(Utility::string_concat_int("addiu $v0, $zero, ", m_value));
 	} else {

@@ -170,6 +170,7 @@ void MccAssembler::scan()
 	// 插入默认的中断处理程序
 	m_interrupt_address["default"] = m_machine_codes.size();
 	m_machine_codes.push_back("01000010000000000000000000011000");
+	m_machine_codes.push_back("00000000000000000000000000000000");
 }
 
 
@@ -305,9 +306,20 @@ string MccAssembler::generate_r_instruction(
 	size_t operands_num = operands.size();
 	if (3 == operands_num) {
 		// 有三个操作数，顺序为rd, rs, rt
-		rd = get_register_code(operands[0]);
-		rs = get_register_code(operands[1]);
-		rt = get_register_code(operands[2]);
+		string op1, op2, op3;
+		op1 = get_register_code(operands[0]);
+		op2 = get_register_code(operands[1]);
+		op3 = get_register_code(operands[2]);
+
+		if ("sllv" == name || "srlv" == name) {
+			rs = op3;
+			rt = op2;
+			rd = op1;
+		} else {
+			rs = op2;
+			rt = op3;
+			rd = op1;
+		}
 	} else if (2 == operands_num) {
 		// 有两个操作数，顺序为rs, rt，rd为00000
 		rd = "00000";
@@ -315,8 +327,13 @@ string MccAssembler::generate_r_instruction(
 		rt = get_register_code(operands[1]);
 	} else if (1 == operands_num) {
 		// 一个操作数，仅rs，另外两个为00000
-		rs = get_register_code(operands[0]);
-		rd = rt = "00000";
+		string op = get_register_code(operands[0]);
+		rs = rd = rt = "00000";
+		if ("jr" == name) {
+			rs = op;
+		} else if ("mfhi" == name || "mflo" == name) {
+			rd = op;
+		}
 	}
 
 	// shamt，对于可能用到的R指令，均为00000
