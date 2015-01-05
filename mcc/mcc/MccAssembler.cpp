@@ -11,6 +11,7 @@ MccAssembler::MccAssembler()
 	init_registers();
 	init_func_codes();
 	init_op_codes();
+	init_bios_codes();
 
 	// Test
 	m_codes.push_back("add $v0, $v0, $v1");
@@ -100,11 +101,50 @@ void MccAssembler::init_op_codes()
 
 void MccAssembler::init_bios_codes()
 {
-	// BIOS
-	vector<string> bios_codes;
+	// 从bios-init文件中读取BIOS的程序内容，共4段
+	ifstream bios_init("bios-init");
+	if (!bios_init.good()) {
+		cout << "读取BIOS初始化文件失败\n";
+		exit(1);
+	}
 	
-	// 插入统一的代码段中
-	m_codes.insert(m_codes.begin(), bios_codes.begin(), bios_codes.end());
+	string line;
+	int line_num = 0;
+	int which_part = 1;
+	while (bios_init >> line) {
+		++line_num;
+		if ("%%" == line) {
+			++which_part;
+			if (4 == which_part) {
+				// 进入了系统调用的实现部分，记录下开始地址
+				deal_label("system");
+			}
+			continue;
+		}
+		
+		if (2 != which_part) {
+			line = line.substr(0, 32);
+		}
+
+		if (1 == which_part) {
+			m_machine_codes.push_back(line);
+		} else if (2 == which_part) {
+			// main不确定，指令缺失
+			LackInfo *lack_info = new LackInfo;
+			lack_info->code_line = m_machine_codes.size();
+			lack_info->concern_offset = false;
+
+			vector<LackInfo*> &lack_infos = get_lack_infos("main");
+			lack_infos.push_back(lack_info);
+
+			m_machine_codes.push_back("000011");
+		} else if (3 == which_part) {
+			m_machine_codes.push_back(line);
+		} else if (4 == which_part) {
+			// 系统调用的实现
+			m_machine_codes.push_back(line);
+		}
+	}
 }
 
 
