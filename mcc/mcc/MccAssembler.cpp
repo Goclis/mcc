@@ -307,14 +307,14 @@ string MccAssembler::generate_r_instruction(
 		rs = get_register_code(operands[1]);
 		rt = get_register_code(operands[2]);
 	} else if (2 == operands_num) {
-		// 有两个操作数，顺序为rs, rt，rd为000000
+		// 有两个操作数，顺序为rs, rt，rd为00000
 		rd = "00000";
 		rs = get_register_code(operands[0]);
 		rt = get_register_code(operands[1]);
 	} else if (1 == operands_num) {
-		// 一个操作数，仅rd，另外两个为000000
-		rd = get_register_code(operands[0]);
-		rs = rt = "00000";
+		// 一个操作数，仅rs，另外两个为00000
+		rs = get_register_code(operands[0]);
+		rd = rt = "00000";
 	}
 
 	// shamt，对于可能用到的R指令，均为00000
