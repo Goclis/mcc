@@ -88,9 +88,17 @@ int main(int args, char** argv)
 		out_stream.close();
 
 		// Generate machine code by using assembler.
-		MccAssembler mcca(robot.get_codes());
+		bool use_bios = true;
+		if (args > 2) {
+			if (0 == strcmp("--no-bios", argv[2])) {
+				use_bios = false;
+			}
+		}
+		MccAssembler mcca(robot.get_codes(), use_bios);
 		mcca.scan();
 		mcca.output_coes();
+
+		cout << "Code Generation Finished.\n";
 	} else {
 		cout << "Found error.\n";
 	}

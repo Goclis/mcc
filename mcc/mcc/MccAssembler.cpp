@@ -28,13 +28,16 @@ MccAssembler::MccAssembler()
 }
 
 
-MccAssembler::MccAssembler(const vector<string> &codes)
+MccAssembler::MccAssembler(const vector<string> &codes, bool use_bios)
 	: m_codes(codes.begin(), codes.end())
 {
 	init_registers();
 	init_func_codes();
 	init_op_codes();
-	init_bios_codes();
+
+	if (use_bios) {
+		init_bios_codes();
+	}
 }
 
 
