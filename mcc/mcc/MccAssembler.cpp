@@ -285,6 +285,8 @@ void MccAssembler::deal_instruction(const string &code)
 		m_machine_codes.push_back(generate_j_instruction(
 			instruction,
 			code.substr(instruction.length() + 1)));
+	} else if ("eret" == instruction) {
+		m_machine_codes.push_back("01000010000000000000000000011000");
 	}
 }
 
