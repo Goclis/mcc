@@ -60,6 +60,9 @@ void MccAssembler::init_registers()
 	// $t0 -> 8
 	m_registers.insert(RegisterPair("$t0", 8));
 
+	// $t1 -> 9
+	m_registers.insert(RegisterPair("$t1", 9));
+
 	// $sp -> 29
 	m_registers.insert(RegisterPair("$sp", 29));
 
@@ -288,6 +291,10 @@ void MccAssembler::deal_instruction(const string &code)
 			code.substr(instruction.length() + 1)));
 	} else if ("eret" == instruction) {
 		m_machine_codes.push_back("01000010000000000000000000011000");
+	} else if ("mtc0" == instruction) {
+		m_machine_codes.push_back("01000000100000000000000000000001");
+	} else if ("mtc1" == instruction) {
+		m_machine_codes.push_back("01000000100010010000000000000001");
 	}
 }
 
