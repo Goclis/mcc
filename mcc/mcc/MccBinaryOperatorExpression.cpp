@@ -180,11 +180,11 @@ int MccBinaryOperatorExpression::generate_code() const
 		{
 			code_buffer += 
 				"slt $v0, $v1, $v0\n"
-				"sltu $v0, $zero, $v0\n";
+				"xori $v0, $v0, 1\n";
 
 			robot
 				.add_code("slt $v0, $v1, $v0")
-				.add_code("sltu $v0, $zero, $v0");
+				.add_code("xori $v0, $v0, 1");
 			break;
 		}
 

@@ -97,6 +97,7 @@ void MccAssembler::init_op_codes()
 {
 	m_op_codes.insert(OpCodePair("addiu", "001001"));
 	m_op_codes.insert(OpCodePair("ori", "001101"));
+	m_op_codes.insert(OpCodePair("xori", "001110"));
 	m_op_codes.insert(OpCodePair("lui", "001111"));
 	m_op_codes.insert(OpCodePair("lw", "100011"));
 	m_op_codes.insert(OpCodePair("sw", "101011"));
@@ -279,7 +280,7 @@ void MccAssembler::deal_instruction(const string &code)
 	} else if ("addiu" == instruction || "ori" == instruction
 		|| "lui" == instruction || "lw" == instruction
 		|| "sw" == instruction || "beq" == instruction
-		|| "bne" == instruction) {
+		|| "bne" == instruction || "xori" == instruction) {
 		// I¿‡–Õ
 		m_machine_codes.push_back(generate_i_instruction(
 			instruction,
