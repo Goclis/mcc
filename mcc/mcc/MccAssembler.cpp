@@ -368,7 +368,7 @@ string MccAssembler::generate_i_instruction(
 	string immediate_or_offset;
 	split_operands(operands_str, operands);
 	// 根据指令的不同，做不同的处理
-	if ("addiu" == name || "ori" == name) {
+	if ("addiu" == name || "ori" == name || "xori" == name) {
 		rt = get_register_code(operands[0]);
 		rs = get_register_code(operands[1]);
 		immediate_or_offset = operands[2];
