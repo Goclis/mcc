@@ -30,7 +30,7 @@ int MccVariableDeclaration::generate_code()
 	int stack_used = 1;
 	bool is_array_variable = (this->m_array_size != -1);
 	if (is_array_variable) {
-		stack_used = 4 * this->m_array_size;
+		stack_used = 1 * this->m_array_size;
 	}
 	
 	string var_name = this->get_decl_name();
