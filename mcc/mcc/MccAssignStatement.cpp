@@ -107,12 +107,12 @@ int MccAssignStatement::generate_code() const
 			// Push $v0.
 			code_buffer +=
 				"sw $v0, 0H($sp)\n"
-				"addiu $v1, $zero, 1\n"
-				"subu $sp, $sp, $v1\n";
+				"addiu $v0, $zero, 1\n"
+				"subu $sp, $sp, $v0\n";
 			robot
 				.add_code("sw $v0, 0H($sp)")
 				.add_code("addiu $v0, $zero, 1")
-				.add_code("subu $sp, $sp, $v1");
+				.add_code("subu $sp, $sp, $v0");
 
 			// Array index.
 			m_array_index_expr->generate_code();
