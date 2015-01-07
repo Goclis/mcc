@@ -1,0 +1,133 @@
+main:
+addu $t0, $zero, $sp
+sw $ra, 0H($sp)
+addiu $v0, $zero, 1
+subu $sp, $sp, $v0
+addiu $v0, $zero, 1
+subu $sp, $sp, $v0
+addiu $v0, $zero, 128
+subu $sp, $sp, $v0
+addiu $v0, $zero, 1
+subu $sp, $sp, $v0
+addiu $v0, $zero, 0
+sw $v0, 0H($sp)
+addiu $v0, $zero, 1
+subu $sp, $sp, $v0
+addiu $v0, $zero, 130
+subu $v0, $t0, $v0
+lw $v1, 1H($sp)
+addiu $sp, $sp, 1
+sw $v1, 0H($v0)
+addu $v0, $zero, $v1
+while_branch_0:
+addiu $v0, $zero, 130
+subu $v0, $t0, $v0
+lw $v0, 0H($v0)
+sw $v0, 0H($sp)
+addiu $v0, $zero, 1
+subu $sp, $sp, $v0
+addiu $v0, $zero, 128
+lw $v1, 1H($sp)
+addiu $sp, $sp, 1
+slt $v0, $v1, $v0
+beq $v0, $zero, while_branch_0_end
+srlv $v1, $zero, $zero
+addiu $v0, $zero, 130
+subu $v0, $t0, $v0
+lw $v0, 0H($v0)
+sw $v0, 0H($sp)
+addiu $v0, $zero, 1
+subu $sp, $sp, $v0
+addiu $v0, $zero, 129
+subu $v0, $t0, $v0
+sw $v0, 0H($sp)
+addiu $v0, $zero, 1
+subu $sp, $sp, $v0
+addiu $v0, $zero, 130
+subu $v0, $t0, $v0
+lw $v0, 0H($v0)
+lw $v1, 1H($sp)
+addiu $sp, $sp, 1
+add $v0, $v0, $v1
+lw $v1, 1H($sp)
+addiu $sp, $sp, 1
+sw $v1, 0H($v0)
+addu $v0, $zero, $v1
+addiu $v0, $zero, 130
+subu $v0, $t0, $v0
+lw $v0, 0H($v0)
+sw $v0, 0H($sp)
+addiu $v0, $zero, 1
+subu $sp, $sp, $v0
+addiu $v0, $zero, 1
+lw $v1, 1H($sp)
+addiu $sp, $sp, 1
+add $v0, $v1, $v0
+sw $v0, 0H($sp)
+addiu $v0, $zero, 1
+subu $sp, $sp, $v0
+addiu $v0, $zero, 130
+subu $v0, $t0, $v0
+lw $v1, 1H($sp)
+addiu $sp, $sp, 1
+sw $v1, 0H($v0)
+addu $v0, $zero, $v1
+j while_branch_0
+srlv $v1, $zero, $zero
+while_branch_0_end:
+while_branch_1:
+addiu $v0, $zero, 1
+beq $v0, $zero, while_branch_1_end
+srlv $v1, $zero, $zero
+ori $v0, $zero, FF10H
+lui $v1, 0000H
+addu $v0, $v0, $v1
+lw $v0, 0H($v0)
+sw $v0, 0H($sp)
+addiu $v0, $zero, 1
+subu $sp, $sp, $v0
+addiu $v0, $zero, 127
+lw $v1, 1H($sp)
+addiu $sp, $sp, 1
+and $v0, $v1, $v0
+sw $v0, 0H($sp)
+addiu $v0, $zero, 1
+subu $sp, $sp, $v0
+addiu $v0, $zero, 1
+subu $v0, $t0, $v0
+lw $v1, 1H($sp)
+addiu $sp, $sp, 1
+sw $v1, 0H($v0)
+addu $v0, $zero, $v1
+addiu $v0, $zero, 129
+subu $v0, $t0, $v0
+sw $v0, 0H($sp)
+addiu $v1, $zero, 1
+subu $sp, $sp, $v1
+addiu $v0, $zero, 1
+subu $v0, $t0, $v0
+lw $v0, 0H($v0)
+lw $v1, 1H($sp)
+addiu $sp, $sp, 1
+add $v0, $v0, $v1
+lw $v0, 0H($v0)
+sw $v0, 0H($sp)
+addiu $v0, $zero, 1
+subu $sp, $sp, $v0
+ori $v0, $zero, FF00H
+lui $v1, 0000H
+addu $v0, $v0, $v1
+lw $v1, 1H($sp)
+addiu $sp, $sp, 1
+sw $v1, 0H($v0)
+addu $v0, $zero, $v1
+j while_branch_1
+srlv $v1, $zero, $zero
+while_branch_1_end:
+addiu $v0, $zero, 0
+addiu $sp, $sp, 130
+lw $ra, 1H($sp)
+addiu $sp, $sp, 2
+lw $t0, 0H($sp)
+jr $ra
+srlv $v1, $zero, $zero
